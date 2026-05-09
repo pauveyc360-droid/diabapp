@@ -196,7 +196,7 @@ label.lbl{display:block;font-size:13px;font-weight:500;color:var(--text2);margin
   <div class="topbar">
     <div class="topbar-logo">💉</div>
     <h1>DiabApp</h1>
-    <button class="icon-btn" onclick="openModal('modal-apikey')" title="Configurar API key">⚙️</button>
+    <button class="icon-btn" onclick="openModal('modal-geminikey')" title="Configurar API key">⚙️</button>
   </div>
   <div class="scroll" id="home-scroll">
     <!-- Sensor card -->
@@ -348,9 +348,9 @@ label.lbl{display:block;font-size:13px;font-weight:500;color:var(--text2);margin
 
     <!-- No API key warning -->
     <div id="no-apikey-warn" style="display:none;margin:16px;padding:16px;background:var(--amber3);border-radius:var(--r);border:1px solid var(--amber4)">
-      <p style="font-size:14px;font-weight:600;color:var(--amber);margin-bottom:8px">⚠️ Falta la API key de Claude</p>
-      <p style="font-size:13px;color:var(--amber)">Para analizar fotos con IA necesitas una API key de Anthropic. Es gratis al empezar.</p>
-      <button class="btn-primary" style="margin-top:12px;background:var(--amber2)" onclick="openModal('modal-apikey')">Configurar API key →</button>
+      <p style="font-size:14px;font-weight:600;color:var(--amber);margin-bottom:8px">⚠️ Falta la API key de Google Gemini</p>
+      <p style="font-size:13px;color:var(--amber)">Para analizar fotos con IA necesitas una API key gratuita de Google. Solo necesitas tu cuenta de Gmail.</p>
+      <button class="btn-primary" style="margin-top:12px;background:var(--amber2)" onclick="openModal('modal-geminikey')">Configurar API key →</button>
     </div>
   </div>
   <nav class="bottomnav">
@@ -475,9 +475,9 @@ label.lbl{display:block;font-size:13px;font-weight:500;color:var(--text2);margin
     </div>
     <div class="sec-label">API Key (análisis de fotos)</div>
     <div class="card" style="margin:0 16px;padding:0">
-      <div class="setting-row" onclick="openModal('modal-apikey')">
+      <div class="setting-row" onclick="openModal('modal-geminikey')">
         <div class="sr-icon" style="background:var(--blue3)">🔑</div>
-        <div class="sr-body"><div class="sr-title">API key de Anthropic</div><div class="sr-sub">Necesaria para analizar fotos con IA</div></div>
+        <div class="sr-body"><div class="sr-title">API key de Google Gemini</div><div class="sr-sub">Gratuita · solo necesitas Gmail</div></div>
         <div class="sr-val" id="cfg-apikey-status">No configurada</div>
       </div>
     </div>
@@ -504,26 +504,26 @@ label.lbl{display:block;font-size:13px;font-weight:500;color:var(--text2);margin
 
 <!-- ===== MODALS ===== -->
 
-<!-- API KEY MODAL -->
-<div class="modal-overlay" id="modal-apikey" onclick="closeModalOutside(event,'modal-apikey')">
+<!-- GEMINI KEY MODAL -->
+<div class="modal-overlay" id="modal-geminikey" onclick="closeModalOutside(event,'modal-geminikey')">
   <div class="modal-box">
     <div class="modal-handle"></div>
-    <div class="modal-title">🔑 Configurar API Key de Anthropic</div>
+    <div class="modal-title">🔑 Configurar API Key de Google</div>
     <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">
-      La API key permite a la app analizar fotos de comida con inteligencia artificial. Se guarda solo en tu móvil.
+      Permite analizar fotos de comida con IA. Es <strong>completamente gratuita</strong> con tu cuenta de Gmail. Se guarda solo en tu móvil.
     </div>
-    <div style="background:var(--blue3);border-radius:var(--r2);padding:14px;margin-bottom:16px;font-size:13px;color:var(--blue);line-height:1.7">
-      <strong>Cómo obtenerla (5 minutos):</strong><br>
-      1. Ve a <strong>console.anthropic.com</strong><br>
-      2. Crea una cuenta gratuita<br>
-      3. En el menú: <em>API Keys → Create Key</em><br>
-      4. Copia la clave (empieza por <code>sk-ant-</code>)<br>
+    <div style="background:var(--blue3);border-radius:var(--r2);padding:14px;margin-bottom:16px;font-size:13px;color:var(--blue);line-height:1.8">
+      <strong>Cómo obtenerla (2 minutos):</strong><br>
+      1. Ve a <strong>aistudio.google.com</strong><br>
+      2. Entra con tu cuenta de Gmail<br>
+      3. Pulsa <em>"Get API key"</em> → <em>"Create API key"</em><br>
+      4. Copia la clave que aparece<br>
       5. Pégala aquí abajo
     </div>
-    <label class="lbl">Tu API Key</label>
-    <input class="field" type="password" id="apikey-input" placeholder="sk-ant-api03-..." autocomplete="off">
+    <label class="lbl">Tu API Key de Google Gemini</label>
+    <input class="field" type="password" id="apikey-input" placeholder="AIza..." autocomplete="off">
     <button class="btn-primary" style="margin-top:12px" onclick="saveApiKey()">Guardar API Key</button>
-    <button class="btn-secondary" onclick="closeModal('modal-apikey')">Cancelar</button>
+    <button class="btn-secondary" onclick="closeModal('modal-geminikey')">Cancelar</button>
   </div>
 </div>
 
@@ -686,7 +686,7 @@ function openModal(id) {
     document.getElementById('basal-time').value = now.toTimeString().slice(0,5);
     document.getElementById('basal-units').value = state.config.basalDose;
   }
-  if (id === 'modal-apikey') {
+  if (id === 'modal-geminikey') {
     document.getElementById('apikey-input').value = state.apiKey ? '••••••••' : '';
   }
 }
@@ -757,15 +757,11 @@ function renderSettings() {
 // ============================================================
 function saveApiKey() {
   const val = document.getElementById('apikey-input').value.trim();
-  if (!val || val === '••••••••') { closeModal('modal-apikey'); return; }
-  if (!val.startsWith('sk-ant-')) {
-    toast('⚠️ La key debe empezar por sk-ant-');
-    return;
-  }
+  if (!val || val === '••••••••') { closeModal('modal-geminikey'); return; }
   state.apiKey = val;
   save();
   renderSettings();
-  closeModal('modal-apikey');
+  closeModal('modal-geminikey');
   toast('✅ API Key guardada');
 }
 
@@ -830,36 +826,32 @@ Analiza esta imagen de comida y devuelve ÚNICAMENTE un objeto JSON válido con 
 
 Sé preciso con los carbohidratos. Si no puedes ver bien algún ingrediente, haz una estimación razonable. Incluye todos los componentes visibles.`;
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': state.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-opus-4-5',
-        max_tokens: 1024,
-        messages: [{
-          role: 'user',
-          content: [
-            { type: 'image', source: { type: 'base64', media_type: mimeType, data: b64 } },
-            { type: 'text', text: prompt }
-          ]
-        }]
-      })
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${state.apiKey}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [
+              { inline_data: { mime_type: mimeType, data: b64 } },
+              { text: prompt }
+            ]
+          }],
+          generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
+        })
+      }
+    );
 
     if (!response.ok) {
       const err = await response.json();
-      throw new Error(err.error?.message || 'Error en la API');
+      throw new Error(err.error?.message || 'Error en la API de Google');
     }
 
     const data = await response.json();
-    const text = data.content[0].text.trim();
+    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
+    if (!text) throw new Error('Respuesta vacía de la IA');
 
-    // Parse JSON (strip possible markdown fences)
     const clean = text.replace(/```json|```/g,'').trim();
     const result = JSON.parse(clean);
     currentAnalysis = result;
