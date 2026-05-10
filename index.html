@@ -4,1433 +4,783 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="DiabApp">
-<meta name="theme-color" content="#0F6E56">
-<title>DiabApp — Gestión Diabetes T1</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#0F1117">
+<title>DiabApp</title>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#F7F6F2;--bg2:#FFFFFF;--bg3:#EEECEA;
-  --text:#1A1A18;--text2:#6B6A65;--text3:#9E9D97;
-  --border:#E0DED8;--border2:#CCCBC5;
-  --green:#0F6E56;--green2:#1D9E75;--green3:#E1F5EE;--green4:#9FE1CB;
-  --amber:#885200;--amber2:#BA7517;--amber3:#FAEEDA;--amber4:#FAC775;
-  --red:#8B1F1F;--red2:#C83232;--red3:#FCEBEB;--red4:#F09595;
-  --blue:#0D4F8A;--blue2:#2176C7;--blue3:#E6F1FB;--blue4:#85B7EB;
-  --shadow:0 2px 12px rgba(0,0,0,0.08);
-  --r:14px;--r2:10px;--r3:20px;
+  --bg:#0F1117;--bg2:#1A1D27;--bg3:#222636;--bg4:#2A2F45;
+  --text:#F0EFF8;--text2:#9896B0;--text3:#5E5C78;--border:#2A2F45;
+  --green:#22C55E;--green-bg:rgba(34,197,94,0.12);
+  --amber:#EAB308;--amber-bg:rgba(234,179,8,0.12);
+  --red:#EF4444;--red-bg:rgba(239,68,68,0.12);
+  --blue:#6366F1;--blue2:#818CF8;--blue-bg:rgba(99,102,241,0.12);
+  --teal:#14B8A6;--teal-bg:rgba(20,184,166,0.12);
+  --orange:#F97316;--orange-bg:rgba(249,115,22,0.12);
+  --r:16px;--r2:12px;
 }
-@media(prefers-color-scheme:dark){
-  :root{
-    --bg:#141412;--bg2:#1E1E1C;--bg3:#252523;
-    --text:#F0EFE9;--text2:#9E9D97;--text3:#6B6A65;
-    --border:#2E2E2C;--border2:#3A3A38;
-    --green:#1D9E75;--green2:#2DBFA0;--green3:#0A2E25;--green4:#0F5E45;
-    --amber:#EF9F27;--amber2:#FAC775;--amber3:#2E2000;--amber4:#5A3800;
-    --red:#E24B4A;--red2:#F09595;--red3:#2E0A0A;--red4:#5A1A1A;
-    --blue:#378ADD;--blue2:#85B7EB;--blue3:#051A30;--blue4:#0C3A6A;
-  }
-}
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:'DM Sans',system-ui,sans-serif;color:var(--text)}
-#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;background:var(--bg)}
-
-/* ===== SCREENS ===== */
-.screen{display:none;flex-direction:column;height:100%;overflow:hidden}
+html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative}
+.screen{display:none;flex-direction:column;flex:1;overflow:hidden}
 .screen.active{display:flex}
-
-/* ===== TOPBAR ===== */
-.topbar{padding:env(safe-area-inset-top,12px) 16px 0;padding-top:max(env(safe-area-inset-top),12px);display:flex;align-items:center;gap:10px;background:var(--bg);z-index:10;flex-shrink:0}
-.topbar h1{font-size:19px;font-weight:600;flex:1;color:var(--text)}
-.topbar-logo{width:34px;height:34px;border-radius:10px;background:var(--green2);display:flex;align-items:center;justify-content:center;font-size:18px}
-.icon-btn{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border2);background:var(--bg2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);font-size:18px;flex-shrink:0}
-
-/* ===== SCROLL CONTENT ===== */
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:88px}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px}
 .scroll::-webkit-scrollbar{display:none}
-
-/* ===== BOTTOM NAV ===== */
-.bottomnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom,4px);z-index:100}
-.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 4px 8px;cursor:pointer;border:none;background:transparent;font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;transition:color .15s}
-.nav-btn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav-btn.active{color:var(--green2)}
-.nav-btn.active svg{stroke:var(--green2)}
-
-/* ===== CARDS ===== */
-.card{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:16px}
-.card+.card{margin-top:10px}
-
-/* ===== SECTION LABEL ===== */
-.sec-label{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;padding:16px 16px 8px}
-
-/* ===== PILLS / BADGES ===== */
-.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500}
-.pill-ok{background:var(--green3);color:var(--green)}
-.pill-warn{background:var(--amber3);color:var(--amber)}
-.pill-bad{background:var(--red3);color:var(--red)}
-.pill-info{background:var(--blue3);color:var(--blue)}
-
-/* ===== BUTTONS ===== */
-.btn-primary{width:100%;padding:16px;background:var(--green2);border:none;border-radius:var(--r);font-size:16px;font-weight:600;color:#fff;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s}
-.btn-primary:active{opacity:.85}
-.btn-secondary{width:100%;padding:14px;background:transparent;border:1.5px solid var(--border2);border-radius:var(--r);font-size:15px;font-weight:500;color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:10px}
-
-/* ===== INPUTS ===== */
-.field{width:100%;padding:14px;border:1.5px solid var(--border2);border-radius:var(--r2);font-size:16px;background:var(--bg2);color:var(--text);font-family:'DM Sans',sans-serif;outline:none}
-.field:focus{border-color:var(--green2)}
-label.lbl{display:block;font-size:13px;font-weight:500;color:var(--text2);margin-bottom:6px}
-
-/* ===== TOAST ===== */
-#toast{position:fixed;top:60px;left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:30px;font-size:14px;font-weight:500;z-index:999;transition:transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
+.topbar{padding:max(env(safe-area-inset-top),16px) 16px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg)}
+.topbar h1{font-size:20px;font-weight:600;flex:1}
+.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
+.bnav{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding:8px 0;padding-bottom:max(env(safe-area-inset-bottom),8px);z-index:50}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;cursor:pointer;border:none;background:transparent;font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;transition:color .15s}
+.nb.on{color:var(--blue2)}
+.nb-icon{font-size:22px}
+.card{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:16px;margin-bottom:10px}
+.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px}
+.btn{width:100%;padding:15px;border-radius:var(--r2);border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s}
+.btn:active{opacity:.8}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn+.btn{margin-top:8px}
+.field{width:100%;padding:13px 14px;border-radius:var(--r2);border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none}
+.field:focus{border-color:var(--blue)}
+.lbl{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.pill-g{background:var(--green-bg);color:var(--green)}
+.pill-a{background:var(--amber-bg);color:var(--amber)}
+.pill-r{background:var(--red-bg);color:var(--red)}
+.pill-b{background:var(--blue-bg);color:var(--blue2)}
+.alert{padding:14px;border-radius:var(--r2);font-size:13px;font-weight:500;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
+.alert-r{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.alert-a{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(234,179,8,.3)}
+#toast{position:fixed;top:max(env(safe-area-inset-top),16px);left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{transform:translateX(-50%) translateY(0)}
-
-/* ===== MODAL ===== */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:flex-end;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-box{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 20px calc(20px + env(safe-area-inset-bottom));width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
-.modal-handle{width:40px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:18px;font-weight:600;margin-bottom:16px}
-
-/* ===== DASHBOARD ===== */
-.sensor-big{background:var(--green3);border-radius:var(--r3);padding:20px;margin:12px 16px 0;border:1px solid var(--green4)}
-.sensor-big .gluc-num{font-size:64px;font-weight:300;font-family:'DM Mono',monospace;color:var(--green);line-height:1}
-.sensor-big .gluc-meta{font-size:13px;color:var(--green);margin-top:4px}
-.sensor-big .tir-row{margin-top:14px;display:flex;gap:8px}
-.tir-seg{flex:1;height:6px;border-radius:3px}
-
-.analyze-fab{display:flex;align-items:center;gap:14px;background:var(--green2);border-radius:var(--r3);padding:18px 20px;margin:12px 16px 0;border:none;width:calc(100% - 32px);cursor:pointer;text-align:left;color:#fff;font-family:'DM Sans',sans-serif}
-.analyze-fab .fab-icon{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:26px}
-.analyze-fab .fab-title{font-size:18px;font-weight:600}
-.analyze-fab .fab-sub{font-size:12px;opacity:.85;margin-top:2px}
-
-.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
-.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:14px}
-.stat-box .sv{font-size:28px;font-weight:500;font-family:'DM Mono',monospace;color:var(--text)}
-.stat-box .sl{font-size:11px;color:var(--text2);margin-top:2px}
-.stat-box .ss{font-size:11px;color:var(--text3);margin-top:1px}
-
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;justify-content:center}
+.modal-ov.open{display:flex}
+.modal-box{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 20px;padding-bottom:max(env(safe-area-inset-bottom),32px);width:100%;max-width:430px;max-height:92vh;overflow-y:auto}
+.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
+.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
+.spin-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.spin-ov.on{display:flex}
+.spin{width:52px;height:52px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--blue2);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin-ov p{color:var(--text2);font-size:14px}
+.dose-hero{text-align:center;padding:24px 16px;background:var(--blue-bg);border-radius:var(--r);border:1px solid rgba(99,102,241,.3);margin-bottom:12px}
+.dose-big{font-size:88px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2);line-height:1}
+.dose-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);opacity:.7;margin-bottom:4px}
+.dose-break{font-size:13px;color:var(--text2);margin-top:8px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stat-box{background:var(--bg3);border-radius:var(--r2);padding:12px}
+.stat-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text)}
+.stat-lbl{font-size:11px;color:var(--text2);margin-top:2px}
 .log-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
 .log-row:last-child{border-bottom:none}
-.log-icon{width:44px;height:44px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.log-ico{width:42px;height:42px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
 .log-info{flex:1;min-width:0}
-.log-title{font-size:14px;font-weight:500;color:var(--text)}
-.log-sub{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-/* ===== ANALYZE ===== */
-.photo-drop{margin:16px;height:200px;border:2px dashed var(--border2);border-radius:var(--r3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:var(--bg3);transition:background .2s}
-.photo-drop:active{background:var(--bg)}
-.photo-drop svg{width:40px;height:40px;stroke:var(--text3);fill:none;stroke-width:1.5}
-.photo-drop p{font-size:15px;color:var(--text2)}
-.photo-drop small{font-size:12px;color:var(--text3)}
-#photo-preview{width:100%;height:200px;object-fit:cover;border-radius:var(--r3);display:none}
-
-.ingr-row{display:flex;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);gap:8px}
+.log-t{font-size:14px;font-weight:500;color:var(--text)}
+.log-s{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ingr-row{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);gap:4px}
 .ingr-row:last-child{border-bottom:none}
-.ingr-name{flex:1;font-size:14px;color:var(--text)}
-.ingr-g{font-size:12px;color:var(--text3);width:50px;text-align:right}
-.ingr-ch{font-size:14px;font-weight:600;color:var(--text);width:60px;text-align:right;font-family:'DM Mono',monospace}
-
-.dose-hero{background:var(--green3);border:1px solid var(--green4);border-radius:var(--r3);padding:24px;text-align:center;margin:0 16px}
-.dose-hero .dh-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--green)}
-.dose-hero .dh-num{font-size:80px;font-weight:300;font-family:'DM Mono',monospace;color:var(--green);line-height:1;margin:6px 0}
-.dose-hero .dh-unit{font-size:16px;color:var(--green);font-weight:500}
-.dose-hero .dh-break{font-size:12px;color:var(--green);opacity:.8;margin-top:8px}
-
-.warn-box{margin:12px 16px 0;padding:12px 14px;background:var(--amber3);border-radius:var(--r2);border:1px solid var(--amber4);font-size:12px;color:var(--amber);display:flex;gap:8px;align-items:flex-start}
-
-/* ===== DIARY ===== */
-.chip-row{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none}
+.ingr-n{flex:1;font-size:13px;color:var(--text)}
+.ingr-g{font-size:11px;color:var(--text3);width:40px;text-align:right}
+.ingr-c{font-size:12px;font-weight:600;font-family:'DM Mono',monospace;color:var(--blue2);width:50px;text-align:right}
+.ingr-k{font-size:12px;color:var(--orange);width:50px;text-align:right}
+.photo-drop{height:160px;border:2px dashed var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:var(--bg3);margin-bottom:10px}
+.photo-drop:active{background:var(--bg4)}
+#photo-prev{width:100%;height:160px;object-fit:cover;border-radius:var(--r);display:none;margin-bottom:10px}
+.warn-footer{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 58px);left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(15,17,23,.97);border-top:1px solid var(--border);padding:5px 16px;font-size:11px;color:var(--text3);text-align:center;z-index:40}
+.chip-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .chip-row::-webkit-scrollbar{display:none}
-.chip{padding:7px 14px;border-radius:20px;border:1.5px solid var(--border2);font-size:13px;cursor:pointer;background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
-.chip.on{background:var(--green2);border-color:var(--green2);color:#fff}
+.chip{padding:6px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .day-sep{padding:6px 16px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3)}
-
-.entry-actions{display:flex;gap:8px;margin-top:8px}
-.ea-btn{flex:1;padding:10px;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--bg2);font-size:13px;color:var(--text2);cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center}
-
-/* ===== REPORTS ===== */
-.tir-full{display:flex;height:16px;border-radius:8px;overflow:hidden;gap:2px;margin:10px 0 6px}
-.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.metric-box{background:var(--bg3);border-radius:var(--r2);padding:10px}
-.metric-box .mv{font-size:20px;font-weight:600;font-family:'DM Mono',monospace}
-.metric-box .ml{font-size:11px;color:var(--text2);margin-top:2px}
-
-.upload-zone{margin:12px 16px;padding:20px;border:2px dashed var(--border2);border-radius:var(--r3);display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer;background:var(--bg3);font-size:14px;color:var(--text2)}
-
-/* ===== SETTINGS ===== */
-.profile-hero{margin:12px 16px;background:var(--green3);border-radius:var(--r3);padding:20px;display:flex;align-items:center;gap:14px;border:1px solid var(--green4)}
-.avatar{width:56px;height:56px;border-radius:50%;background:var(--green2);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:#fff;flex-shrink:0}
-.profile-hero h3{font-size:16px;font-weight:600;color:var(--green)}
-.profile-hero p{font-size:12px;color:var(--green);opacity:.8;margin-top:3px}
-
-.setting-row{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer}
-.setting-row:last-child{border-bottom:none}
-.sr-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.sr-body{flex:1}
-.sr-title{font-size:14px;font-weight:500;color:var(--text)}
-.sr-sub{font-size:12px;color:var(--text2);margin-top:2px}
-.sr-val{font-size:13px;font-weight:600;color:var(--green2)}
-
-/* ===== API KEY SETUP ===== */
-.setup-screen{padding:24px 20px;display:flex;flex-direction:column;gap:16px}
-.setup-step{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:16px}
-.step-num{width:28px;height:28px;border-radius:50%;background:var(--green2);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.step-header{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.step-header h3{font-size:15px;font-weight:600}
-
-/* ===== SPINNER ===== */
-.spinner-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:14px}
-.spinner-overlay.on{display:flex}
-.spinner{width:52px;height:52px;border:4px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
-.spinner-overlay p{color:#fff;font-size:15px}
-@keyframes spin{to{transform:rotate(360deg)}}
+.set-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;gap:12px}
+.set-row:last-child{border-bottom:none}
+.set-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.set-body{flex:1}
+.set-t{font-size:14px;font-weight:500;color:var(--text)}
+.set-s{font-size:12px;color:var(--text2);margin-top:1px}
+.set-v{font-size:13px;font-weight:600;color:var(--blue2)}
+.nutri-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.nutri-box{background:var(--bg3);border-radius:var(--r2);padding:12px;text-align:center}
+.nutri-val{font-size:20px;font-weight:700;font-family:'DM Mono',monospace}
+.nutri-lbl{font-size:11px;color:var(--text2);margin-top:2px}
+.mode-tabs{display:flex;background:var(--bg3);border-radius:var(--r2);padding:3px;margin-bottom:12px}
+.mode-tab{flex:1;padding:9px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text2);background:transparent;transition:all .2s}
+.mode-tab.on{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.manual-ingr{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.manual-ingr input{flex:1;min-width:0}
+.manual-ingr .qty{width:80px;flex-shrink:0}
+.del-btn{width:32px;height:32px;border-radius:8px;background:var(--red-bg);border:none;cursor:pointer;color:var(--red);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 </style>
 </head>
 <body>
 <div id="app">
 
-<!-- ===== DASHBOARD ===== -->
+<!-- HOME -->
 <div class="screen active" id="s-home">
   <div class="topbar">
-    <div class="topbar-logo">💉</div>
+    <div style="font-size:22px">💉</div>
     <h1>DiabApp</h1>
-    <button class="icon-btn" onclick="openModal('modal-geminikey')" title="Configurar API key">⚙️</button>
   </div>
-  <div class="scroll" id="home-scroll">
-    <!-- Sensor card -->
-    <div class="sensor-big">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--green);opacity:.7">FreeStyle LibreLink</div>
-          <div class="gluc-num" id="dash-gluc">—</div>
-          <div class="gluc-meta" id="dash-gluc-meta">Sin datos hoy · anota manualmente</div>
-        </div>
-        <span class="pill pill-ok" id="dash-range-pill">EN RANGO</span>
-      </div>
-      <div class="tir-row" id="dash-tir-bar">
-        <div class="tir-seg" style="background:var(--red2);opacity:.3"></div>
-        <div class="tir-seg" style="background:var(--red2);opacity:.5"></div>
-        <div class="tir-seg" style="flex:3;background:var(--green2)"></div>
-        <div class="tir-seg" style="flex:2;background:var(--amber2);opacity:.6"></div>
-        <div class="tir-seg" style="background:var(--amber2);opacity:.3"></div>
-      </div>
-      <div style="font-size:12px;color:var(--green);margin-top:8px" id="dash-tir-text">Tiempo en rango: <strong id="dash-tir-pct">—</strong></div>
+  <div class="scroll" style="padding:0 16px">
+    <div style="margin-bottom:14px">
+      <div style="font-size:24px;font-weight:700">Hola, Pau 👋</div>
+      <div style="font-size:13px;color:var(--text2)" id="home-date">—</div>
     </div>
-
-    <!-- Main CTA -->
-    <button class="analyze-fab" onclick="goTo('s-analyze')">
-      <div class="fab-icon">📸</div>
-      <div>
-        <div class="fab-title">Analizar comida</div>
-        <div class="fab-sub">Foto → carbohidratos → dosis insulina</div>
+    <div class="card" id="toujeo-card" style="display:flex;align-items:center;gap:12px;cursor:pointer" onclick="toggleToujeo()">
+      <div style="font-size:28px">💉</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:600" id="toujeo-label">Toujeo de hoy</div>
+        <div style="font-size:12px;color:var(--text2)" id="toujeo-sub">¿Ya te la has puesto?</div>
       </div>
-      <svg style="width:20px;height:20px;flex-shrink:0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
-
-    <!-- Stats -->
-    <div class="sec-label">Resumen de hoy</div>
-    <div class="stats-row">
-      <div class="stat-box">
-        <div class="sv" id="dash-rapid">0<span style="font-size:16px"> u</span></div>
-        <div class="sl">Insulina rápida</div>
-        <div class="ss" id="dash-rapid-doses">0 dosis</div>
-      </div>
-      <div class="stat-box">
-        <div class="sv" id="dash-ch">0<span style="font-size:16px"> g</span></div>
-        <div class="sl">Carbohidratos</div>
-        <div class="ss" id="dash-ch-meals">0 comidas</div>
-      </div>
-      <div class="stat-box">
-        <div class="sv" id="dash-basal" style="color:var(--green2)">—</div>
-        <div class="sl">Basal Toujeo</div>
-        <div class="ss" id="dash-basal-time">No registrada hoy</div>
-      </div>
-      <div class="stat-box">
-        <div class="sv" id="dash-hipos" style="color:var(--amber)">0</div>
-        <div class="sl">Hipoglucemias</div>
-        <div class="ss">esta semana</div>
+      <div id="toujeo-check" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px"></div>
+    </div>
+    <button class="btn btn-primary" style="margin-bottom:10px;padding:18px;font-size:17px;border-radius:var(--r)" onclick="goTo('s-analyze')">📸 Analizar comida</button>
+    <div class="card">
+      <div class="card-title">Resumen de hoy</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-val" id="today-rapid">0<span style="font-size:14px"> u</span></div><div class="stat-lbl">Insulina rápida</div></div>
+        <div class="stat-box"><div class="stat-val" id="today-ch">0<span style="font-size:14px"> g</span></div><div class="stat-lbl">Carbohidratos</div></div>
+        <div class="stat-box"><div class="stat-val" id="today-kcal" style="color:var(--orange)">0<span style="font-size:14px"> kcal</span></div><div class="stat-lbl">Calorías hoy</div></div>
+        <div class="stat-box"><div class="stat-val" id="today-hipos" style="color:var(--amber)">0</div><div class="stat-lbl">Hipos semana</div></div>
       </div>
     </div>
-
-    <!-- Quick actions -->
-    <div class="sec-label">Registrar</div>
-    <div style="display:flex;gap:8px;padding:0 16px;flex-wrap:wrap">
-      <button class="ea-btn" onclick="openModal('modal-hipo')">⬇️ Hipo</button>
-      <button class="ea-btn" onclick="openModal('modal-hiper')">⬆️ Hiper</button>
-      <button class="ea-btn" onclick="openModal('modal-basal')">💉 Basal</button>
-      <button class="ea-btn" onclick="openModal('modal-nota')">📝 Nota</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button class="btn btn-outline" onclick="openModal('modal-hipo')">⬇️ Hipo</button>
+      <button class="btn btn-outline" onclick="openModal('modal-hiper')">⬆️ Hiper</button>
+      <button class="btn btn-outline" onclick="openModal('modal-basal')">💉 Basal</button>
+      <button class="btn btn-outline" onclick="goTo('s-history')">📋 Historial</button>
     </div>
-
-    <!-- Recent logs -->
-    <div class="sec-label">Últimos registros</div>
-    <div class="card" style="margin:0 16px;padding:0" id="recent-list">
-      <div style="padding:20px;text-align:center;color:var(--text3);font-size:14px">Aún no hay registros hoy.<br>¡Analiza tu primera comida!</div>
+    <div class="card">
+      <div class="card-title">Mis datos del sensor</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">GMI</span><span class="pill pill-g">6.8%</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Tiempo en rango</span><span class="pill pill-a">68%</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Glucosa promedio</span><span class="pill pill-a">146 mg/dL</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Variabilidad CV</span><span class="pill pill-a">38.4%</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Hipos (14 días)</span><span class="pill pill-r">13</span></div>
+      </div>
+      <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:12px;color:var(--text2);line-height:1.6">
+        💡 <strong style="color:var(--text)">Patrón:</strong> hipos tarde-noche, picos matutinos. La Toujeo nocturna está ayudando.
+      </div>
     </div>
-    <div style="height:20px"></div>
   </div>
-  <nav class="bottomnav" id="nav-home">
-    <button class="nav-btn active" onclick="goTo('s-home')">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio
-    </button>
-    <button class="nav-btn" onclick="goTo('s-analyze')">
-      <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Analizar
-    </button>
-    <button class="nav-btn" onclick="goTo('s-diary')">
-      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Diario
-    </button>
-    <button class="nav-btn" onclick="goTo('s-reports')">
-      <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Informes
-    </button>
-    <button class="nav-btn" onclick="goTo('s-settings')">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Config.
-    </button>
+  <div class="warn-footer">⚕️ Recomendaciones orientativas. No sustituyen el criterio médico.</div>
+  <nav class="bnav">
+    <button class="nb on" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
+    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
+    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
+    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
   </nav>
 </div>
 
-<!-- ===== ANALYZE ===== -->
+<!-- ANALYZE -->
 <div class="screen" id="s-analyze">
   <div class="topbar">
     <button class="icon-btn" onclick="goTo('s-home')">←</button>
     <h1>Analizar comida</h1>
   </div>
-  <div class="scroll" id="analyze-scroll">
-    <!-- Photo area -->
-    <div id="photo-drop-zone" class="photo-drop" onclick="document.getElementById('file-input').click()">
-      <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      <p>Haz una foto a tu comida</p>
-      <small>o toca para subir imagen de la galería</small>
+  <div class="scroll" style="padding:0 16px">
+    <div class="mode-tabs">
+      <button class="mode-tab on" id="tab-photo" onclick="switchMode('photo')">📸 Foto</button>
+      <button class="mode-tab" id="tab-manual" onclick="switchMode('manual')">✏️ Manual</button>
     </div>
-    <input type="file" id="file-input" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
-    <img id="photo-preview" alt="foto comida">
 
-    <!-- Results area (hidden until analysis) -->
-    <div id="analysis-result" style="display:none">
-      <div class="sec-label">Desglose de carbohidratos</div>
-      <div class="card" style="margin:0 16px;padding:0">
-        <div id="ingr-list" style="padding:4px 16px"></div>
-        <div style="padding:12px 16px;background:var(--blue3);border-radius:0 0 var(--r) var(--r);display:flex;justify-content:space-between;align-items:center">
-          <span style="font-size:14px;font-weight:600;color:var(--blue)">Total carbohidratos</span>
-          <span style="font-size:20px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue)" id="total-ch">0 g</span>
+    <!-- PHOTO MODE -->
+    <div id="mode-photo">
+      <div id="gluc-alert" style="display:none"></div>
+      <div id="photo-drop-zone" class="photo-drop" onclick="document.getElementById('file-in').click()">
+        <div style="font-size:36px">📸</div>
+        <div style="font-size:15px;color:var(--text2)">Toca para hacer una foto</div>
+        <div style="font-size:12px;color:var(--text3)">o subir desde la galería</div>
+      </div>
+      <input type="file" id="file-in" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
+      <img id="photo-prev" alt="foto comida">
+      <div id="analysis-area" style="display:none">
+        <div class="nutri-bar">
+          <div class="nutri-box"><div class="nutri-val" id="sum-ch" style="color:var(--blue2)">—</div><div class="nutri-lbl">g Carbos</div></div>
+          <div class="nutri-box"><div class="nutri-val" id="sum-kcal" style="color:var(--orange)">—</div><div class="nutri-lbl">kcal</div></div>
+          <div class="nutri-box"><div class="nutri-val" id="sum-conf" style="font-size:13px">—</div><div class="nutri-lbl">Confianza IA</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <div style="padding:12px 16px 0;display:flex;justify-content:space-between">
+            <span style="font-size:11px;font-weight:600;color:var(--text3)">ALIMENTO</span>
+            <div style="display:flex;gap:4px">
+              <span style="font-size:11px;color:var(--text3);width:50px;text-align:right">Carbos</span>
+              <span style="font-size:11px;color:var(--orange);width:50px;text-align:right">Kcal</span>
+            </div>
+          </div>
+          <div id="ingr-list" style="padding:4px 16px"></div>
+          <div style="padding:12px 16px;background:var(--bg3);border-radius:0 0 var(--r) var(--r);display:flex;justify-content:space-between">
+            <span style="font-size:14px;font-weight:600;color:var(--blue2)">Total</span>
+            <div style="display:flex;gap:10px">
+              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="total-ch-val">—</span>
+              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange)" id="total-kcal-val">—</span>
+            </div>
+          </div>
+        </div>
+        <div id="obs-box" style="display:none;padding:10px 14px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);margin-bottom:10px;border-left:3px solid var(--blue)"></div>
+        <div style="margin-bottom:12px">
+          <label class="lbl">Tu glucemia actual (mg/dL)</label>
+          <input class="field" type="number" id="gluc-in" placeholder="Ej. 120" min="20" max="600" oninput="onGlucChange('photo')">
+        </div>
+        <div class="dose-hero" id="dose-hero" style="display:none">
+          <div class="dose-lbl">Dosis recomendada NovoRapid</div>
+          <div class="dose-big" id="dose-big">—</div>
+          <div style="font-size:15px;color:var(--blue2);font-weight:500">unidades</div>
+          <div class="dose-break" id="dose-break"></div>
+        </div>
+        <div class="alert alert-a" style="font-size:12px">⚕️ Recomendación orientativa. Consulta con tu endocrino.</div>
+        <div id="confirm-area" style="display:none;margin-bottom:12px">
+          <label class="lbl" style="margin-top:12px">Dosis real que te pones (u)</label>
+          <input class="field" type="number" id="dose-real" placeholder="Confirma o modifica" step="0.5" style="margin-bottom:10px;margin-top:6px">
+          <button class="btn btn-green" onclick="saveMeal('photo')">✅ Guardar registro</button>
+          <button class="btn btn-outline" onclick="resetAnalyze()">🔄 Nueva foto</button>
         </div>
       </div>
+    </div>
 
-      <!-- Glucemia input -->
-      <div style="padding:16px 16px 0">
-        <label class="lbl">Tu glucemia actual (mg/dL)</label>
-        <input class="field" type="number" id="gluc-now" placeholder="Ej. 120" min="40" max="500" oninput="recalcDose()">
+    <!-- MANUAL MODE -->
+    <div id="mode-manual" style="display:none">
+      <div class="card">
+        <div class="card-title">Describe lo que has comido</div>
+        <div style="margin-bottom:12px">
+          <label class="lbl">Nombre del plato</label>
+          <input class="field" id="m-name" type="text" placeholder="Ej. Pasta boloñesa con pan">
+        </div>
+        <div style="margin-bottom:8px">
+          <label class="lbl">Ingredientes con cantidad (opcional)</label>
+          <div id="manual-ingrs"></div>
+          <button class="btn btn-outline" style="padding:10px;font-size:13px;margin-top:6px" onclick="addManualIngr()">+ Añadir ingrediente</button>
+        </div>
+        <div style="margin-bottom:12px">
+          <label class="lbl">O escribe los carbohidratos directamente (g)</label>
+          <input class="field" id="m-ch-direct" type="number" placeholder="Ej. 60 — si ya los sabes" oninput="onDirectCH()">
+        </div>
+        <button class="btn btn-primary" onclick="analyzeManual()">🤖 Calcular con IA</button>
+        <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px">La IA estimará carbos y calorías</p>
       </div>
-
-      <!-- Dose hero -->
-      <div style="margin-top:16px">
-        <div class="dose-hero">
-          <div class="dh-label">Dosis recomendada NovoRapid</div>
-          <div class="dh-num" id="dose-num">—</div>
-          <div class="dh-unit">unidades</div>
-          <div class="dh-break" id="dose-break"></div>
+      <div id="manual-result" style="display:none">
+        <div class="nutri-bar">
+          <div class="nutri-box"><div class="nutri-val" id="m-sum-ch" style="color:var(--blue2)">—</div><div class="nutri-lbl">g Carbos</div></div>
+          <div class="nutri-box"><div class="nutri-val" id="m-sum-kcal" style="color:var(--orange)">—</div><div class="nutri-lbl">kcal</div></div>
+          <div class="nutri-box"><div class="nutri-val" id="m-sum-conf" style="font-size:13px">—</div><div class="nutri-lbl">Confianza IA</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <div style="padding:12px 16px 0;display:flex;justify-content:space-between">
+            <span style="font-size:11px;font-weight:600;color:var(--text3)">ALIMENTO</span>
+            <div style="display:flex;gap:4px">
+              <span style="font-size:11px;color:var(--text3);width:50px;text-align:right">Carbos</span>
+              <span style="font-size:11px;color:var(--orange);width:50px;text-align:right">Kcal</span>
+            </div>
+          </div>
+          <div id="m-ingr-list" style="padding:4px 16px"></div>
+          <div style="padding:12px 16px;background:var(--bg3);border-radius:0 0 var(--r) var(--r);display:flex;justify-content:space-between">
+            <span style="font-size:14px;font-weight:600;color:var(--blue2)">Total</span>
+            <div style="display:flex;gap:10px">
+              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="m-total-ch">—</span>
+              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange)" id="m-total-kcal">—</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:10px;margin-bottom:12px">
+          <label class="lbl">Tu glucemia actual (mg/dL)</label>
+          <input class="field" type="number" id="m-gluc-in" placeholder="Ej. 120" min="20" max="600" oninput="onGlucChange('manual')">
+        </div>
+        <div class="dose-hero" id="m-dose-hero" style="display:none">
+          <div class="dose-lbl">Dosis recomendada NovoRapid</div>
+          <div class="dose-big" id="m-dose-big">—</div>
+          <div style="font-size:15px;color:var(--blue2);font-weight:500">unidades</div>
+          <div class="dose-break" id="m-dose-break"></div>
+        </div>
+        <div class="alert alert-a" style="font-size:12px">⚕️ Recomendación orientativa. Consulta con tu endocrino.</div>
+        <div id="m-confirm-area" style="display:none;margin-bottom:12px">
+          <label class="lbl" style="margin-top:12px">Dosis real que te pones (u)</label>
+          <input class="field" type="number" id="m-dose-real" placeholder="Confirma o modifica" step="0.5" style="margin-bottom:10px;margin-top:6px">
+          <button class="btn btn-green" onclick="saveMeal('manual')">✅ Guardar registro</button>
+          <button class="btn btn-outline" onclick="resetManual()">🔄 Nueva comida</button>
         </div>
       </div>
-
-      <div class="warn-box">
-        <span>⚠️</span>
-        <span>Recomendación orientativa. No sustituye el criterio de tu endocrino. Ante cualquier duda, consulta con tu médico.</span>
-      </div>
-
-      <!-- Confirm -->
-      <div style="padding:16px">
-        <label class="lbl">Dosis que finalmente te pones</label>
-        <input class="field" type="number" id="dose-final" placeholder="Confirma o modifica la dosis" step="0.5">
-        <button class="btn-primary" style="margin-top:12px" onclick="confirmMeal()">✅ Guardar registro</button>
-        <button class="btn-secondary" onclick="resetAnalyze()">🔄 Nueva foto</button>
-      </div>
-    </div>
-
-    <!-- No API key warning -->
-    <div id="no-apikey-warn" style="display:none;margin:16px;padding:16px;background:var(--amber3);border-radius:var(--r);border:1px solid var(--amber4)">
-      <p style="font-size:14px;font-weight:600;color:var(--amber);margin-bottom:8px">⚠️ Falta la API key de Google Gemini</p>
-      <p style="font-size:13px;color:var(--amber)">Para analizar fotos con IA necesitas una API key gratuita de Google. Solo necesitas tu cuenta de Gmail.</p>
-      <button class="btn-primary" style="margin-top:12px;background:var(--amber2)" onclick="openModal('modal-geminikey')">Configurar API key →</button>
     </div>
   </div>
-  <nav class="bottomnav">
-    <button class="nav-btn" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
-    <button class="nav-btn active" onclick="goTo('s-analyze')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Analizar</button>
-    <button class="nav-btn" onclick="goTo('s-diary')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Diario</button>
-    <button class="nav-btn" onclick="goTo('s-reports')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Informes</button>
-    <button class="nav-btn" onclick="goTo('s-settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Config.</button>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
+    <button class="nb on" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
+    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
+    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
   </nav>
 </div>
 
-<!-- ===== DIARY ===== -->
-<div class="screen" id="s-diary">
+<!-- HISTORY -->
+<div class="screen" id="s-history">
   <div class="topbar">
     <button class="icon-btn" onclick="goTo('s-home')">←</button>
-    <h1>Diario</h1>
-    <button class="icon-btn" onclick="openModal('modal-manual-meal')">+</button>
+    <h1>Historial</h1>
+    <button class="icon-btn" onclick="exportData()">💾</button>
   </div>
   <div class="scroll">
-    <div class="chip-row" id="diary-filters">
-      <button class="chip on" onclick="filterDiary('all',this)">Todo</button>
-      <button class="chip" onclick="filterDiary('meal',this)">Comidas</button>
-      <button class="chip" onclick="filterDiary('hipo',this)">Hipos</button>
-      <button class="chip" onclick="filterDiary('hiper',this)">Hipers</button>
-      <button class="chip" onclick="filterDiary('basal',this)">Basal</button>
-      <button class="chip" onclick="filterDiary('nota',this)">Notas</button>
+    <div style="padding:8px 16px">
+      <div class="chip-row" id="hist-filters">
+        <button class="chip on" onclick="filterHist('all',this)">Todo</button>
+        <button class="chip" onclick="filterHist('meal',this)">Comidas</button>
+        <button class="chip" onclick="filterHist('hipo',this)">Hipos</button>
+        <button class="chip" onclick="filterHist('hiper',this)">Hipers</button>
+        <button class="chip" onclick="filterHist('basal',this)">Basal</button>
+      </div>
     </div>
-    <div id="diary-list"></div>
+    <div id="hist-list"></div>
   </div>
-  <nav class="bottomnav">
-    <button class="nav-btn" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
-    <button class="nav-btn" onclick="goTo('s-analyze')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Analizar</button>
-    <button class="nav-btn active" onclick="goTo('s-diary')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Diario</button>
-    <button class="nav-btn" onclick="goTo('s-reports')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Informes</button>
-    <button class="nav-btn" onclick="goTo('s-settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Config.</button>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
+    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
+    <button class="nb on" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
+    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
   </nav>
 </div>
 
-<!-- ===== REPORTS ===== -->
-<div class="screen" id="s-reports">
+<!-- PROFILE -->
+<div class="screen" id="s-profile">
   <div class="topbar">
     <button class="icon-btn" onclick="goTo('s-home')">←</button>
-    <h1>Informes AGP</h1>
+    <h1>Mi perfil</h1>
   </div>
-  <div class="scroll">
-    <div class="upload-zone" onclick="document.getElementById('pdf-input').click()">
-      📄 <span>Subir informe FreeStyle LibreLink<br><small style="color:var(--text3)">PDF o imagen · los datos se guardan en tu móvil</small></span>
+  <div class="scroll" style="padding:0 16px">
+    <div class="card" style="display:flex;align-items:center;gap:14px">
+      <div style="width:52px;height:52px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0">PV</div>
+      <div><div style="font-size:16px;font-weight:700">Pau Vey Manresa</div><div style="font-size:12px;color:var(--text2)">Diabetes Tipo 1 · 71kg · 176cm</div></div>
     </div>
-    <input type="file" id="pdf-input" accept="image/*,.pdf" style="display:none" onchange="handleReport(event)">
-    <div id="reports-list">
-      <div style="padding:32px 16px;text-align:center;color:var(--text3);font-size:14px">Sube tu primer informe AGP del FreeStyle LibreLink para ver tus estadísticas aquí.</div>
+    <div class="card">
+      <div class="card-title">Parámetros de insulina</div>
+      <div class="set-row" onclick="editParam('ratio','Ratio insulina/CH (g por unidad)','number',12)">
+        <div class="set-ico" style="background:var(--teal-bg)">💧</div>
+        <div class="set-body"><div class="set-t">Ratio insulina/CH</div><div class="set-s">1u por cada N gramos</div></div>
+        <div class="set-v" id="cfg-ratio">12g/u</div>
+      </div>
+      <div class="set-row" onclick="editParam('sensitivity','Factor de sensibilidad (mg/dL)','number',43)">
+        <div class="set-ico" style="background:var(--blue-bg)">🎯</div>
+        <div class="set-body"><div class="set-t">Factor sensibilidad</div><div class="set-s">1u baja X mg/dL</div></div>
+        <div class="set-v" id="cfg-sens">43</div>
+      </div>
+      <div class="set-row" onclick="editParam('target','Glucemia objetivo (mg/dL)','number',100)">
+        <div class="set-ico" style="background:var(--amber-bg)">❤️</div>
+        <div class="set-body"><div class="set-t">Glucemia objetivo</div></div>
+        <div class="set-v" id="cfg-target">100</div>
+      </div>
+      <div class="set-row" onclick="editParam('basalDose','Dosis habitual Toujeo (u)','number',29)">
+        <div class="set-ico" style="background:var(--green-bg)">💉</div>
+        <div class="set-body"><div class="set-t">Dosis Toujeo habitual</div></div>
+        <div class="set-v" id="cfg-basal">29u</div>
+      </div>
     </div>
-    <div class="sec-label" style="margin-top:8px">Exportar para tu endocrino</div>
-    <div style="padding:0 16px 16px">
-      <button class="btn-primary" onclick="exportReport()">📋 Generar informe PDF</button>
-      <p style="font-size:12px;color:var(--text3);margin-top:8px;text-align:center">Incluye comidas, dosis, hipos/hipers y estadísticas del período seleccionado</p>
+    <div class="card">
+      <div class="card-title">Consejos personalizados</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--blue)">💡 Tu mayor área de mejora: reducir los picos matutinos</div>
+        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--green)">✅ Las hipos de tarde-noche han mejorado con la Toujeo nocturna</div>
+        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--amber)">📊 Variabilidad 38.4% — objetivo ≤36%. ¡Casi!</div>
+        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--teal)">🎯 Cada 5% más en tiempo en rango es clínicamente beneficioso</div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <div class="card-title">Datos y privacidad</div>
+      <div class="set-row" onclick="exportData()">
+        <div class="set-ico" style="background:var(--blue-bg)">📤</div>
+        <div class="set-body"><div class="set-t">Exportar todos los datos</div><div class="set-s">Descarga JSON con el historial</div></div>
+      </div>
+      <div class="set-row" onclick="deleteAll()">
+        <div class="set-ico" style="background:var(--red-bg)">🗑️</div>
+        <div class="set-body"><div class="set-t">Borrar todos los datos</div><div class="set-s">Acción irreversible</div></div>
+      </div>
     </div>
   </div>
-  <nav class="bottomnav">
-    <button class="nav-btn" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
-    <button class="nav-btn" onclick="goTo('s-analyze')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Analizar</button>
-    <button class="nav-btn" onclick="goTo('s-diary')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Diario</button>
-    <button class="nav-btn active" onclick="goTo('s-reports')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Informes</button>
-    <button class="nav-btn" onclick="goTo('s-settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Config.</button>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
+    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
+    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
+    <button class="nb on" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
   </nav>
 </div>
 
-<!-- ===== SETTINGS ===== -->
-<div class="screen" id="s-settings">
-  <div class="topbar">
-    <button class="icon-btn" onclick="goTo('s-home')">←</button>
-    <h1>Configuración</h1>
-  </div>
-  <div class="scroll">
-    <div class="profile-hero">
-      <div class="avatar">PV</div>
-      <div>
-        <h3>Pau Vey Manresa</h3>
-        <p>Diabetes Tipo 1 · 71kg · 176cm</p>
-      </div>
-    </div>
-    <div class="sec-label">Parámetros de insulina</div>
-    <div class="card" style="margin:0 16px;padding:0">
-      <div class="setting-row" onclick="editSetting('ratio','Ratio insulina/CH (g por unidad)','number',12)">
-        <div class="sr-icon" style="background:var(--green3)">💧</div>
-        <div class="sr-body"><div class="sr-title">Ratio insulina/CH</div><div class="sr-sub">1 unidad por cada N gramos de CH</div></div>
-        <div class="sr-val" id="cfg-ratio">12g/u</div>
-      </div>
-      <div class="setting-row" onclick="editSetting('sensitivity','Factor de sensibilidad (mg/dL por unidad)','number',43)">
-        <div class="sr-icon" style="background:var(--blue3)">🎯</div>
-        <div class="sr-body"><div class="sr-title">Factor de sensibilidad</div><div class="sr-sub">1 unidad baja X mg/dL</div></div>
-        <div class="sr-val" id="cfg-sens">43 mg/dL</div>
-      </div>
-      <div class="setting-row" onclick="editSetting('target','Glucemia objetivo (mg/dL)','number',100)">
-        <div class="sr-icon" style="background:var(--amber3)">❤️</div>
-        <div class="sr-body"><div class="sr-title">Glucemia objetivo</div><div class="sr-sub">Para el cálculo de corrección</div></div>
-        <div class="sr-val" id="cfg-target">100 mg/dL</div>
-      </div>
-    </div>
-    <div class="sec-label">Insulina basal</div>
-    <div class="card" style="margin:0 16px;padding:0">
-      <div class="setting-row" onclick="editSetting('basalType','Tipo de insulina basal','text','Toujeo')">
-        <div class="sr-icon" style="background:var(--green3)">💉</div>
-        <div class="sr-body"><div class="sr-title">Tipo de basal</div></div>
-        <div class="sr-val" id="cfg-basalType">Toujeo</div>
-      </div>
-      <div class="setting-row" onclick="editSetting('basalDose','Dosis habitual de basal (unidades)','number',29)">
-        <div class="sr-icon" style="background:var(--blue3)">💊</div>
-        <div class="sr-body"><div class="sr-title">Dosis habitual</div></div>
-        <div class="sr-val" id="cfg-basalDose">29 u</div>
-      </div>
-      <div class="setting-row" onclick="editSetting('basalTime','Hora de administración (ej. 07:30)','text','07:30')">
-        <div class="sr-icon" style="background:var(--amber3)">⏰</div>
-        <div class="sr-body"><div class="sr-title">Hora de administración</div></div>
-        <div class="sr-val" id="cfg-basalTime">07:30</div>
-      </div>
-      <div class="setting-row" onclick="editSetting('rapidType','Tipo de insulina rápida','text','NovoRapid')">
-        <div class="sr-icon" style="background:var(--green3)">⚡</div>
-        <div class="sr-body"><div class="sr-title">Insulina rápida</div></div>
-        <div class="sr-val" id="cfg-rapidType">NovoRapid</div>
-      </div>
-    </div>
-    <div class="sec-label">API Key (análisis de fotos)</div>
-    <div class="card" style="margin:0 16px;padding:0">
-      <div class="setting-row" onclick="openModal('modal-geminikey')">
-        <div class="sr-icon" style="background:var(--blue3)">🔑</div>
-        <div class="sr-body"><div class="sr-title">API key de Google Gemini</div><div class="sr-sub">Gratuita · solo necesitas Gmail</div></div>
-        <div class="sr-val" id="cfg-apikey-status">No configurada</div>
-      </div>
-    </div>
-    <div class="sec-label">Datos y privacidad</div>
-    <div class="card" style="margin:0 16px;padding:0;margin-bottom:20px">
-      <div class="setting-row" onclick="exportData()">
-        <div class="sr-icon" style="background:var(--blue3)">📤</div>
-        <div class="sr-body"><div class="sr-title">Exportar todos los datos</div><div class="sr-sub">Descarga JSON con todo el historial</div></div>
-      </div>
-      <div class="setting-row" onclick="deleteAllData()">
-        <div class="sr-icon" style="background:var(--red3)">🗑️</div>
-        <div class="sr-body"><div class="sr-title">Borrar todos los datos</div><div class="sr-sub">Acción irreversible</div></div>
-      </div>
-    </div>
-  </div>
-  <nav class="bottomnav">
-    <button class="nav-btn" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
-    <button class="nav-btn" onclick="goTo('s-analyze')"><svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Analizar</button>
-    <button class="nav-btn" onclick="goTo('s-diary')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Diario</button>
-    <button class="nav-btn" onclick="goTo('s-reports')"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>Informes</button>
-    <button class="nav-btn active" onclick="goTo('s-settings')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Config.</button>
-  </nav>
-</div>
-
-<!-- ===== MODALS ===== -->
-
-<!-- GEMINI KEY MODAL -->
-<div class="modal-overlay" id="modal-geminikey" onclick="closeModalOutside(event,'modal-geminikey')">
+<!-- MODALS -->
+<div class="modal-ov" id="modal-hipo" onclick="closeOut(event,'modal-hipo')">
   <div class="modal-box">
     <div class="modal-handle"></div>
-    <div class="modal-title">🔑 Configurar API Key de Google</div>
-    <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6">
-      Permite analizar fotos de comida con IA. Es <strong>completamente gratuita</strong> con tu cuenta de Gmail. Se guarda solo en tu móvil.
-    </div>
-    <div style="background:var(--blue3);border-radius:var(--r2);padding:14px;margin-bottom:16px;font-size:13px;color:var(--blue);line-height:1.8">
-      <strong>Cómo obtenerla (2 minutos):</strong><br>
-      1. Ve a <strong>aistudio.google.com</strong><br>
-      2. Entra con tu cuenta de Gmail<br>
-      3. Pulsa <em>"Get API key"</em> → <em>"Create API key"</em><br>
-      4. Copia la clave que aparece<br>
-      5. Pégala aquí abajo
-    </div>
-    <label class="lbl">Tu API Key de Google Gemini</label>
-    <input class="field" type="password" id="apikey-input" placeholder="AIza..." autocomplete="off">
-    <button class="btn-primary" style="margin-top:12px" onclick="saveApiKey()">Guardar API Key</button>
-    <button class="btn-secondary" onclick="closeModal('modal-geminikey')">Cancelar</button>
-  </div>
-</div>
-
-<!-- HIPO MODAL -->
-<div class="modal-overlay" id="modal-hipo" onclick="closeModalOutside(event,'modal-hipo')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⬇️ Registrar hipoglucemia</div>
+    <div class="modal-title">⬇️ Hipoglucemia</div>
     <label class="lbl">Glucemia mínima (mg/dL)</label>
-    <input class="field" type="number" id="hipo-gluc" placeholder="Ej. 58" min="20" max="100">
-    <label class="lbl" style="margin-top:12px">Síntomas</label>
-    <input class="field" type="text" id="hipo-symp" placeholder="Ej. temblor, sudoración, mareo">
-    <label class="lbl" style="margin-top:12px">Tratamiento</label>
-    <input class="field" type="text" id="hipo-treat" placeholder="Ej. zumo naranja, 15g dextrosa">
-    <label class="lbl" style="margin-top:12px">Notas (opcional)</label>
-    <input class="field" type="text" id="hipo-notes" placeholder="Causa posible, contexto...">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveHipo()">Guardar hipoglucemia</button>
-    <button class="btn-secondary" onclick="closeModal('modal-hipo')">Cancelar</button>
-  </div>
-</div>
-
-<!-- HIPER MODAL -->
-<div class="modal-overlay" id="modal-hiper" onclick="closeModalOutside(event,'modal-hiper')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⬆️ Registrar hiperglucemia</div>
-    <label class="lbl">Glucemia máxima (mg/dL)</label>
-    <input class="field" type="number" id="hiper-gluc" placeholder="Ej. 280" min="180" max="600">
-    <label class="lbl" style="margin-top:12px">Causa posible</label>
-    <input class="field" type="text" id="hiper-cause" placeholder="Ej. estrés, infección, error dosis">
-    <label class="lbl" style="margin-top:12px">Dosis de corrección usada (u)</label>
-    <input class="field" type="number" id="hiper-corr" placeholder="Ej. 2.5" step="0.5">
-    <label class="lbl" style="margin-top:12px">Notas (opcional)</label>
-    <input class="field" type="text" id="hiper-notes" placeholder="">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveHiper()">Guardar hiperglucemia</button>
-    <button class="btn-secondary" onclick="closeModal('modal-hiper')">Cancelar</button>
-  </div>
-</div>
-
-<!-- BASAL MODAL -->
-<div class="modal-overlay" id="modal-basal" onclick="closeModalOutside(event,'modal-basal')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">💉 Registrar insulina basal</div>
-    <label class="lbl">Unidades administradas</label>
-    <input class="field" type="number" id="basal-units" placeholder="Ej. 29" step="0.5">
-    <label class="lbl" style="margin-top:12px">Hora</label>
-    <input class="field" type="time" id="basal-time" value="07:30">
-    <label class="lbl" style="margin-top:12px">Notas (opcional)</label>
-    <input class="field" type="text" id="basal-notes" placeholder="Ej. cambio de dosis por consejo médico">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveBasal()">Guardar basal</button>
-    <button class="btn-secondary" onclick="closeModal('modal-basal')">Cancelar</button>
-  </div>
-</div>
-
-<!-- NOTA MODAL -->
-<div class="modal-overlay" id="modal-nota" onclick="closeModalOutside(event,'modal-nota')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📝 Añadir nota</div>
-    <label class="lbl">Nota libre</label>
-    <textarea class="field" id="nota-text" rows="4" placeholder="Ej. día de ejercicio intenso, enfermedad, estrés laboral..." style="resize:none"></textarea>
-    <button class="btn-primary" style="margin-top:16px" onclick="saveNota()">Guardar nota</button>
-    <button class="btn-secondary" onclick="closeModal('modal-nota')">Cancelar</button>
-  </div>
-</div>
-
-<!-- MANUAL MEAL MODAL -->
-<div class="modal-overlay" id="modal-manual-meal" onclick="closeModalOutside(event,'modal-manual-meal')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">🍽️ Registrar comida manual</div>
-    <label class="lbl">Descripción de la comida</label>
-    <input class="field" type="text" id="mm-desc" placeholder="Ej. pasta con tomate, pan, fruta">
-    <label class="lbl" style="margin-top:12px">Carbohidratos totales (g)</label>
-    <input class="field" type="number" id="mm-ch" placeholder="Ej. 60" oninput="calcManualDose()">
-    <label class="lbl" style="margin-top:12px">Glucemia previa (mg/dL)</label>
-    <input class="field" type="number" id="mm-gluc" placeholder="Ej. 110" oninput="calcManualDose()">
-    <div id="mm-dose-preview" style="margin-top:12px;padding:14px;background:var(--green3);border-radius:var(--r2);display:none">
-      <div style="font-size:11px;color:var(--green);font-weight:600;text-transform:uppercase;letter-spacing:.07em">Dosis recomendada</div>
-      <div style="font-size:36px;font-weight:500;font-family:'DM Mono',monospace;color:var(--green)" id="mm-dose-num">—</div>
-      <div style="font-size:12px;color:var(--green);opacity:.8" id="mm-dose-break"></div>
+    <input class="field" id="h-gluc" type="number" placeholder="Ej. 58" style="margin-bottom:10px">
+    <label class="lbl">Síntomas</label>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="h-symp-btns">
+      <button class="chip" onclick="toggleChip(this)">Temblor</button>
+      <button class="chip" onclick="toggleChip(this)">Sudor</button>
+      <button class="chip" onclick="toggleChip(this)">Mareo</button>
+      <button class="chip" onclick="toggleChip(this)">Confusión</button>
+      <button class="chip" onclick="toggleChip(this)">Hambre</button>
     </div>
-    <label class="lbl" style="margin-top:12px">Dosis real puesta (u)</label>
-    <input class="field" type="number" id="mm-final" placeholder="Confirma o modifica" step="0.5">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveManualMeal()">Guardar comida</button>
-    <button class="btn-secondary" onclick="closeModal('modal-manual-meal')">Cancelar</button>
+    <label class="lbl">Tratamiento</label>
+    <input class="field" id="h-treat" type="text" placeholder="Ej. zumo naranja" style="margin-bottom:10px">
+    <label class="lbl">Notas</label>
+    <input class="field" id="h-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-primary" onclick="saveHipo()">Guardar</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-hipo')">Cancelar</button>
   </div>
 </div>
 
-<!-- SETTING EDIT MODAL -->
-<div class="modal-overlay" id="modal-setting" onclick="closeModalOutside(event,'modal-setting')">
+<div class="modal-ov" id="modal-hiper" onclick="closeOut(event,'modal-hiper')">
   <div class="modal-box">
     <div class="modal-handle"></div>
-    <div class="modal-title" id="setting-modal-title">Editar</div>
-    <input class="field" id="setting-modal-input" type="text">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveSetting()">Guardar</button>
-    <button class="btn-secondary" onclick="closeModal('modal-setting')">Cancelar</button>
+    <div class="modal-title">⬆️ Hiperglucemia</div>
+    <label class="lbl">Glucemia máxima (mg/dL)</label>
+    <input class="field" id="hi-gluc" type="number" placeholder="Ej. 280" style="margin-bottom:10px">
+    <label class="lbl">Causa probable</label>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="hi-cause-btns">
+      <button class="chip" onclick="toggleChip(this)">Comida abundante</button>
+      <button class="chip" onclick="toggleChip(this)">Estrés</button>
+      <button class="chip" onclick="toggleChip(this)">Enfermedad</button>
+      <button class="chip" onclick="toggleChip(this)">Olvidé insulina</button>
+      <button class="chip" onclick="toggleChip(this)">Otro</button>
+    </div>
+    <label class="lbl">Corrección usada (u)</label>
+    <input class="field" id="hi-corr" type="number" placeholder="Ej. 2.5" step="0.5" style="margin-bottom:10px">
+    <label class="lbl">Notas</label>
+    <input class="field" id="hi-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-primary" onclick="saveHiper()">Guardar</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-hiper')">Cancelar</button>
   </div>
 </div>
 
-<!-- SPINNER -->
-<div class="spinner-overlay" id="spinner">
-  <div class="spinner"></div>
-  <p id="spinner-msg">Analizando imagen con IA…</p>
+<div class="modal-ov" id="modal-basal" onclick="closeOut(event,'modal-basal')">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title">💉 Insulina basal</div>
+    <label class="lbl">Unidades Toujeo</label>
+    <input class="field" id="b-units" type="number" placeholder="Ej. 29" style="margin-bottom:10px">
+    <label class="lbl">Hora</label>
+    <input class="field" id="b-time" type="time" value="22:00" style="margin-bottom:10px">
+    <label class="lbl">Notas</label>
+    <input class="field" id="b-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-primary" onclick="saveBasal()">Guardar</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-basal')">Cancelar</button>
+  </div>
 </div>
 
-<!-- TOAST -->
+<div class="modal-ov" id="modal-param" onclick="closeOut(event,'modal-param')">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="param-title">Editar</div>
+    <input class="field" id="param-input" type="number" style="margin-bottom:14px">
+    <button class="btn btn-primary" onclick="saveParam()">Guardar</button>
+    <button class="btn btn-outline" onclick="closeModal('modal-param')">Cancelar</button>
+  </div>
+</div>
+
+<div class="modal-ov" id="modal-highdose" onclick="closeOut(event,'modal-highdose')">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div style="text-align:center;padding:10px 0">
+      <div style="font-size:48px">⚠️</div>
+      <div class="modal-title" style="margin-top:8px">Dosis alta</div>
+      <div style="font-size:14px;color:var(--text2);margin-bottom:20px" id="highdose-msg"></div>
+      <button class="btn btn-primary" onclick="confirmHighDose()">Sí, confirmar</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-highdose')">Revisar</button>
+    </div>
+  </div>
+</div>
+
+<div class="spin-ov" id="spinner">
+  <div class="spin"></div>
+  <p id="spin-msg">Analizando con IA…</p>
+</div>
 <div id="toast"></div>
 
 <script>
-// ============================================================
-// STATE & STORAGE
-// ============================================================
-const DB_KEY = 'diabapp_v1';
-let state = {
-  config: {
-    ratio: 12,
-    sensitivity: 43,
-    target: 100,
-    basalType: 'Toujeo',
-    basalDose: 29,
-    basalTime: '07:30',
-    rapidType: 'NovoRapid'
-  },
-  entries: [],
-  reports: [],
-  apiKey: ''
-};
+const STORE='diabapp_pau_v3';
+let S={config:{ratio:12,sensitivity:43,target:100,basalDose:29},entries:[],toujeo:{done:false,date:'',time:''}};
+let curAnalysis=null,curMode='photo',pendingHighDose=null;
 
-function load() {
-  try {
-    const s = localStorage.getItem(DB_KEY);
-    if (s) state = Object.assign(state, JSON.parse(s));
-  } catch(e) {}
-}
-function save() {
-  try { localStorage.setItem(DB_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function load(){try{const d=localStorage.getItem(STORE);if(d)S=Object.assign(S,JSON.parse(d));}catch(e){}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(S));}catch(e){}}
 
-// ============================================================
-// NAVIGATION
-// ============================================================
-function goTo(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if (id === 's-home') renderDashboard();
-  if (id === 's-diary') renderDiary('all');
-  if (id === 's-reports') renderReports();
-  if (id === 's-settings') renderSettings();
+  const map={'s-home':0,'s-analyze':1,'s-history':2,'s-profile':3};
+  document.querySelectorAll('.bnav').forEach(nav=>{
+    nav.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',i===(map[id]??-1)));
+  });
+  if(id==='s-home')renderHome();
+  if(id==='s-history')renderHistory('all');
+  if(id==='s-profile')renderProfile();
 }
 
-// ============================================================
-// MODALS
-// ============================================================
-function openModal(id) {
-  document.getElementById(id).classList.add('open');
-  if (id === 'modal-basal') {
-    const now = new Date();
-    document.getElementById('basal-time').value = now.toTimeString().slice(0,5);
-    document.getElementById('basal-units').value = state.config.basalDose;
-  }
-  if (id === 'modal-geminikey') {
-    document.getElementById('apikey-input').value = state.apiKey ? '••••••••' : '';
-  }
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('open');
-}
-function closeModalOutside(e, id) {
-  if (e.target === document.getElementById(id)) closeModal(id);
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+function closeOut(e,id){if(e.target===document.getElementById(id))closeModal(id);}
+function toggleChip(el){el.classList.toggle('on');}
+function showSpin(msg){document.getElementById('spin-msg').textContent=msg||'Analizando…';document.getElementById('spinner').classList.add('on');}
+function hideSpin(){document.getElementById('spinner').classList.remove('on');}
+
+function switchMode(m){
+  curMode=m;
+  document.getElementById('tab-photo').classList.toggle('on',m==='photo');
+  document.getElementById('tab-manual').classList.toggle('on',m==='manual');
+  document.getElementById('mode-photo').style.display=m==='photo'?'block':'none';
+  document.getElementById('mode-manual').style.display=m==='manual'?'block':'none';
 }
 
-// ============================================================
-// TOAST
-// ============================================================
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
+function toggleToujeo(){
+  const today=new Date().toDateString();
+  if(S.toujeo.date===today&&S.toujeo.done){S.toujeo.done=false;S.toujeo.time='';}
+  else{S.toujeo.done=true;S.toujeo.date=today;S.toujeo.time=new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+  save();renderToujeo();
+}
+function renderToujeo(){
+  const today=new Date().toDateString();
+  const done=S.toujeo.done&&S.toujeo.date===today;
+  document.getElementById('toujeo-card').style.borderColor=done?'rgba(34,197,94,.4)':'var(--border)';
+  document.getElementById('toujeo-label').textContent=done?'✅ Toujeo puesta':'💉 Toujeo de hoy';
+  document.getElementById('toujeo-sub').textContent=done?'Registrada a las '+S.toujeo.time:'¿Ya te la has puesto?';
+  document.getElementById('toujeo-check').textContent=done?'✓':'';
+  document.getElementById('toujeo-check').style.background=done?'var(--green)':'transparent';
+  document.getElementById('toujeo-check').style.borderColor=done?'var(--green)':'var(--border)';
+  document.getElementById('toujeo-check').style.color=done?'#fff':'transparent';
 }
 
-// ============================================================
-// SPINNER
-// ============================================================
-function showSpinner(msg) {
-  document.getElementById('spinner-msg').textContent = msg || 'Procesando…';
-  document.getElementById('spinner').classList.add('on');
-}
-function hideSpinner() {
-  document.getElementById('spinner').classList.remove('on');
-}
-
-// ============================================================
-// SETTINGS
-// ============================================================
-let editingKey = '', editingType = '';
-function editSetting(key, label, type, def) {
-  editingKey = key;
-  editingType = type;
-  document.getElementById('setting-modal-title').textContent = label;
-  const inp = document.getElementById('setting-modal-input');
-  inp.type = type;
-  inp.value = state.config[key] !== undefined ? state.config[key] : def;
-  openModal('modal-setting');
-}
-function saveSetting() {
-  const val = document.getElementById('setting-modal-input').value.trim();
-  if (!val) return;
-  state.config[editingKey] = editingType === 'number' ? parseFloat(val) : val;
-  save();
-  renderSettings();
-  closeModal('modal-setting');
-  toast('✅ Guardado');
-}
-function renderSettings() {
-  const c = state.config;
-  document.getElementById('cfg-ratio').textContent = c.ratio + 'g/u';
-  document.getElementById('cfg-sens').textContent = c.sensitivity + ' mg/dL';
-  document.getElementById('cfg-target').textContent = c.target + ' mg/dL';
-  document.getElementById('cfg-basalType').textContent = c.basalType;
-  document.getElementById('cfg-basalDose').textContent = c.basalDose + ' u';
-  document.getElementById('cfg-basalTime').textContent = c.basalTime;
-  document.getElementById('cfg-rapidType').textContent = c.rapidType;
-  document.getElementById('cfg-apikey-status').textContent = state.apiKey ? '✅ Configurada' : '❌ No configurada';
+function renderHome(){
+  const now=new Date();
+  document.getElementById('home-date').textContent=now.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  const today=now.toDateString();
+  const meals=S.entries.filter(e=>e.type==='meal'&&new Date(e.ts).toDateString()===today);
+  document.getElementById('today-rapid').innerHTML=meals.reduce((a,e)=>a+(e.doseFinal||0),0).toFixed(1)+'<span style="font-size:14px"> u</span>';
+  document.getElementById('today-ch').innerHTML=Math.round(meals.reduce((a,e)=>a+(e.ch||0),0))+'<span style="font-size:14px"> g</span>';
+  document.getElementById('today-kcal').innerHTML=Math.round(meals.reduce((a,e)=>a+(e.kcal||0),0))+'<span style="font-size:14px"> kcal</span>';
+  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
+  document.getElementById('today-hipos').textContent=S.entries.filter(e=>e.type==='hipo'&&new Date(e.ts)>weekAgo).length;
+  renderToujeo();
 }
 
-// ============================================================
-// API KEY
-// ============================================================
-function saveApiKey() {
-  const val = document.getElementById('apikey-input').value.trim();
-  if (!val || val === '••••••••') { closeModal('modal-geminikey'); return; }
-  state.apiKey = val;
-  save();
-  renderSettings();
-  closeModal('modal-geminikey');
-  toast('✅ API Key guardada');
+function calcDose(ch,gluc){
+  const c=S.config;
+  let base=ch/c.ratio,corr=(gluc-c.target)/c.sensitivity,total=base+corr;
+  if(gluc<90)total-=1;
+  total=Math.max(0,Math.round(total*2)/2);
+  return{total,base:Math.round(base*10)/10,corr:Math.round(corr*10)/10};
 }
 
-// ============================================================
-// DOSE CALCULATION
-// ============================================================
-function calcDose(ch, gluc) {
-  const c = state.config;
-  const mealDose = ch / c.ratio;
-  const corrDose = (gluc - c.target) / c.sensitivity;
-  const total = Math.max(0, mealDose + corrDose);
-  return { total: Math.round(total * 10) / 10, mealDose: Math.round(mealDose * 10) / 10, corrDose: Math.round(corrDose * 10) / 10 };
-}
-
-// ============================================================
-// PHOTO ANALYSIS
-// ============================================================
-let currentAnalysis = null;
-
-function handlePhoto(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  if (!state.apiKey) {
-    document.getElementById('no-apikey-warn').style.display = 'block';
-    return;
-  }
-  document.getElementById('no-apikey-warn').style.display = 'none';
-
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const b64 = ev.target.result.split(',')[1];
-    const mimeType = file.type || 'image/jpeg';
-
-    // Show preview
-    const prev = document.getElementById('photo-preview');
-    prev.src = ev.target.result;
-    prev.style.display = 'block';
-    document.getElementById('photo-drop-zone').style.display = 'none';
-    document.getElementById('analysis-result').style.display = 'none';
-
-    analyzeImage(b64, mimeType);
+function handlePhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const b64=ev.target.result.split(',')[1],mime=file.type||'image/jpeg';
+    document.getElementById('photo-prev').src=ev.target.result;
+    document.getElementById('photo-prev').style.display='block';
+    document.getElementById('photo-drop-zone').style.display='none';
+    document.getElementById('analysis-area').style.display='none';
+    analyzeWithAI({type:'photo',b64,mime});
   };
   reader.readAsDataURL(file);
 }
 
-async function analyzeImage(b64, mimeType) {
-  showSpinner('Analizando imagen con IA…');
-  try {
-    const prompt = `Eres un asistente especializado en nutrición para personas con diabetes tipo 1.
-
-Analiza esta imagen de comida y devuelve ÚNICAMENTE un objeto JSON válido con esta estructura exacta (sin texto adicional, sin markdown, sin explicaciones):
-{
-  "descripcion": "descripción breve de la comida",
-  "ingredientes": [
-    {"nombre": "nombre del alimento", "cantidad_g": 200, "ch_g": 45},
-    {"nombre": "otro alimento", "cantidad_g": 80, "ch_g": 8}
-  ],
-  "total_ch_g": 53,
-  "notas": "observación opcional sobre la estimación"
+function addManualIngr(){
+  const wrap=document.getElementById('manual-ingrs');
+  const idx=wrap.children.length;
+  const div=document.createElement('div');div.className='manual-ingr';
+  div.innerHTML='<input class="field" type="text" placeholder="Alimento" id="mi-name-'+idx+'"><input class="field qty" type="number" placeholder="g" id="mi-qty-'+idx+'"><button class="del-btn" onclick="this.parentElement.remove()">✕</button>';
+  wrap.appendChild(div);
 }
 
-Sé preciso con los carbohidratos. Si no puedes ver bien algún ingrediente, haz una estimación razonable. Incluye todos los componentes visibles.`;
-
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${state.apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{
-            parts: [
-              { inline_data: { mime_type: mimeType, data: b64 } },
-              { text: prompt }
-            ]
-          }],
-          generationConfig: { temperature: 0.2, maxOutputTokens: 1024 }
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || 'Error en la API de Google');
-    }
-
-    const data = await response.json();
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
-    if (!text) throw new Error('Respuesta vacía de la IA');
-
-    const clean = text.replace(/```json|```/g,'').trim();
-    const result = JSON.parse(clean);
-    currentAnalysis = result;
-    renderAnalysisResult(result);
-  } catch(err) {
-    hideSpinner();
-    toast('❌ Error: ' + err.message);
-    console.error(err);
-    document.getElementById('photo-preview').style.display = 'none';
-    document.getElementById('photo-drop-zone').style.display = 'flex';
+function onDirectCH(){
+  const ch=parseFloat(document.getElementById('m-ch-direct').value)||0;
+  if(ch>0){
+    const r={ingredientes:[{nombre:'Comida manual',cantidad_g:0,carbohidratos_g:ch,calorias_kcal:Math.round(ch*4)}],total_carbohidratos:ch,total_calorias:Math.round(ch*4),confianza:'alta',observaciones:'Valores introducidos manualmente'};
+    curAnalysis={...r,mode:'manual'};renderResults(r,'manual');
   }
-  hideSpinner();
 }
 
-function renderAnalysisResult(result) {
-  const ingrList = document.getElementById('ingr-list');
-  ingrList.innerHTML = '';
-  (result.ingredientes || []).forEach(ing => {
-    const row = document.createElement('div');
-    row.className = 'ingr-row';
-    row.innerHTML = `<span class="ingr-name">${ing.nombre}</span><span class="ingr-g">${ing.cantidad_g}g</span><span class="ingr-ch">${ing.ch_g}g CH</span>`;
-    ingrList.appendChild(row);
+async function analyzeManual(){
+  const name=document.getElementById('m-name').value.trim();
+  const directCH=parseFloat(document.getElementById('m-ch-direct').value)||0;
+  if(!name&&!directCH){toast('⚠️ Escribe qué has comido');return;}
+  const ingrs=[];
+  document.querySelectorAll('.manual-ingr').forEach((row,i)=>{
+    const n=row.querySelector('[id^="mi-name"]')?.value?.trim();
+    const q=parseFloat(row.querySelector('[id^="mi-qty"]')?.value)||0;
+    if(n)ingrs.push(n+(q?' ('+q+'g)':''));
   });
-  document.getElementById('total-ch').textContent = (result.total_ch_g || 0) + ' g';
-  document.getElementById('gluc-now').value = '';
-  document.getElementById('dose-num').textContent = '—';
-  document.getElementById('dose-break').textContent = 'Introduce tu glucemia actual para calcular la dosis';
-  document.getElementById('dose-final').value = '';
-  document.getElementById('analysis-result').style.display = 'block';
-  document.getElementById('analyze-scroll').scrollTop = 0;
+  const desc=name+(ingrs.length?'\nIngredientes: '+ingrs.join(', '):'')+(directCH?'\nCarbohidratos conocidos: '+directCH+'g':'');
+  analyzeWithAI({type:'text',desc});
 }
 
-function recalcDose() {
-  if (!currentAnalysis) return;
-  const ch = currentAnalysis.total_ch_g || 0;
-  const gluc = parseFloat(document.getElementById('gluc-now').value);
-  if (isNaN(gluc) || gluc < 20) {
-    document.getElementById('dose-num').textContent = '—';
-    document.getElementById('dose-break').textContent = 'Introduce tu glucemia';
-    document.getElementById('dose-final').value = '';
-    return;
-  }
-  const d = calcDose(ch, gluc);
-  document.getElementById('dose-num').textContent = d.total.toFixed(1);
-  const corrSign = d.corrDose >= 0 ? '+' : '';
-  document.getElementById('dose-break').textContent =
-    `${d.mealDose.toFixed(1)}u comida ${corrSign}${d.corrDose.toFixed(1)}u corrección`;
-  document.getElementById('dose-final').value = d.total.toFixed(1);
+async function analyzeWithAI(input){
+  showSpin('Analizando con IA…');
+  try{
+    const prompt='Eres un nutricionista experto en diabetes tipo 1. '+(input.type==='photo'?'Analiza esta imagen de comida':'Analiza esta descripción de comida: '+input.desc)+' y devuelve SOLO un JSON sin texto adicional ni markdown: {"ingredientes":[{"nombre":"string","cantidad_g":number,"carbohidratos_g":number,"calorias_kcal":number}],"total_carbohidratos":number,"total_calorias":number,"confianza":"alta/media/baja","observaciones":"string"}';
+    const content=input.type==='photo'
+      ?[{type:'image',source:{type:'base64',media_type:input.mime,data:input.b64}},{type:'text',text:prompt}]
+      :[{type:'text',text:prompt}];
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content}]})
+    });
+    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'Error API');}
+    const data=await res.json();
+    const txt=data.content[0].text.trim().replace(/```json|```/g,'').trim();
+    const result=JSON.parse(txt);
+    const mode=input.type==='photo'?'photo':'manual';
+    curAnalysis={...result,mode};
+    renderResults(result,mode);
+  }catch(err){hideSpin();toast('❌ '+err.message);if(input.type==='photo')resetAnalyze();}
+  hideSpin();
 }
 
-function confirmMeal() {
-  if (!currentAnalysis) return;
-  const gluc = parseFloat(document.getElementById('gluc-now').value) || 0;
-  const doseFinal = parseFloat(document.getElementById('dose-final').value) || 0;
-  const d = gluc > 0 ? calcDose(currentAnalysis.total_ch_g, gluc) : {total: 0, mealDose: 0, corrDose: 0};
-
-  const entry = {
-    id: Date.now(),
-    type: 'meal',
-    ts: new Date().toISOString(),
-    desc: currentAnalysis.descripcion || 'Comida analizada',
-    ch: currentAnalysis.total_ch_g,
-    ingredients: currentAnalysis.ingredientes || [],
-    glucPrev: gluc,
-    doseRec: d.total,
-    doseFinal: doseFinal,
-    notes: currentAnalysis.notas || ''
-  };
-  state.entries.unshift(entry);
-  save();
-  toast('✅ Comida registrada');
-  resetAnalyze();
-  renderDashboard();
-  goTo('s-home');
-}
-
-function resetAnalyze() {
-  currentAnalysis = null;
-  document.getElementById('photo-preview').style.display = 'none';
-  document.getElementById('photo-drop-zone').style.display = 'flex';
-  document.getElementById('analysis-result').style.display = 'none';
-  document.getElementById('file-input').value = '';
-  document.getElementById('no-apikey-warn').style.display = 'none';
-}
-
-// ============================================================
-// MANUAL MEAL
-// ============================================================
-function calcManualDose() {
-  const ch = parseFloat(document.getElementById('mm-ch').value) || 0;
-  const gluc = parseFloat(document.getElementById('mm-gluc').value) || 0;
-  const prev = document.getElementById('mm-dose-preview');
-  if (ch > 0 && gluc > 0) {
-    const d = calcDose(ch, gluc);
-    document.getElementById('mm-dose-num').textContent = d.total.toFixed(1) + ' u';
-    const corrSign = d.corrDose >= 0 ? '+' : '';
-    document.getElementById('mm-dose-break').textContent =
-      `${d.mealDose.toFixed(1)}u comida ${corrSign}${d.corrDose.toFixed(1)}u corrección`;
-    prev.style.display = 'block';
-    document.getElementById('mm-final').value = d.total.toFixed(1);
-  } else {
-    prev.style.display = 'none';
+function renderResults(r,mode){
+  const ingrHTML=(r.ingredientes||[]).map(i=>'<div class="ingr-row"><span class="ingr-n">'+i.nombre+'</span><span class="ingr-g">'+(i.cantidad_g||'—')+'g</span><span class="ingr-c">'+i.carbohidratos_g+'g</span><span class="ingr-k">'+(i.calorias_kcal||'—')+'</span></div>').join('');
+  const confColor=r.confianza==='alta'?'var(--green)':r.confianza==='media'?'var(--amber)':'var(--red)';
+  const confEmoji=r.confianza==='alta'?'✅':r.confianza==='media'?'⚠️':'❓';
+  if(mode==='photo'){
+    document.getElementById('sum-ch').textContent=(r.total_carbohidratos||0)+'g';
+    document.getElementById('sum-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
+    document.getElementById('sum-conf').textContent=confEmoji+' '+r.confianza;
+    document.getElementById('sum-conf').style.color=confColor;
+    document.getElementById('ingr-list').innerHTML=ingrHTML;
+    document.getElementById('total-ch-val').textContent=(r.total_carbohidratos||0)+'g';
+    document.getElementById('total-kcal-val').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
+    const obs=document.getElementById('obs-box');
+    if(r.observaciones){obs.textContent='💬 '+r.observaciones;obs.style.display='block';}else{obs.style.display='none';}
+    document.getElementById('gluc-in').value='';
+    document.getElementById('dose-hero').style.display='none';
+    document.getElementById('confirm-area').style.display='none';
+    document.getElementById('analysis-area').style.display='block';
+  }else{
+    document.getElementById('m-sum-ch').textContent=(r.total_carbohidratos||0)+'g';
+    document.getElementById('m-sum-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
+    document.getElementById('m-sum-conf').textContent=confEmoji+' '+r.confianza;
+    document.getElementById('m-sum-conf').style.color=confColor;
+    document.getElementById('m-ingr-list').innerHTML=ingrHTML;
+    document.getElementById('m-total-ch').textContent=(r.total_carbohidratos||0)+'g';
+    document.getElementById('m-total-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
+    document.getElementById('m-gluc-in').value='';
+    document.getElementById('m-dose-hero').style.display='none';
+    document.getElementById('m-confirm-area').style.display='none';
+    document.getElementById('manual-result').style.display='block';
   }
 }
 
-function saveManualMeal() {
-  const desc = document.getElementById('mm-desc').value.trim();
-  const ch = parseFloat(document.getElementById('mm-ch').value) || 0;
-  const gluc = parseFloat(document.getElementById('mm-gluc').value) || 0;
-  const doseFinal = parseFloat(document.getElementById('mm-final').value) || 0;
-  if (!desc) { toast('⚠️ Escribe una descripción'); return; }
-  if (ch <= 0) { toast('⚠️ Introduce los carbohidratos'); return; }
-  const d = gluc > 0 ? calcDose(ch, gluc) : {total: doseFinal, mealDose: 0, corrDose: 0};
-  const entry = {
-    id: Date.now(), type: 'meal', ts: new Date().toISOString(),
-    desc, ch, ingredients: [], glucPrev: gluc,
-    doseRec: d.total, doseFinal, notes: ''
-  };
-  state.entries.unshift(entry);
-  save();
-  closeModal('modal-manual-meal');
-  ['mm-desc','mm-ch','mm-gluc','mm-final'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('mm-dose-preview').style.display = 'none';
-  toast('✅ Comida guardada');
-  renderDiary('all');
-  renderDashboard();
-}
-
-// ============================================================
-// HIPO / HIPER / BASAL / NOTA
-// ============================================================
-function saveHipo() {
-  const gluc = parseFloat(document.getElementById('hipo-gluc').value) || 0;
-  const symp = document.getElementById('hipo-symp').value.trim();
-  const treat = document.getElementById('hipo-treat').value.trim();
-  const notes = document.getElementById('hipo-notes').value.trim();
-  if (!gluc) { toast('⚠️ Introduce la glucemia'); return; }
-  const entry = { id: Date.now(), type: 'hipo', ts: new Date().toISOString(), gluc, symp, treat, notes };
-  state.entries.unshift(entry);
-  save();
-  closeModal('modal-hipo');
-  ['hipo-gluc','hipo-symp','hipo-treat','hipo-notes'].forEach(id => document.getElementById(id).value = '');
-  toast('✅ Hipoglucemia registrada');
-  renderDiary('all');
-  renderDashboard();
-}
-
-function saveHiper() {
-  const gluc = parseFloat(document.getElementById('hiper-gluc').value) || 0;
-  const cause = document.getElementById('hiper-cause').value.trim();
-  const corr = parseFloat(document.getElementById('hiper-corr').value) || 0;
-  const notes = document.getElementById('hiper-notes').value.trim();
-  if (!gluc) { toast('⚠️ Introduce la glucemia'); return; }
-  const entry = { id: Date.now(), type: 'hiper', ts: new Date().toISOString(), gluc, cause, corr, notes };
-  state.entries.unshift(entry);
-  save();
-  closeModal('modal-hiper');
-  ['hiper-gluc','hiper-cause','hiper-corr','hiper-notes'].forEach(id => document.getElementById(id).value = '');
-  toast('✅ Hiperglucemia registrada');
-  renderDiary('all');
-  renderDashboard();
-}
-
-function saveBasal() {
-  const units = parseFloat(document.getElementById('basal-units').value) || 0;
-  const time = document.getElementById('basal-time').value;
-  const notes = document.getElementById('basal-notes').value.trim();
-  if (!units) { toast('⚠️ Introduce las unidades'); return; }
-  const entry = { id: Date.now(), type: 'basal', ts: new Date().toISOString(), units, time, notes };
-  state.entries.unshift(entry);
-  save();
-  closeModal('modal-basal');
-  document.getElementById('basal-notes').value = '';
-  toast('✅ Basal registrada');
-  renderDiary('all');
-  renderDashboard();
-}
-
-function saveNota() {
-  const text = document.getElementById('nota-text').value.trim();
-  if (!text) { toast('⚠️ Escribe algo'); return; }
-  const entry = { id: Date.now(), type: 'nota', ts: new Date().toISOString(), text };
-  state.entries.unshift(entry);
-  save();
-  closeModal('modal-nota');
-  document.getElementById('nota-text').value = '';
-  toast('✅ Nota guardada');
-  renderDiary('all');
-  renderDashboard();
-}
-
-// ============================================================
-// DASHBOARD RENDER
-// ============================================================
-function renderDashboard() {
-  const today = new Date().toDateString();
-  const todayEntries = state.entries.filter(e => new Date(e.ts).toDateString() === today);
-
-  // Rapid insulin & carbs
-  const meals = todayEntries.filter(e => e.type === 'meal');
-  const totalRapid = meals.reduce((a, e) => a + (e.doseFinal || 0), 0);
-  const totalCh = meals.reduce((a, e) => a + (e.ch || 0), 0);
-  document.getElementById('dash-rapid').innerHTML = Math.round(totalRapid * 10) / 10 + '<span style="font-size:16px"> u</span>';
-  document.getElementById('dash-rapid-doses').textContent = meals.length + ' dosis';
-  document.getElementById('dash-ch').innerHTML = Math.round(totalCh) + '<span style="font-size:16px"> g</span>';
-  document.getElementById('dash-ch-meals').textContent = meals.length + ' comidas';
-
-  // Basal
-  const basals = todayEntries.filter(e => e.type === 'basal');
-  if (basals.length > 0) {
-    const last = basals[0];
-    document.getElementById('dash-basal').innerHTML = last.units + '<span style="font-size:16px"> u</span>';
-    document.getElementById('dash-basal-time').textContent = last.time + ' ✓';
-  } else {
-    document.getElementById('dash-basal').textContent = '—';
-    document.getElementById('dash-basal-time').textContent = 'No registrada hoy';
+function onGlucChange(mode){
+  if(!curAnalysis)return;
+  const p=mode==='photo'?'':'m-';
+  const gluc=parseFloat(document.getElementById(p+'gluc-in').value);
+  if(isNaN(gluc)||gluc<20){document.getElementById(p+'dose-hero').style.display='none';document.getElementById(p+'confirm-area').style.display='none';return;}
+  if(mode==='photo'){
+    const ab=document.getElementById('gluc-alert');
+    if(gluc<70){ab.innerHTML='<div class="alert alert-r">⚠️ HIPOGLUCEMIA — Toma 15g de azúcar ahora. Zumo, sobre de azúcar o glucosa.</div>';ab.style.display='block';}
+    else if(gluc>250){ab.innerHTML='<div class="alert alert-a">⚠️ GLUCEMIA MUY ALTA — Considera contactar con tu médico.</div>';ab.style.display='block';}
+    else{ab.style.display='none';}
   }
+  const ch=curAnalysis.total_carbohidratos||0;
+  const d=calcDose(ch,gluc);
+  document.getElementById(p+'dose-big').textContent=d.total.toFixed(1);
+  let brk=d.base.toFixed(1)+'u comida';
+  if(d.corr!==0)brk+=' '+(d.corr>=0?'+':'')+d.corr.toFixed(1)+'u corrección';
+  if(gluc<90)brk+=' −1u seguridad';
+  document.getElementById(p+'dose-break').textContent=brk;
+  document.getElementById(p+'dose-hero').style.display='block';
+  document.getElementById(p+'dose-real').value=d.total.toFixed(1);
+  document.getElementById(p+'confirm-area').style.display='block';
+}
 
-  // Hipos (this week)
-  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
-  const weekHipos = state.entries.filter(e => e.type === 'hipo' && new Date(e.ts) > weekAgo).length;
-  document.getElementById('dash-hipos').textContent = weekHipos;
-
-  // Last glucose from meals
-  const lastMeal = meals[0];
-  if (lastMeal && lastMeal.glucPrev > 0) {
-    const g = lastMeal.glucPrev;
-    document.getElementById('dash-gluc').textContent = g;
-    document.getElementById('dash-gluc-meta').textContent = 'Última medición registrada · ' + fmtTime(lastMeal.ts);
-    const pill = document.getElementById('dash-range-pill');
-    if (g < 70) { pill.textContent = 'HIPOGLUCEMIA'; pill.className = 'pill pill-bad'; }
-    else if (g > 180) { pill.textContent = 'ALTA'; pill.className = 'pill pill-warn'; }
-    else { pill.textContent = 'EN RANGO'; pill.className = 'pill pill-ok'; }
+function saveMeal(mode){
+  if(!curAnalysis)return;
+  const p=mode==='photo'?'':'m-';
+  const gluc=parseFloat(document.getElementById(p+'gluc-in').value)||0;
+  const doseFinal=parseFloat(document.getElementById(p+'dose-real').value)||0;
+  if(doseFinal>12){
+    pendingHighDose={gluc,doseFinal,mode};
+    document.getElementById('highdose-msg').textContent='La dosis calculada es '+doseFinal+'u. ¿Estás seguro?';
+    openModal('modal-highdose');return;
   }
-
-  // Recent list
-  const rl = document.getElementById('recent-list');
-  if (todayEntries.length === 0) {
-    rl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text3);font-size:14px">Aún no hay registros hoy.<br>¡Analiza tu primera comida!</div>';
-  } else {
-    rl.innerHTML = todayEntries.slice(0,5).map(e => entryRow(e)).join('');
-  }
+  doSaveMeal(gluc,doseFinal,mode);
 }
 
-// ============================================================
-// DIARY RENDER
-// ============================================================
-let diaryFilter = 'all';
-function filterDiary(f, btn) {
-  diaryFilter = f;
-  document.querySelectorAll('#diary-filters .chip').forEach(c => c.classList.remove('on'));
-  btn.classList.add('on');
-  renderDiary(f);
+function confirmHighDose(){closeModal('modal-highdose');if(pendingHighDose)doSaveMeal(pendingHighDose.gluc,pendingHighDose.doseFinal,pendingHighDose.mode);}
+
+function doSaveMeal(gluc,doseFinal,mode){
+  const d=gluc>0?calcDose(curAnalysis.total_carbohidratos,gluc):{total:doseFinal,base:0,corr:0};
+  const desc=mode==='photo'?(curAnalysis.ingredientes||[]).map(i=>i.nombre).join(', ')||'Comida por foto':document.getElementById('m-name').value||'Comida manual';
+  S.entries.unshift({id:Date.now(),type:'meal',ts:new Date().toISOString(),desc,ch:curAnalysis.total_carbohidratos,kcal:curAnalysis.total_calorias||0,ingredients:curAnalysis.ingredientes||[],glucPrev:gluc,doseRec:d.total,doseFinal,source:mode,obs:curAnalysis.observaciones||''});
+  save();toast('✅ Comida registrada');
+  mode==='photo'?resetAnalyze():resetManual();
+  renderHome();goTo('s-home');
 }
 
-function renderDiary(filter) {
-  const list = document.getElementById('diary-list');
-  const entries = filter === 'all' ? state.entries : state.entries.filter(e => e.type === filter);
+function resetAnalyze(){curAnalysis=null;document.getElementById('photo-prev').style.display='none';document.getElementById('photo-drop-zone').style.display='flex';document.getElementById('analysis-area').style.display='none';document.getElementById('gluc-alert').style.display='none';document.getElementById('file-in').value='';}
+function resetManual(){curAnalysis=null;document.getElementById('m-name').value='';document.getElementById('m-ch-direct').value='';document.getElementById('manual-ingrs').innerHTML='';document.getElementById('manual-result').style.display='none';}
 
-  if (entries.length === 0) {
-    list.innerHTML = '<div style="padding:32px;text-align:center;color:var(--text3);font-size:14px">No hay registros todavía.</div>';
-    return;
-  }
-
-  // Group by day
-  const groups = {};
-  entries.forEach(e => {
-    const day = new Date(e.ts).toDateString();
-    if (!groups[day]) groups[day] = [];
-    groups[day].push(e);
-  });
-
-  let html = '';
-  Object.keys(groups).forEach(day => {
-    const d = new Date(day);
-    const label = isToday(d) ? 'Hoy' : isYesterday(d) ? 'Ayer' : fmtDate(d);
-    html += `<div class="day-sep">${label}</div>`;
-    groups[day].forEach(e => { html += entryRow(e, true); });
-  });
-  list.innerHTML = html;
+function saveHipo(){
+  const gluc=parseFloat(document.getElementById('h-gluc').value)||0;if(!gluc){toast('⚠️ Introduce la glucemia');return;}
+  const symp=[...document.querySelectorAll('#h-symp-btns .chip.on')].map(b=>b.textContent).join(', ');
+  S.entries.unshift({id:Date.now(),type:'hipo',ts:new Date().toISOString(),gluc,symp,treat:document.getElementById('h-treat').value,notes:document.getElementById('h-notes').value});
+  save();closeModal('modal-hipo');['h-gluc','h-treat','h-notes'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#h-symp-btns .chip').forEach(c=>c.classList.remove('on'));
+  toast('✅ Hipo registrada');renderHome();
+}
+function saveHiper(){
+  const gluc=parseFloat(document.getElementById('hi-gluc').value)||0;if(!gluc){toast('⚠️ Introduce la glucemia');return;}
+  const cause=[...document.querySelectorAll('#hi-cause-btns .chip.on')].map(b=>b.textContent).join(', ');
+  S.entries.unshift({id:Date.now(),type:'hiper',ts:new Date().toISOString(),gluc,cause,corr:parseFloat(document.getElementById('hi-corr').value)||0,notes:document.getElementById('hi-notes').value});
+  save();closeModal('modal-hiper');['hi-gluc','hi-corr','hi-notes'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#hi-cause-btns .chip').forEach(c=>c.classList.remove('on'));
+  toast('✅ Hiper registrada');renderHome();
+}
+function saveBasal(){
+  const units=parseFloat(document.getElementById('b-units').value)||0;if(!units){toast('⚠️ Introduce las unidades');return;}
+  S.entries.unshift({id:Date.now(),type:'basal',ts:new Date().toISOString(),units,time:document.getElementById('b-time').value,notes:document.getElementById('b-notes').value});
+  save();closeModal('modal-basal');['b-units','b-notes'].forEach(id=>document.getElementById(id).value='');
+  toast('✅ Basal registrada');renderHome();
 }
 
-function entryRow(e, withDelete = false) {
-  let icon, title, sub, badge, badgeClass;
-  if (e.type === 'meal') {
-    icon = '🍽️'; title = e.desc;
-    sub = `${e.ch}g CH · Prev: ${e.glucPrev || '—'} mg/dL · Dosis: ${e.doseFinal}u`;
-    badge = e.doseFinal + 'u'; badgeClass = 'pill-ok';
-  } else if (e.type === 'hipo') {
-    icon = '⬇️'; title = 'Hipoglucemia';
-    sub = `${e.gluc} mg/dL · ${e.symp || ''} · ${e.treat || ''}`;
-    badge = e.gluc + ''; badgeClass = 'pill-bad';
-  } else if (e.type === 'hiper') {
-    icon = '⬆️'; title = 'Hiperglucemia';
-    sub = `${e.gluc} mg/dL · ${e.cause || ''} · Corrección: ${e.corr || 0}u`;
-    badge = e.gluc + ''; badgeClass = 'pill-warn';
-  } else if (e.type === 'basal') {
-    icon = '💉'; title = 'Basal ' + (state.config.basalType || 'Toujeo');
-    sub = `${e.units}u · ${e.time}${e.notes ? ' · ' + e.notes : ''}`;
-    badge = e.units + 'u'; badgeClass = 'pill-info';
-  } else if (e.type === 'nota') {
-    icon = '📝'; title = 'Nota';
-    sub = e.text.slice(0, 60);
-    badge = ''; badgeClass = '';
-  }
-  const delBtn = withDelete ? `<button onclick="deleteEntry(${e.id})" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text3);padding:4px 0 4px 8px">🗑</button>` : '';
-  return `<div class="log-row">
-    <div class="log-icon">${icon}</div>
-    <div class="log-info">
-      <div class="log-title">${title}</div>
-      <div class="log-sub">${fmtTime(e.ts)} · ${sub}</div>
-    </div>
-    ${badge ? `<span class="pill ${badgeClass}">${badge}</span>` : ''}
-    ${delBtn}
-  </div>`;
-}
-
-function deleteEntry(id) {
-  if (!confirm('¿Borrar este registro?')) return;
-  state.entries = state.entries.filter(e => e.id !== id);
-  save();
-  renderDiary(diaryFilter);
-  renderDashboard();
-  toast('🗑 Eliminado');
-}
-
-// ============================================================
-// REPORTS
-// ============================================================
-function handleReport(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  showSpinner('Procesando informe…');
-  setTimeout(() => {
-    hideSpinner();
-    // Store report metadata (we can't extract AGP data automatically without backend)
-    const report = {
-      id: Date.now(),
-      ts: new Date().toISOString(),
-      name: file.name,
-      type: file.type,
-      manual: {}
-    };
-    // Open modal to let user enter key data manually
-    state.reports.unshift(report);
-    save();
-    openReportEntryModal(report.id);
-  }, 1000);
-}
-
-function openReportEntryModal(id) {
-  const modal = document.createElement('div');
-  modal.className = 'modal-overlay open';
-  modal.id = 'modal-report-entry';
-  modal.innerHTML = `<div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">📊 Datos del informe AGP</div>
-    <p style="font-size:13px;color:var(--text2);margin-bottom:14px">Introduce los valores clave del informe (los encontrarás en la primera página del PDF de FreeStyle).</p>
-    <label class="lbl">Período (ej: 1-30 abril 2025)</label>
-    <input class="field" id="ri-period" placeholder="1-30 abril 2025">
-    <label class="lbl" style="margin-top:10px">GMI (%)</label>
-    <input class="field" id="ri-gmi" type="number" step="0.1" placeholder="Ej. 7.1">
-    <label class="lbl" style="margin-top:10px">Tiempo en rango 70-180 (%)</label>
-    <input class="field" id="ri-tir" type="number" step="1" placeholder="Ej. 64">
-    <label class="lbl" style="margin-top:10px">Glucosa promedio (mg/dL)</label>
-    <input class="field" id="ri-avg" type="number" placeholder="Ej. 154">
-    <label class="lbl" style="margin-top:10px">Variabilidad CV (%)</label>
-    <input class="field" id="ri-cv" type="number" step="1" placeholder="Ej. 32">
-    <label class="lbl" style="margin-top:10px">Episodios de hipoglucemia</label>
-    <input class="field" id="ri-hipos" type="number" placeholder="Ej. 8">
-    <button class="btn-primary" style="margin-top:16px" onclick="saveReportEntry(${id})">Guardar informe</button>
-    <button class="btn-secondary" onclick="document.getElementById('modal-report-entry').remove()">Cancelar</button>
-  </div>`;
-  modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
-  document.body.appendChild(modal);
-}
-
-function saveReportEntry(id) {
-  const r = state.reports.find(r => r.id === id);
-  if (!r) return;
-  r.manual = {
-    period: document.getElementById('ri-period').value,
-    gmi: parseFloat(document.getElementById('ri-gmi').value) || 0,
-    tir: parseFloat(document.getElementById('ri-tir').value) || 0,
-    avg: parseFloat(document.getElementById('ri-avg').value) || 0,
-    cv: parseFloat(document.getElementById('ri-cv').value) || 0,
-    hipos: parseInt(document.getElementById('ri-hipos').value) || 0
-  };
-  save();
-  document.getElementById('modal-report-entry').remove();
-  renderReports();
-  toast('✅ Informe guardado');
-}
-
-function renderReports() {
-  const list = document.getElementById('reports-list');
-  if (state.reports.length === 0) {
-    list.innerHTML = '<div style="padding:32px 16px;text-align:center;color:var(--text3);font-size:14px">Sube tu primer informe AGP del FreeStyle LibreLink para ver tus estadísticas aquí.</div>';
-    return;
-  }
-  list.innerHTML = state.reports.map(r => {
-    const m = r.manual || {};
-    const tir = m.tir || 0;
-    const low = Math.round((100 - tir) * 0.25);
-    const high = 100 - tir - low;
-    return `<div class="card" style="margin:8px 16px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div>
-          <div style="font-size:15px;font-weight:600">${m.period || r.name || 'Informe'}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:2px">${fmtDate(new Date(r.ts))}</div>
-        </div>
-        <button onclick="deleteReport(${r.id})" style="background:none;border:none;cursor:pointer;font-size:18px;color:var(--text3)">🗑</button>
-      </div>
-      ${m.gmi ? `<div class="metric-grid">
-        <div class="metric-box"><div class="mv" style="color:var(--amber)">${m.gmi}%</div><div class="ml">GMI</div></div>
-        <div class="metric-box"><div class="mv">${m.avg} mg/dL</div><div class="ml">Glucosa promedio</div></div>
-        <div class="metric-box"><div class="mv" style="color:var(--red)">${m.hipos}</div><div class="ml">Episodios hipo</div></div>
-        <div class="metric-box"><div class="mv">${m.cv}%</div><div class="ml">Variabilidad CV</div></div>
-      </div>
-      <div style="margin-top:12px">
-        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">Tiempo en rango (TIR)</div>
-        <div class="tir-full">
-          <div style="flex:${low};background:var(--red2);border-radius:8px 0 0 8px"></div>
-          <div style="flex:${tir};background:var(--green2)"></div>
-          <div style="flex:${high};background:var(--amber2);border-radius:0 8px 8px 0"></div>
-        </div>
-        <div style="display:flex;gap:14px;margin-top:5px;font-size:11px;color:var(--text2)">
-          <span>🔴 Bajo ${low}%</span>
-          <span>🟢 Rango ${tir}%</span>
-          <span>🟡 Alto ${high}%</span>
-        </div>
-      </div>` : '<p style="color:var(--text3);font-size:13px">Sin datos introducidos aún. Toca para editar.</p>'}
-    </div>`;
+let histFilter='all';
+function filterHist(f,btn){histFilter=f;document.querySelectorAll('#hist-filters .chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');renderHistory(f);}
+function renderHistory(f){
+  const entries=f==='all'?S.entries:S.entries.filter(e=>e.type===f);
+  const list=document.getElementById('hist-list');
+  if(!entries.length){list.innerHTML='<div style="padding:32px;text-align:center;color:var(--text3);font-size:14px">No hay registros todavía.</div>';return;}
+  const groups={};
+  entries.forEach(e=>{const d=new Date(e.ts).toDateString();if(!groups[d])groups[d]=[];groups[d].push(e);});
+  list.innerHTML=Object.keys(groups).map(day=>{
+    const d=new Date(day);
+    const lbl=isToday(d)?'Hoy':isYest(d)?'Ayer':fmtDate(d);
+    return'<div class="day-sep">'+lbl+'</div>'+groups[day].map(e=>entryHTML(e)).join('');
   }).join('');
 }
-
-function deleteReport(id) {
-  if (!confirm('¿Borrar este informe?')) return;
-  state.reports = state.reports.filter(r => r.id !== id);
-  save();
-  renderReports();
-  toast('🗑 Eliminado');
+function entryHTML(e){
+  const icons={meal:'🍽️',hipo:'⬇️',hiper:'⬆️',basal:'💉'};
+  let t='',s='',badge='',bc='';
+  if(e.type==='meal'){t=e.desc;const k=e.kcal?' · '+e.kcal+'kcal':'';s=e.ch+'g CH'+k+' · '+(e.glucPrev||'—')+' mg/dL · '+e.doseFinal+'u';badge=e.doseFinal+'u';bc='pill-b';}
+  if(e.type==='hipo'){t='Hipoglucemia';s=e.gluc+' mg/dL · '+(e.symp||'');badge=e.gluc+'';bc='pill-r';}
+  if(e.type==='hiper'){t='Hiperglucemia';s=e.gluc+' mg/dL · '+(e.cause||'');badge=e.gluc+'';bc='pill-a';}
+  if(e.type==='basal'){t='Basal Toujeo';s=e.units+'u · '+e.time;badge=e.units+'u';bc='pill-g';}
+  return'<div class="log-row"><div class="log-ico">'+(icons[e.type]||'📝')+'</div><div class="log-info"><div class="log-t">'+t+'</div><div class="log-s">'+fmtTime(e.ts)+' · '+s+'</div></div><span class="pill '+bc+'" style="flex-shrink:0">'+badge+'</span><button onclick="delEntry('+e.id+')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px;flex-shrink:0">🗑</button></div>';
 }
+function delEntry(id){if(!confirm('¿Borrar?'))return;S.entries=S.entries.filter(e=>e.id!==id);save();renderHistory(histFilter);renderHome();toast('🗑 Eliminado');}
 
-// ============================================================
-// EXPORT
-// ============================================================
-function exportReport() {
-  const start = prompt('Período del informe (ej: últimos 30 días)', 'Últimos 30 días');
-  if (!start) return;
+let editKey='',editType='';
+function editParam(key,label,type,def){editKey=key;editType=type;document.getElementById('param-title').textContent=label;const inp=document.getElementById('param-input');inp.type=type;inp.value=S.config[key]!==undefined?S.config[key]:def;openModal('modal-param');}
+function saveParam(){const val=document.getElementById('param-input').value;if(!val)return;S.config[editKey]=editType==='number'?parseFloat(val):val;save();renderProfile();closeModal('modal-param');toast('✅ Guardado');}
+function renderProfile(){document.getElementById('cfg-ratio').textContent=S.config.ratio+'g/u';document.getElementById('cfg-sens').textContent=S.config.sensitivity;document.getElementById('cfg-target').textContent=S.config.target;document.getElementById('cfg-basal').textContent=S.config.basalDose+'u';}
 
-  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 30);
-  const entries = state.entries.filter(e => new Date(e.ts) > weekAgo);
-  const meals = entries.filter(e => e.type === 'meal');
-  const hipos = entries.filter(e => e.type === 'hipo');
-  const hipers = entries.filter(e => e.type === 'hiper');
-  const basals = entries.filter(e => e.type === 'basal');
+function exportData(){const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='DiabApp_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);toast('📤 Datos exportados');}
+function deleteAll(){if(!confirm('¿Borrar TODOS los datos?'))return;if(!confirm('Confirma: se borrará todo el historial.'))return;S.entries=[];save();renderHome();renderHistory('all');toast('🗑 Datos borrados');}
 
-  const avgDose = meals.length > 0 ? (meals.reduce((a,e) => a + (e.doseFinal||0), 0) / meals.length).toFixed(1) : 0;
-  const avgCh = meals.length > 0 ? Math.round(meals.reduce((a,e) => a + (e.ch||0), 0) / meals.length) : 0;
+function fmtTime(ts){return new Date(ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+function fmtDate(d){return d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});}
+function isToday(d){return d.toDateString()===new Date().toDateString();}
+function isYest(d){const y=new Date();y.setDate(y.getDate()-1);return d.toDateString()===y.toDateString();}
 
-  let html = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
-  <style>body{font-family:Arial,sans-serif;max-width:800px;margin:0 auto;padding:20px;color:#1a1a1a}
-  h1{color:#0F6E56;border-bottom:2px solid #0F6E56;padding-bottom:10px}
-  h2{color:#185FA5;margin-top:24px}
-  table{width:100%;border-collapse:collapse;margin-top:10px}
-  th{background:#0F6E56;color:white;padding:8px;text-align:left;font-size:12px}
-  td{padding:7px 8px;border-bottom:1px solid #eee;font-size:12px}
-  .stat-box{display:inline-block;background:#f5f5f0;border-radius:8px;padding:12px 20px;margin:8px;text-align:center}
-  .stat-num{font-size:24px;font-weight:bold;color:#0F6E56}
-  .stat-lbl{font-size:11px;color:#666;margin-top:2px}
-  .warn{background:#fff3cd;border:1px solid #ffc107;padding:10px;border-radius:6px;font-size:12px;margin:16px 0}
-  </style></head><body>
-  <h1>📊 Informe DiabApp — Pau Vey Manresa</h1>
-  <p><strong>Período:</strong> ${start} &nbsp; <strong>Generado:</strong> ${new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'long',year:'numeric'})}</p>
-  <div class="warn">⚠️ Este informe es orientativo y no sustituye el seguimiento médico. Comparte con tu endocrino.</div>
-
-  <h2>Resumen estadístico</h2>
-  <div>
-    <div class="stat-box"><div class="stat-num">${meals.length}</div><div class="stat-lbl">Comidas</div></div>
-    <div class="stat-box"><div class="stat-num">${avgCh}g</div><div class="stat-lbl">CH prom/comida</div></div>
-    <div class="stat-box"><div class="stat-num">${avgDose}u</div><div class="stat-lbl">Dosis prom/comida</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:#e24b4a">${hipos.length}</div><div class="stat-lbl">Hipoglucemias</div></div>
-    <div class="stat-box"><div class="stat-num" style="color:#ba7517">${hipers.length}</div><div class="stat-lbl">Hiperglucemias</div></div>
-    <div class="stat-box"><div class="stat-num">${basals.length}</div><div class="stat-lbl">Basales registradas</div></div>
-  </div>
-
-  <h2>Comidas registradas</h2>
-  <table><tr><th>Fecha/hora</th><th>Comida</th><th>CH (g)</th><th>Glucemia previa</th><th>Dosis rec.</th><th>Dosis usada</th></tr>
-  ${meals.map(e => `<tr><td>${fmtDateTime(e.ts)}</td><td>${e.desc}</td><td>${e.ch}</td><td>${e.glucPrev || '—'} mg/dL</td><td>${e.doseRec.toFixed(1)}u</td><td>${e.doseFinal}u</td></tr>`).join('')}
-  </table>
-
-  <h2>Episodios de hipoglucemia</h2>
-  ${hipos.length === 0 ? '<p style="color:#666">Sin hipoglucemias registradas en este período. ✅</p>' :
-  `<table><tr><th>Fecha/hora</th><th>Glucemia</th><th>Síntomas</th><th>Tratamiento</th></tr>
-  ${hipos.map(e => `<tr><td>${fmtDateTime(e.ts)}</td><td style="color:#e24b4a;font-weight:bold">${e.gluc} mg/dL</td><td>${e.symp||'—'}</td><td>${e.treat||'—'}</td></tr>`).join('')}
-  </table>`}
-
-  <h2>Episodios de hiperglucemia</h2>
-  ${hipers.length === 0 ? '<p style="color:#666">Sin hiperglucemias registradas en este período. ✅</p>' :
-  `<table><tr><th>Fecha/hora</th><th>Glucemia</th><th>Causa posible</th><th>Corrección usada</th></tr>
-  ${hipers.map(e => `<tr><td>${fmtDateTime(e.ts)}</td><td style="color:#ba7517;font-weight:bold">${e.gluc} mg/dL</td><td>${e.cause||'—'}</td><td>${e.corr||0}u</td></tr>`).join('')}
-  </table>`}
-
-  <h2>Insulina basal</h2>
-  ${basals.length === 0 ? '<p style="color:#666">Sin basales registradas en este período.</p>' :
-  `<table><tr><th>Fecha</th><th>Tipo</th><th>Hora</th><th>Unidades</th><th>Notas</th></tr>
-  ${basals.map(e => `<tr><td>${fmtDate(new Date(e.ts))}</td><td>${state.config.basalType}</td><td>${e.time}</td><td>${e.units}u</td><td>${e.notes||'—'}</td></tr>`).join('')}
-  </table>`}
-
-  <hr style="margin-top:40px;border:1px solid #eee">
-  <p style="font-size:11px;color:#999">Generado por DiabApp · Datos almacenados localmente en el dispositivo · Solo uso personal</p>
-  </body></html>`;
-
-  const blob = new Blob([html], {type: 'text/html'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `DiabApp_Informe_${new Date().toISOString().slice(0,10)}.html`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('📋 Informe descargado');
-}
-
-function exportData() {
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `DiabApp_datos_${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-  toast('📤 Datos exportados');
-}
-
-function deleteAllData() {
-  if (!confirm('⚠️ ¿Borrar TODOS los datos? Esta acción es irreversible.')) return;
-  if (!confirm('Confirma una segunda vez: se borrarán todos tus registros.')) return;
-  state.entries = [];
-  state.reports = [];
-  save();
-  renderDashboard();
-  renderDiary('all');
-  renderReports();
-  toast('🗑 Todos los datos borrados');
-}
-
-// ============================================================
-// UTILS
-// ============================================================
-function fmtTime(ts) {
-  return new Date(ts).toLocaleTimeString('es-ES', {hour:'2-digit', minute:'2-digit'});
-}
-function fmtDate(d) {
-  return d.toLocaleDateString('es-ES', {day:'numeric', month:'long'});
-}
-function fmtDateTime(ts) {
-  const d = new Date(ts);
-  return d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit'}) + ' ' + fmtTime(ts);
-}
-function isToday(d) {
-  return d.toDateString() === new Date().toDateString();
-}
-function isYesterday(d) {
-  const y = new Date(); y.setDate(y.getDate()-1);
-  return d.toDateString() === y.toDateString();
-}
-
-// ============================================================
-// INIT
-// ============================================================
-load();
-renderDashboard();
-renderSettings();
-
-// Check API key on analyze screen load
-document.getElementById('s-analyze').addEventListener('transitionend', () => {
-  if (!state.apiKey) document.getElementById('no-apikey-warn').style.display = 'block';
-});
+load();renderHome();renderProfile();
 </script>
 </body>
 </html>
