@@ -80,6 +80,8 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 .setv{font-size:12px;font-weight:600;color:var(--blue2);flex-shrink:0}
 .chip{padding:5px 12px;border-radius:16px;border:0.5px solid var(--bd2);font-size:12px;cursor:pointer;background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;white-space:nowrap}
 .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.tab-btn{flex:1;padding:8px;border-radius:9px;border:none;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--t2);background:transparent;transition:all .2s}
+.tab-btn.on{background:var(--bg2);color:var(--t);box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .chiprow{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
 .chiprow::-webkit-scrollbar{display:none}
 
@@ -178,7 +180,11 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
     <h1>Buscar comida</h1>
   </div>
   <div class="search-wrap">
-    <input class="search-input" type="text" id="food-search" placeholder="Buscar: macarrones, pollo, pizza..." oninput="renderFoodList()" autocomplete="off" autocorrect="off">
+    <div style="display:flex;background:var(--bg3);border-radius:var(--r2);padding:3px;margin-bottom:8px">
+      <button class="tab-btn on" id="tab-platos" onclick="switchFoodTab('platos')">🍽️ Platos</button>
+      <button class="tab-btn" id="tab-ingr" onclick="switchFoodTab('ingr')">🥗 Ingredientes</button>
+    </div>
+    <input class="search-input" type="text" id="food-search" placeholder="Buscar plato o ingrediente..." oninput="renderFoodList()" autocomplete="off" autocorrect="off">
   </div>
   <div class="cat-strip" id="cat-strip"></div>
   <div class="scroll" style="padding-bottom:80px">
@@ -445,6 +451,65 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
   </div>
 </div>
 
+
+<!-- INGREDIENT DETAIL MODAL -->
+<div class="modal-ov" id="modal-ingr" onclick="closeOut(event,'modal-ingr')">
+  <div class="modal-box">
+    <div class="mhandle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="font-size:32px" id="ingr-icon"></div>
+      <div>
+        <div style="font-size:16px;font-weight:600;color:var(--t)" id="ingr-name"></div>
+        <div style="font-size:11px;color:var(--t2)" id="ingr-base-info"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <label class="lbl">Cantidad de raciones</label>
+      <div style="display:flex;align-items:center;gap:12px;margin-top:6px">
+        <button onclick="changeIngrQty(-0.5)" style="width:36px;height:36px;border-radius:8px;border:0.5px solid var(--bd2);background:transparent;color:var(--t);font-size:20px;cursor:pointer">−</button>
+        <div style="flex:1;text-align:center;font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="ingr-qty-display">1</div>
+        <button onclick="changeIngrQty(0.5)" style="width:36px;height:36px;border-radius:8px;border:0.5px solid var(--bd2);background:transparent;color:var(--t);font-size:20px;cursor:pointer">+</button>
+      </div>
+      <div style="text-align:center;font-size:11px;color:var(--t3);margin-top:4px" id="ingr-qty-hint">1 ración = cantidad indicada arriba</div>
+    </div>
+
+    <div style="background:var(--bg3);border-radius:var(--r2);padding:12px;margin-bottom:12px;display:flex;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:var(--t2)">Carbohidratos</div>
+        <div style="font-size:26px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="ingr-total-ch">0g</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:10px;color:var(--t2)">Calorías</div>
+        <div style="font-size:20px;font-weight:500;font-family:'DM Mono',monospace;color:var(--orange)" id="ingr-total-kcal">0 kcal</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px">
+      <label class="lbl">Glucemia actual (mg/dL)</label>
+      <input class="field" type="number" id="ingr-gluc" placeholder="Ej. 120" oninput="calcIngrDose()" style="margin-top:4px">
+    </div>
+
+    <div class="dose-hero" id="ingr-dose-hero" style="display:none">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);opacity:.7;margin-bottom:3px">Dosis recomendada</div>
+      <div class="dose-num" id="ingr-dose-num">—</div>
+      <div style="font-size:13px;color:var(--blue2);font-weight:500" id="ingr-rapid-lbl">unidades</div>
+      <div style="font-size:11px;color:var(--blue2);opacity:.8;margin-top:6px" id="ingr-dose-sub"></div>
+    </div>
+
+    <div style="padding:8px 10px;background:var(--amber-bg);border-radius:var(--r2);font-size:11px;color:var(--amber);margin-bottom:10px">
+      ⚕️ Recomendación orientativa. Consulta con tu endocrino.
+    </div>
+
+    <div id="ingr-confirm-area" style="display:none">
+      <label class="lbl">Dosis real que te pones (u)</label>
+      <input class="field" type="number" id="ingr-dose-real" step="0.5" style="margin:4px 0 10px">
+      <button class="btn btn-g" onclick="saveIngrMeal()">✅ Guardar registro</button>
+    </div>
+    <button class="btn" onclick="closeModal('modal-ingr')" style="margin-top:6px">Cancelar</button>
+  </div>
+</div>
+
 <!-- HIPO -->
 <div class="modal-ov" id="modal-hipo" onclick="closeOut(event,'modal-hipo')">
   <div class="modal-box">
@@ -526,6 +591,124 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
 // ============================================================
 // FOOD DATABASE - 350+ platos
 // ============================================================
+
+// ============================================================
+// INGREDIENTS DATABASE - ingredientes sueltos
+// ============================================================
+const INGR_DB = [
+  // PROTEINAS
+  {id:'i1',name:'Atún en lata (100g)',icon:'🐟',ch:0,kcal:116,cat:'Proteínas'},
+  {id:'i2',name:'Pollo a la plancha (100g)',icon:'🍗',ch:0,kcal:165,cat:'Proteínas'},
+  {id:'i3',name:'Jamón serrano (30g)',icon:'🥩',ch:0,kcal:75,cat:'Proteínas'},
+  {id:'i4',name:'Jamón york (30g)',icon:'🥩',ch:0,kcal:45,cat:'Proteínas'},
+  {id:'i5',name:'Salmón ahumado (50g)',icon:'🐟',ch:0,kcal:80,cat:'Proteínas'},
+  {id:'i6',name:'Huevo cocido',icon:'🥚',ch:0,kcal:78,cat:'Proteínas'},
+  {id:'i7',name:'Huevo frito',icon:'🍳',ch:0,kcal:90,cat:'Proteínas'},
+  {id:'i8',name:'Sardinas en lata (100g)',icon:'🐟',ch:0,kcal:140,cat:'Proteínas'},
+  {id:'i9',name:'Bacalao desalado (100g)',icon:'🐟',ch:0,kcal:90,cat:'Proteínas'},
+  {id:'i10',name:'Gambas cocidas (100g)',icon:'🦐',ch:0,kcal:85,cat:'Proteínas'},
+  {id:'i11',name:'Pechuga de pavo (30g)',icon:'🍗',ch:0,kcal:35,cat:'Proteínas'},
+  {id:'i12',name:'Chorizo (30g)',icon:'🌭',ch:0,kcal:110,cat:'Proteínas'},
+  {id:'i13',name:'Salchichón (30g)',icon:'🌭',ch:0,kcal:105,cat:'Proteínas'},
+  {id:'i14',name:'Mortadela (30g)',icon:'🥩',ch:1,kcal:80,cat:'Proteínas'},
+  {id:'i15',name:'Carne picada (100g)',icon:'🥩',ch:0,kcal:220,cat:'Proteínas'},
+  {id:'i16',name:'Ternera a la plancha (100g)',icon:'🥩',ch:0,kcal:190,cat:'Proteínas'},
+  {id:'i17',name:'Lomo de cerdo (100g)',icon:'🥩',ch:0,kcal:180,cat:'Proteínas'},
+  {id:'i18',name:'Boquerones en vinagre (50g)',icon:'🐟',ch:0,kcal:65,cat:'Proteínas'},
+  {id:'i19',name:'Mejillones cocidos (100g)',icon:'🦪',ch:4,kcal:86,cat:'Proteínas'},
+  {id:'i20',name:'Palitos de cangrejo (50g)',icon:'🦀',ch:6,kcal:50,cat:'Proteínas'},
+  // LACTEOS Y QUESOS
+  {id:'i30',name:'Queso manchego (30g)',icon:'🧀',ch:0,kcal:110,cat:'Lácteos'},
+  {id:'i31',name:'Queso fresco (50g)',icon:'🧀',ch:1,kcal:55,cat:'Lácteos'},
+  {id:'i32',name:'Mozzarella (50g)',icon:'🧀',ch:1,kcal:130,cat:'Lácteos'},
+  {id:'i33',name:'Queso feta (30g)',icon:'🧀',ch:1,kcal:75,cat:'Lácteos'},
+  {id:'i34',name:'Queso en lonchas (1 loncha)',icon:'🧀',ch:0,kcal:70,cat:'Lácteos'},
+  {id:'i35',name:'Queso parmesano rallado (15g)',icon:'🧀',ch:0,kcal:60,cat:'Lácteos'},
+  {id:'i36',name:'Queso de cabra (30g)',icon:'🧀',ch:0,kcal:80,cat:'Lácteos'},
+  {id:'i37',name:'Queso brie (30g)',icon:'🧀',ch:0,kcal:95,cat:'Lácteos'},
+  {id:'i38',name:'Requesón (50g)',icon:'🧀',ch:2,kcal:50,cat:'Lácteos'},
+  {id:'i39',name:'Yogur natural (125g)',icon:'🥛',ch:7,kcal:75,cat:'Lácteos'},
+  {id:'i40',name:'Yogur griego (125g)',icon:'🥛',ch:4,kcal:130,cat:'Lácteos'},
+  {id:'i41',name:'Nata líquida (30ml)',icon:'🥛',ch:1,kcal:90,cat:'Lácteos'},
+  // VERDURAS Y HORTALIZAS
+  {id:'i50',name:'Tomate (1 unidad)',icon:'🍅',ch:4,kcal:18,cat:'Verduras'},
+  {id:'i51',name:'Lechuga (bol)',icon:'🥬',ch:2,kcal:15,cat:'Verduras'},
+  {id:'i52',name:'Pepino (1/2 unidad)',icon:'🥒',ch:2,kcal:8,cat:'Verduras'},
+  {id:'i53',name:'Cebolla (1/2 unidad)',icon:'🧅',ch:5,kcal:22,cat:'Verduras'},
+  {id:'i54',name:'Zanahoria (1 unidad)',icon:'🥕',ch:6,kcal:25,cat:'Verduras'},
+  {id:'i55',name:'Pimiento rojo (1/2)',icon:'🫑',ch:5,kcal:19,cat:'Verduras'},
+  {id:'i56',name:'Pimiento verde (1/2)',icon:'🫑',ch:3,kcal:14,cat:'Verduras'},
+  {id:'i57',name:'Champiñones (50g)',icon:'🍄',ch:2,kcal:14,cat:'Verduras'},
+  {id:'i58',name:'Espinacas (50g)',icon:'🥬',ch:2,kcal:12,cat:'Verduras'},
+  {id:'i59',name:'Rúcula (30g)',icon:'🥬',ch:1,kcal:8,cat:'Verduras'},
+  {id:'i60',name:'Aguacate (1/2 unidad)',icon:'🥑',ch:2,kcal:120,cat:'Verduras'},
+  {id:'i61',name:'Maíz en lata (50g)',icon:'🌽',ch:10,kcal:43,cat:'Verduras'},
+  {id:'i62',name:'Aceitunas (10 unidades)',icon:'🫒',ch:1,kcal:50,cat:'Verduras'},
+  {id:'i63',name:'Berenjena (100g)',icon:'🍆',ch:4,kcal:20,cat:'Verduras'},
+  {id:'i64',name:'Calabacín (100g)',icon:'🥒',ch:3,kcal:17,cat:'Verduras'},
+  {id:'i65',name:'Brócoli (100g)',icon:'🥦',ch:5,kcal:34,cat:'Verduras'},
+  {id:'i66',name:'Coliflor (100g)',icon:'🥦',ch:4,kcal:23,cat:'Verduras'},
+  {id:'i67',name:'Espárragos (100g)',icon:'🥦',ch:3,kcal:20,cat:'Verduras'},
+  {id:'i68',name:'Remolacha (50g)',icon:'🫀',ch:5,kcal:22,cat:'Verduras'},
+  {id:'i69',name:'Cebollino (10g)',icon:'🌿',ch:1,kcal:3,cat:'Verduras'},
+  {id:'i70',name:'Apio (1 rama)',icon:'🌿',ch:1,kcal:6,cat:'Verduras'},
+  {id:'i71',name:'Alcachofa (1 unidad)',icon:'🌿',ch:5,kcal:22,cat:'Verduras'},
+  {id:'i72',name:'Judías verdes (100g)',icon:'🫛',ch:5,kcal:31,cat:'Verduras'},
+  {id:'i73',name:'Guisantes (50g)',icon:'🫛',ch:8,kcal:42,cat:'Verduras'},
+  // HIDRATOS
+  {id:'i80',name:'Arroz cocido (100g)',icon:'🍚',ch:28,kcal:130,cat:'Hidratos'},
+  {id:'i81',name:'Pasta cocida (100g)',icon:'🍝',ch:25,kcal:130,cat:'Hidratos'},
+  {id:'i82',name:'Patata cocida (1 mediana)',icon:'🥔',ch:20,kcal:87,cat:'Hidratos'},
+  {id:'i83',name:'Pan blanco (1 rebanada)',icon:'🍞',ch:15,kcal:70,cat:'Hidratos'},
+  {id:'i84',name:'Pan integral (1 rebanada)',icon:'🍞',ch:12,kcal:65,cat:'Hidratos'},
+  {id:'i85',name:'Pan de molde (1 rebanada)',icon:'🍞',ch:14,kcal:68,cat:'Hidratos'},
+  {id:'i86',name:'Biscote (1 unidad)',icon:'🍪',ch:8,kcal:35,cat:'Hidratos'},
+  {id:'i87',name:'Quinoa cocida (100g)',icon:'🌾',ch:21,kcal:120,cat:'Hidratos'},
+  {id:'i88',name:'Cuscús cocido (100g)',icon:'🌾',ch:23,kcal:112,cat:'Hidratos'},
+  {id:'i89',name:'Lentejas cocidas (100g)',icon:'🫘',ch:20,kcal:116,cat:'Hidratos'},
+  {id:'i90',name:'Garbanzos cocidos (100g)',icon:'🫘',ch:22,kcal:164,cat:'Hidratos'},
+  {id:'i91',name:'Patata frita (100g)',icon:'🍟',ch:35,kcal:312,cat:'Hidratos'},
+  {id:'i92',name:'Tostada grande (1)',icon:'🍞',ch:20,kcal:90,cat:'Hidratos'},
+  {id:'i93',name:'Croutons (20g)',icon:'🍞',ch:14,kcal:75,cat:'Hidratos'},
+  // SALSAS Y CONDIMENTOS
+  {id:'i100',name:'Aceite de oliva (1 cucharada)',icon:'🫙',ch:0,kcal:90,cat:'Salsas'},
+  {id:'i101',name:'Mayonesa (1 cucharada)',icon:'🫙',ch:0,kcal:90,cat:'Salsas'},
+  {id:'i102',name:'Ketchup (1 cucharada)',icon:'🫙',ch:4,kcal:16,cat:'Salsas'},
+  {id:'i103',name:'Mostaza (1 cucharada)',icon:'🫙',ch:1,kcal:10,cat:'Salsas'},
+  {id:'i104',name:'Salsa de tomate (50g)',icon:'🍅',ch:5,kcal:30,cat:'Salsas'},
+  {id:'i105',name:'Alioli (1 cucharada)',icon:'🫙',ch:1,kcal:95,cat:'Salsas'},
+  {id:'i106',name:'Salsa de soja (1 cucharada)',icon:'🫙',ch:1,kcal:8,cat:'Salsas'},
+  {id:'i107',name:'Vinagre balsámico (1 cuch.)',icon:'🫙',ch:4,kcal:14,cat:'Salsas'},
+  {id:'i108',name:'Guacamole (50g)',icon:'🥑',ch:3,kcal:80,cat:'Salsas'},
+  {id:'i109',name:'Hummus (50g)',icon:'🫘',ch:9,kcal:110,cat:'Salsas'},
+  {id:'i110',name:'Nata agria (30g)',icon:'🥛',ch:1,kcal:55,cat:'Salsas'},
+  {id:'i111',name:'Salsa barbacoa (1 cuch.)',icon:'🫙',ch:6,kcal:25,cat:'Salsas'},
+  {id:'i112',name:'Pesto (1 cucharada)',icon:'🌿',ch:1,kcal:65,cat:'Salsas'},
+  // FRUTOS SECOS Y SEMILLAS
+  {id:'i120',name:'Nueces (30g)',icon:'🥜',ch:4,kcal:196,cat:'Frutos secos'},
+  {id:'i121',name:'Almendras (30g)',icon:'🥜',ch:5,kcal:175,cat:'Frutos secos'},
+  {id:'i122',name:'Pipas de girasol (30g)',icon:'🌻',ch:5,kcal:173,cat:'Frutos secos'},
+  {id:'i123',name:'Semillas de chía (15g)',icon:'🌱',ch:5,kcal:72,cat:'Frutos secos'},
+  {id:'i124',name:'Pistachos (30g)',icon:'🥜',ch:8,kcal:170,cat:'Frutos secos'},
+  {id:'i125',name:'Anacardos (30g)',icon:'🥜',ch:9,kcal:163,cat:'Frutos secos'},
+  // FRUTAS
+  {id:'i130',name:'Naranja (1 mediana)',icon:'🍊',ch:15,kcal:60,cat:'Frutas'},
+  {id:'i131',name:'Manzana (1 mediana)',icon:'🍎',ch:20,kcal:80,cat:'Frutas'},
+  {id:'i132',name:'Plátano (1 mediano)',icon:'🍌',ch:27,kcal:105,cat:'Frutas'},
+  {id:'i133',name:'Fresas (100g)',icon:'🍓',ch:8,kcal:32,cat:'Frutas'},
+  {id:'i134',name:'Uvas (100g)',icon:'🍇',ch:18,kcal:69,cat:'Frutas'},
+  {id:'i135',name:'Sandía (trozo 200g)',icon:'🍉',ch:12,kcal:46,cat:'Frutas'},
+  {id:'i136',name:'Melón (trozo 150g)',icon:'🍈',ch:10,kcal:38,cat:'Frutas'},
+  {id:'i137',name:'Pera (1 mediana)',icon:'🍐',ch:22,kcal:84,cat:'Frutas'},
+  {id:'i138',name:'Melocotón (1 unidad)',icon:'🍑',ch:14,kcal:58,cat:'Frutas'},
+  {id:'i139',name:'Kiwi (1 unidad)',icon:'🥝',ch:10,kcal:42,cat:'Frutas'},
+  {id:'i140',name:'Mango (100g)',icon:'🥭',ch:15,kcal:60,cat:'Frutas'},
+  {id:'i141',name:'Piña (100g)',icon:'🍍',ch:13,kcal:50,cat:'Frutas'},
+  {id:'i142',name:'Cerezas (100g)',icon:'🍒',ch:16,kcal:63,cat:'Frutas'},
+];
+
+const INGR_CATS = ['Todos',...[...new Set(INGR_DB.map(i=>i.cat))].sort()];
+
 const EXTRAS = [
   {id:'pan',name:'Pan (1 rebanada)',icon:'🍞',ch:15,kcal:70},
   {id:'pan2',name:'Pan (2 rebanadas)',icon:'🍞',ch:30,kcal:140},
@@ -1122,6 +1305,204 @@ function fmtTime(ts){return new Date(ts).toLocaleTimeString('es-ES',{hour:'2-dig
 function fmtDate(d){return d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});}
 function isToday(d){return d.toDateString()===new Date().toDateString();}
 function isYest(d){const y=new Date();y.setDate(y.getDate()-1);return d.toDateString()===y.toDateString();}
+
+
+
+// ============================================================
+// INGREDIENTS TAB
+// ============================================================
+let foodTab = 'platos'; // 'platos' or 'ingr'
+let selIngr = null, ingrQty = 1;
+
+function switchFoodTab(tab) {
+  foodTab = tab;
+  document.getElementById('tab-platos').classList.toggle('on', tab==='platos');
+  document.getElementById('tab-ingr').classList.toggle('on', tab==='ingr');
+  renderFoodList();
+}
+
+const _origRenderFoodList = renderFoodList;
+renderFoodList = function() {
+  if (foodTab === 'ingr') {
+    renderIngrList();
+  } else {
+    _origRenderFoodList();
+  }
+};
+
+const _origRenderCats = renderCats;
+renderCats = function() {
+  if (foodTab === 'ingr') {
+    renderIngrCats();
+  } else {
+    _origRenderCats();
+  }
+};
+
+let curIngrCat = 'Todos';
+
+function renderIngrCats() {
+  const strip = document.getElementById('cat-strip');
+  strip.innerHTML = INGR_CATS.map(c=>`<button class="chip${c===curIngrCat?' on':''}" onclick="setIngrCat('${c}',this)">${c}</button>`).join('');
+}
+
+function setIngrCat(c, btn) {
+  curIngrCat = c;
+  document.querySelectorAll('#cat-strip .chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderIngrList();
+}
+
+function renderIngrList() {
+  renderIngrCats();
+  const q = (document.getElementById('food-search').value||'').toLowerCase().trim();
+  let items = INGR_DB;
+  if (curIngrCat !== 'Todos') items = items.filter(i=>i.cat===curIngrCat);
+  if (q) items = items.filter(i=>i.name.toLowerCase().includes(q)||i.cat.toLowerCase().includes(q));
+  const list = document.getElementById('food-list');
+  if (!items.length) { list.innerHTML='<div style="padding:32px;text-align:center;color:var(--t3);font-size:13px">Sin resultados.</div>'; return; }
+  list.innerHTML = items.map(i=>`
+    <div class="food-item" onclick="openIngr('${i.id}')">
+      <div class="food-icon">${i.icon}</div>
+      <div class="food-info">
+        <div class="food-name">${i.name}</div>
+        <div class="food-cat">${i.cat}</div>
+      </div>
+      <div class="food-ch">${i.ch}g CH</div>
+    </div>`).join('');
+}
+
+function openIngr(id) {
+  selIngr = INGR_DB.find(i=>i.id===id);
+  if (!selIngr) return;
+  ingrQty = 1;
+  document.getElementById('ingr-icon').textContent = selIngr.icon;
+  document.getElementById('ingr-name').textContent = selIngr.name;
+  document.getElementById('ingr-base-info').textContent = selIngr.ch+'g CH · '+selIngr.kcal+' kcal por ración';
+  document.getElementById('ingr-gluc').value = '';
+  document.getElementById('ingr-dose-hero').style.display = 'none';
+  document.getElementById('ingr-confirm-area').style.display = 'none';
+  updateIngrTotals();
+  openModal('modal-ingr');
+}
+
+function changeIngrQty(delta) {
+  ingrQty = Math.max(0.5, Math.round((ingrQty + delta)*10)/10);
+  document.getElementById('ingr-qty-display').textContent = ingrQty;
+  updateIngrTotals();
+  calcIngrDose();
+}
+
+function updateIngrTotals() {
+  if (!selIngr) return;
+  const ch = Math.round(selIngr.ch * ingrQty * 10) / 10;
+  const kcal = Math.round(selIngr.kcal * ingrQty);
+  document.getElementById('ingr-total-ch').textContent = ch + 'g';
+  document.getElementById('ingr-total-kcal').textContent = kcal + ' kcal';
+}
+
+function calcIngrDose() {
+  const p = getP(); if (!p || !selIngr) return;
+  const ch = selIngr.ch * ingrQty;
+  const gluc = parseFloat(document.getElementById('ingr-gluc').value);
+  if (isNaN(gluc) || gluc < 20) {
+    document.getElementById('ingr-dose-hero').style.display = 'none';
+    document.getElementById('ingr-confirm-area').style.display = 'none';
+    return;
+  }
+  let base = ch / p.config.ratio, corr = (gluc - p.config.target) / p.config.sensitivity, total = base + corr;
+  if (gluc < 90) total -= 1;
+  total = Math.max(0, Math.round(total*2)/2);
+  document.getElementById('ingr-dose-num').textContent = total.toFixed(1);
+  document.getElementById('ingr-rapid-lbl').textContent = 'unidades ' + p.config.rapidType;
+  let sub = Math.round(base*10)/10+'u comida';
+  if (Math.round(corr*10)/10 !== 0) sub += ' '+(corr>=0?'+':'')+Math.round(corr*10)/10+'u corrección';
+  if (gluc < 90) sub += ' −1u seguridad';
+  document.getElementById('ingr-dose-sub').textContent = sub;
+  document.getElementById('ingr-dose-hero').style.display = 'block';
+  document.getElementById('ingr-dose-real').value = total.toFixed(1);
+  document.getElementById('ingr-confirm-area').style.display = 'block';
+}
+
+function saveIngrMeal() {
+  const p = getP(); if (!p || !selIngr) return;
+  const ch = Math.round(selIngr.ch * ingrQty * 10) / 10;
+  const kcal = Math.round(selIngr.kcal * ingrQty);
+  const gluc = parseFloat(document.getElementById('ingr-gluc').value) || 0;
+  const doseFinal = parseFloat(document.getElementById('ingr-dose-real').value) || 0;
+  let base = ch / p.config.ratio, corr = gluc > 0 ? (gluc - p.config.target) / p.config.sensitivity : 0;
+  const doseRec = Math.max(0, Math.round((base+corr)*2)/2);
+  const desc = (ingrQty !== 1 ? ingrQty + 'x ' : '') + selIngr.name;
+  p.entries.unshift({id:Date.now(),type:'meal',ts:new Date().toISOString(),desc,ch,kcal,glucPrev:gluc,doseRec,doseFinal});
+  save(); closeModal('modal-ingr'); toast('✅ Registrado'); renderHome();
+}
+
+// Also add ingredients to plate painter search
+const _origRenderPlateSearch = renderPlateSearch;
+renderPlateSearch = function() {
+  const q = (document.getElementById('plate-search').value||'').toLowerCase().trim();
+  const res = document.getElementById('plate-search-results');
+  if (!q) { res.innerHTML=''; return; }
+  
+  const foodItems = FOOD_DB.filter(f=>f.tags.some(t=>t.includes(q))||f.name.toLowerCase().includes(q)).slice(0,5);
+  const ingrItems = INGR_DB.filter(i=>i.name.toLowerCase().includes(q)||i.cat.toLowerCase().includes(q)).slice(0,5);
+  
+  if (!foodItems.length && !ingrItems.length) { res.innerHTML='<div style="padding:8px;font-size:12px;color:var(--t3)">Sin resultados</div>'; return; }
+  
+  let html = '';
+  if (foodItems.length) {
+    html += '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:6px 4px 2px">Platos</div>';
+    html += foodItems.map(f=>`
+      <div onclick="addFoodToPlate(${f.id})" style="display:flex;align-items:center;gap:8px;padding:8px 4px;cursor:pointer;border-bottom:0.5px solid var(--bd)">
+        <span style="font-size:20px">${f.icon}</span>
+        <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--t)">${f.name}</div><div style="font-size:10px;color:var(--t2)">${f.m.ch}g CH ración M</div></div>
+        <span style="font-size:20px;color:var(--blue2)">+</span>
+      </div>`).join('');
+  }
+  if (ingrItems.length) {
+    html += '<div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t3);padding:6px 4px 2px">Ingredientes</div>';
+    html += ingrItems.map(i=>`
+      <div onclick="addIngrToPlate('${i.id}')" style="display:flex;align-items:center;gap:8px;padding:8px 4px;cursor:pointer;border-bottom:0.5px solid var(--bd)">
+        <span style="font-size:20px">${i.icon}</span>
+        <div style="flex:1"><div style="font-size:12px;font-weight:500;color:var(--t)">${i.name}</div><div style="font-size:10px;color:var(--t2)">${i.ch}g CH · ${i.kcal} kcal</div></div>
+        <span style="font-size:20px;color:var(--blue2)">+</span>
+      </div>`).join('');
+  }
+  res.innerHTML = html;
+};
+
+function addIngrToPlate(id) {
+  const ingr = INGR_DB.find(i=>i.id===id);
+  if (!ingr) return;
+  if (plateSegments.find(s=>s.ingrId===id)) { toast('Ya está en el plato'); return; }
+  if (plateSegments.length >= 8) { toast('Máximo 8 ingredientes'); return; }
+  
+  // Wrap ingredient as a fake food-like object
+  const fakeFood = {
+    id: 'ingr_'+id, name: ingr.name, icon: ingr.icon, cat: ingr.cat,
+    s:{ch:ingr.ch*0.5, kcal:ingr.kcal*0.5},
+    m:{ch:ingr.ch, kcal:ingr.kcal},
+    l:{ch:ingr.ch*2, kcal:ingr.kcal*2}
+  };
+  
+  plateSegments.push({
+    food: fakeFood, ingrId: id,
+    pct: plateSegments.length === 0 ? 100 : Math.floor(100/(plateSegments.length+1)),
+    color: PLATE_COLORS[plateSegments.length % PLATE_COLORS.length]
+  });
+  
+  if (plateSegments.length > 1) {
+    const perSeg = Math.floor(100/plateSegments.length);
+    plateSegments.forEach(s => s.pct = perSeg);
+    plateSegments[0].pct += 100 - perSeg*plateSegments.length;
+  }
+  
+  document.getElementById('plate-search').value='';
+  document.getElementById('plate-search-results').innerHTML='';
+  document.getElementById('plate-totals').style.display='block';
+  document.getElementById('plate-empty-msg').style.display='none';
+  drawPlate(); renderSegmentsList(); updatePlateTotals();
+}
 
 
 // ============================================================
