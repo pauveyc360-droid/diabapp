@@ -13,316 +13,193 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#0F1117;--bg2:#1A1D27;--bg3:#222636;--bg4:#2A2F45;
-  --text:#F0EFF8;--text2:#9896B0;--text3:#5E5C78;--border:#2A2F45;
+  --t:#F0EFF8;--t2:#9896B0;--t3:#5E5C78;--bd:#2A2F45;--bd2:#3A3A58;
+  --blue:#6366F1;--blue2:#818CF8;--blue-bg:rgba(99,102,241,0.15);
   --green:#22C55E;--green-bg:rgba(34,197,94,0.12);
   --amber:#EAB308;--amber-bg:rgba(234,179,8,0.12);
   --red:#EF4444;--red-bg:rgba(239,68,68,0.12);
-  --blue:#6366F1;--blue2:#818CF8;--blue-bg:rgba(99,102,241,0.12);
-  --teal:#14B8A6;--teal-bg:rgba(20,184,166,0.12);
   --orange:#F97316;--orange-bg:rgba(249,115,22,0.12);
-  --r:16px;--r2:12px;
+  --r:14px;--r2:10px;
 }
-html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);overflow:hidden}
-#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative}
+html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--t);overflow:hidden}
+#app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;background:var(--bg)}
 .screen{display:none;flex-direction:column;flex:1;overflow:hidden}
 .screen.active{display:flex}
-.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:90px}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:80px}
 .scroll::-webkit-scrollbar{display:none}
-.topbar{padding:max(env(safe-area-inset-top),16px) 16px 8px;display:flex;align-items:center;gap:10px;flex-shrink:0;background:var(--bg)}
-.topbar h1{font-size:20px;font-weight:600;flex:1}
-.icon-btn{width:36px;height:36px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;flex-shrink:0}
-.bnav{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--border);display:flex;padding:8px 0;padding-bottom:max(env(safe-area-inset-bottom),8px);z-index:50}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px;cursor:pointer;border:none;background:transparent;font-size:10px;color:var(--text3);font-family:'DM Sans',sans-serif;transition:color .15s}
+.topbar{padding:max(env(safe-area-inset-top),14px) 14px 8px;display:flex;align-items:center;gap:8px;background:var(--bg);flex-shrink:0;border-bottom:0.5px solid var(--bd)}
+.topbar h1{font-size:18px;font-weight:600;flex:1;color:var(--t)}
+.ibt{width:34px;height:34px;border-radius:50%;border:0.5px solid var(--bd2);background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--t2);font-size:15px;flex-shrink:0}
+.bnav{position:absolute;bottom:0;left:0;right:0;background:var(--bg2);border-top:0.5px solid var(--bd);display:flex;padding:6px 0;padding-bottom:max(env(safe-area-inset-bottom),6px);z-index:50}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;cursor:pointer;border:none;background:transparent;font-size:9px;color:var(--t3);font-family:'DM Sans',sans-serif}
+.nb svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nb.on{color:var(--blue2)}
-.nb-icon{font-size:22px}
-.card{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:16px;margin-bottom:10px}
-.card-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:10px}
-.btn{width:100%;padding:15px;border-radius:var(--r2);border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:opacity .15s}
-.btn:active{opacity:.8}
-.btn-primary{background:var(--blue);color:#fff}
-.btn-green{background:var(--green);color:#fff}
-.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
-.btn+.btn{margin-top:8px}
-.field{width:100%;padding:13px 14px;border-radius:var(--r2);border:1px solid var(--border);background:var(--bg3);color:var(--text);font-size:16px;font-family:'DM Sans',sans-serif;outline:none}
+.card{background:var(--bg2);border-radius:var(--r);border:0.5px solid var(--bd);padding:14px;margin-bottom:8px}
+.btn{width:100%;padding:13px;border-radius:var(--r2);border:0.5px solid var(--bd2);font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;background:transparent;color:var(--t)}
+.btn-p{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn-g{background:var(--green);border-color:var(--green);color:#fff}
+.btn+.btn{margin-top:6px}
+.field{width:100%;padding:11px 13px;border-radius:var(--r2);border:0.5px solid var(--bd2);background:var(--bg3);color:var(--t);font-size:15px;font-family:'DM Sans',sans-serif;outline:none}
 .field:focus{border-color:var(--blue)}
-.lbl{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px}
-.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.lbl{display:block;font-size:11px;font-weight:500;color:var(--t2);margin-bottom:4px}
+.pill{display:inline-flex;align-items:center;padding:2px 8px;border-radius:16px;font-size:11px;font-weight:500}
+.pill-b{background:var(--blue-bg);color:var(--blue2)}
 .pill-g{background:var(--green-bg);color:var(--green)}
 .pill-a{background:var(--amber-bg);color:var(--amber)}
 .pill-r{background:var(--red-bg);color:var(--red)}
-.pill-b{background:var(--blue-bg);color:var(--blue2)}
-.alert{padding:14px;border-radius:var(--r2);font-size:13px;font-weight:500;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start}
-.alert-r{background:var(--red-bg);color:var(--red);border:1px solid rgba(239,68,68,.3)}
-.alert-a{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(234,179,8,.3)}
-#toast{position:fixed;top:max(env(safe-area-inset-top),16px);left:50%;transform:translateX(-50%) translateY(-80px);background:var(--text);color:var(--bg);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
+.pill-o{background:var(--orange-bg);color:var(--orange)}
+#toast{position:fixed;top:max(env(safe-area-inset-top),14px);left:50%;transform:translateX(-50%) translateY(-60px);background:var(--t);color:var(--bg);padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;z-index:999;transition:transform .3s;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{transform:translateX(-50%) translateY(0)}
-.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;align-items:flex-end;justify-content:center}
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;align-items:flex-end;justify-content:center}
 .modal-ov.open{display:flex}
-.modal-box{background:var(--bg2);border-radius:24px 24px 0 0;padding:20px 20px;padding-bottom:max(env(safe-area-inset-bottom),32px);width:100%;max-width:430px;max-height:92vh;overflow-y:auto}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px}
-.modal-title{font-size:18px;font-weight:700;margin-bottom:16px}
-.spin-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.modal-box{background:var(--bg2);border-radius:20px 20px 0 0;padding:16px 16px;padding-bottom:max(env(safe-area-inset-bottom),24px);width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
+.mhandle{width:32px;height:3px;background:var(--bd2);border-radius:2px;margin:0 auto 14px}
+.mtitle{font-size:17px;font-weight:600;margin-bottom:14px;color:var(--t)}
+.spin-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:12px}
 .spin-ov.on{display:flex}
-.spin{width:52px;height:52px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--blue2);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spin-ov p{color:var(--text2);font-size:14px}
-.dose-hero{text-align:center;padding:24px 16px;background:var(--blue-bg);border-radius:var(--r);border:1px solid rgba(99,102,241,.3);margin-bottom:12px}
-.dose-big{font-size:88px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2);line-height:1}
-.dose-lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);opacity:.7;margin-bottom:4px}
-.dose-break{font-size:13px;color:var(--text2);margin-top:8px}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.stat-box{background:var(--bg3);border-radius:var(--r2);padding:12px}
-.stat-val{font-size:24px;font-weight:700;font-family:'DM Mono',monospace;color:var(--text)}
-.stat-lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.log-row{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border)}
-.log-row:last-child{border-bottom:none}
-.log-ico{width:42px;height:42px;border-radius:12px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.log-info{flex:1;min-width:0}
-.log-t{font-size:14px;font-weight:500;color:var(--text)}
-.log-s{font-size:12px;color:var(--text2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ingr-row{display:flex;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);gap:4px}
-.ingr-row:last-child{border-bottom:none}
-.ingr-n{flex:1;font-size:13px;color:var(--text)}
-.ingr-g{font-size:11px;color:var(--text3);width:40px;text-align:right}
-.ingr-c{font-size:12px;font-weight:600;font-family:'DM Mono',monospace;color:var(--blue2);width:50px;text-align:right}
-.ingr-k{font-size:12px;color:var(--orange);width:50px;text-align:right}
-.photo-drop{height:160px;border:2px dashed var(--border);border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;background:var(--bg3);margin-bottom:10px}
-.photo-drop:active{background:var(--bg4)}
-#photo-prev{width:100%;height:160px;object-fit:cover;border-radius:var(--r);display:none;margin-bottom:10px}
-.warn-footer{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 58px);left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(15,17,23,.97);border-top:1px solid var(--border);padding:5px 16px;font-size:11px;color:var(--text3);text-align:center;z-index:40}
-.chip-row{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-.chip-row::-webkit-scrollbar{display:none}
-.chip{padding:6px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:transparent;color:var(--text2);font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0}
+.spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.15);border-top-color:var(--blue2);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.dose-hero{text-align:center;padding:20px 14px;background:var(--blue-bg);border-radius:var(--r);border:0.5px solid rgba(99,102,241,.4);margin-bottom:10px}
+.dose-num{font-size:80px;font-weight:500;font-family:'DM Mono',monospace;color:var(--blue2);line-height:1}
+.stat2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sbox{background:var(--bg3);border-radius:var(--r2);padding:10px}
+.sval{font-size:20px;font-weight:500;font-family:'DM Mono',monospace;color:var(--t)}
+.slbl{font-size:10px;color:var(--t2);margin-top:2px}
+.logrow{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:0.5px solid var(--bd)}
+.logrow:last-child{border-bottom:none}
+.logico{width:38px;height:38px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.loginfo{flex:1;min-width:0}
+.logt{font-size:13px;font-weight:500;color:var(--t)}
+.logs{font-size:11px;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.daysep{padding:4px 14px;font-size:10px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3)}
+.setrow{display:flex;align-items:center;padding:12px 0;border-bottom:0.5px solid var(--bd);cursor:pointer;gap:10px}
+.setrow:last-child{border-bottom:none}
+.setico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.sett{font-size:13px;font-weight:500;color:var(--t)}
+.sets{font-size:11px;color:var(--t2);margin-top:1px}
+.setv{font-size:12px;font-weight:600;color:var(--blue2);flex-shrink:0}
+.chip{padding:5px 12px;border-radius:16px;border:0.5px solid var(--bd2);font-size:12px;cursor:pointer;background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;white-space:nowrap}
 .chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
-.day-sep{padding:6px 16px;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.07em;background:var(--bg3)}
-.set-row{display:flex;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;gap:12px}
-.set-row:last-child{border-bottom:none}
-.set-ico{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
-.set-body{flex:1}
-.set-t{font-size:14px;font-weight:500;color:var(--text)}
-.set-s{font-size:12px;color:var(--text2);margin-top:1px}
-.set-v{font-size:13px;font-weight:600;color:var(--blue2)}
-.nutri-bar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
-.nutri-box{background:var(--bg3);border-radius:var(--r2);padding:12px;text-align:center}
-.nutri-val{font-size:20px;font-weight:700;font-family:'DM Mono',monospace}
-.nutri-lbl{font-size:11px;color:var(--text2);margin-top:2px}
-.mode-tabs{display:flex;background:var(--bg3);border-radius:var(--r2);padding:3px;margin-bottom:12px}
-.mode-tab{flex:1;padding:9px;border-radius:10px;border:none;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--text2);background:transparent;transition:all .2s}
-.mode-tab.on{background:var(--bg2);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.3)}
-.manual-ingr{display:flex;gap:8px;align-items:center;margin-bottom:8px}
-.manual-ingr input{flex:1;min-width:0}
-.manual-ingr .qty{width:80px;flex-shrink:0}
-.del-btn{width:32px;height:32px;border-radius:8px;background:var(--red-bg);border:none;cursor:pointer;color:var(--red);font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.chiprow{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chiprow::-webkit-scrollbar{display:none}
+
+/* FOOD DB STYLES */
+.search-wrap{padding:10px 14px;position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:0.5px solid var(--bd)}
+.search-input{width:100%;padding:10px 14px;border-radius:var(--r2);border:0.5px solid var(--bd2);background:var(--bg3);color:var(--t);font-size:15px;font-family:'DM Sans',sans-serif;outline:none}
+.search-input:focus{border-color:var(--blue)}
+.cat-strip{padding:8px 14px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;border-bottom:0.5px solid var(--bd);flex-shrink:0}
+.cat-strip::-webkit-scrollbar{display:none}
+.food-item{display:flex;align-items:center;padding:11px 14px;border-bottom:0.5px solid var(--bd);cursor:pointer;gap:10px}
+.food-item:active{background:var(--bg3)}
+.food-icon{font-size:22px;width:36px;text-align:center;flex-shrink:0}
+.food-info{flex:1;min-width:0}
+.food-name{font-size:13px;font-weight:500;color:var(--t)}
+.food-cat{font-size:11px;color:var(--t2);margin-top:1px}
+.food-ch{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:var(--blue2);flex-shrink:0}
+.ration-btn{flex:1;padding:10px;border-radius:var(--r2);border:0.5px solid var(--bd2);background:transparent;color:var(--t2);font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:center}
+.ration-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.extra-item{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:0.5px solid var(--bd)}
+.extra-item:last-child{border-bottom:none}
+.extra-check{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--bd2);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:13px}
+.extra-check.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.pcard{width:100%;background:var(--bg2);border:0.5px solid var(--bd);border-radius:var(--r2);padding:14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-bottom:8px}
+.pav{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;color:#fff;flex-shrink:0}
 </style>
 </head>
 <body>
 <div id="app">
 
+<!-- PROFILES -->
+<div class="screen active" id="s-profiles">
+  <div style="flex:1;overflow-y:auto;padding:16px">
+    <div style="text-align:center;padding:24px 0 20px">
+      <div style="font-size:44px;margin-bottom:10px">💉</div>
+      <div style="font-size:24px;font-weight:700;color:var(--t)">DiabApp</div>
+      <div style="font-size:13px;color:var(--t2);margin-top:4px">Gestión diabetes tipo 1</div>
+    </div>
+    <div id="profiles-list"></div>
+    <button class="btn btn-p" onclick="openModal('modal-newprofile')">+ Nuevo perfil</button>
+  </div>
+</div>
+
 <!-- HOME -->
-<div class="screen active" id="s-home">
+<div class="screen" id="s-home">
   <div class="topbar">
-    <div style="font-size:22px">💉</div>
-    <h1>DiabApp</h1>
+    <button class="ibt" onclick="switchProfile()" aria-label="Cambiar perfil">👤</button>
+    <h1 id="home-name">DiabApp</h1>
   </div>
-  <div class="scroll" style="padding:0 16px">
-    <div style="margin-bottom:14px">
-      <div style="font-size:24px;font-weight:700">Hola, Pau 👋</div>
-      <div style="font-size:13px;color:var(--text2)" id="home-date">—</div>
+  <div class="scroll" style="padding:0 14px">
+    <div style="padding:12px 0 8px">
+      <div style="font-size:20px;font-weight:700;color:var(--t)" id="home-greeting">Hola 👋</div>
+      <div style="font-size:12px;color:var(--t2)" id="home-date"></div>
     </div>
-    <div class="card" id="toujeo-card" style="display:flex;align-items:center;gap:12px;cursor:pointer" onclick="toggleToujeo()">
-      <div style="font-size:28px">💉</div>
+    <div class="card" id="toujeo-card" style="display:flex;align-items:center;gap:10px;cursor:pointer" onclick="toggleToujeo()">
+      <div style="font-size:24px">💉</div>
       <div style="flex:1">
-        <div style="font-size:14px;font-weight:600" id="toujeo-label">Toujeo de hoy</div>
-        <div style="font-size:12px;color:var(--text2)" id="toujeo-sub">¿Ya te la has puesto?</div>
+        <div style="font-size:13px;font-weight:600;color:var(--t)" id="toujeo-lbl">Basal de hoy</div>
+        <div style="font-size:11px;color:var(--t2)" id="toujeo-sub">¿Ya te la has puesto?</div>
       </div>
-      <div id="toujeo-check" style="width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px"></div>
+      <div id="toujeo-check" style="width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:12px"></div>
     </div>
-    <button class="btn btn-primary" style="margin-bottom:10px;padding:18px;font-size:17px;border-radius:var(--r)" onclick="goTo('s-analyze')">📸 Analizar comida</button>
+    <button class="btn btn-p" style="margin-bottom:8px;padding:16px;font-size:16px" onclick="goTo('s-food')">🍽️ Buscar comida y calcular dosis</button>
     <div class="card">
-      <div class="card-title">Resumen de hoy</div>
-      <div class="stat-grid">
-        <div class="stat-box"><div class="stat-val" id="today-rapid">0<span style="font-size:14px"> u</span></div><div class="stat-lbl">Insulina rápida</div></div>
-        <div class="stat-box"><div class="stat-val" id="today-ch">0<span style="font-size:14px"> g</span></div><div class="stat-lbl">Carbohidratos</div></div>
-        <div class="stat-box"><div class="stat-val" id="today-kcal" style="color:var(--orange)">0<span style="font-size:14px"> kcal</span></div><div class="stat-lbl">Calorías hoy</div></div>
-        <div class="stat-box"><div class="stat-val" id="today-hipos" style="color:var(--amber)">0</div><div class="stat-lbl">Hipos semana</div></div>
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">Hoy</div>
+      <div class="stat2">
+        <div class="sbox"><div class="sval" id="today-rapid">0 u</div><div class="slbl">Insulina rápida</div></div>
+        <div class="sbox"><div class="sval" id="today-ch">0 g</div><div class="slbl">Carbohidratos</div></div>
+        <div class="sbox"><div class="sval" id="today-kcal" style="color:var(--orange)">0 kcal</div><div class="slbl">Calorías</div></div>
+        <div class="sbox"><div class="sval" id="today-hipos" style="color:var(--amber)">0</div><div class="slbl">Hipos semana</div></div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-      <button class="btn btn-outline" onclick="openModal('modal-hipo')">⬇️ Hipo</button>
-      <button class="btn btn-outline" onclick="openModal('modal-hiper')">⬆️ Hiper</button>
-      <button class="btn btn-outline" onclick="openModal('modal-basal')">💉 Basal</button>
-      <button class="btn btn-outline" onclick="goTo('s-history')">📋 Historial</button>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+      <button class="btn" onclick="openModal('modal-hipo')">⬇️ Hipo</button>
+      <button class="btn" onclick="openModal('modal-hiper')">⬆️ Hiper</button>
+      <button class="btn" onclick="openModal('modal-basal')">💉 Basal</button>
+      <button class="btn" onclick="goTo('s-history')">📋 Historial</button>
     </div>
-    <div class="card">
-      <div class="card-title">Mis datos del sensor</div>
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">GMI</span><span class="pill pill-g">6.8%</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Tiempo en rango</span><span class="pill pill-a">68%</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Glucosa promedio</span><span class="pill pill-a">146 mg/dL</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Variabilidad CV</span><span class="pill pill-a">38.4%</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;color:var(--text2)">Hipos (14 días)</span><span class="pill pill-r">13</span></div>
-      </div>
-      <div style="margin-top:12px;padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:12px;color:var(--text2);line-height:1.6">
-        💡 <strong style="color:var(--text)">Patrón:</strong> hipos tarde-noche, picos matutinos. La Toujeo nocturna está ayudando.
-      </div>
+    <div style="padding:7px 10px;background:var(--bg3);border-radius:var(--r2);font-size:10px;color:var(--t3);text-align:center">
+      ⚕️ Recomendaciones orientativas. No sustituyen el criterio médico.
     </div>
   </div>
-  <div class="warn-footer">⚕️ Recomendaciones orientativas. No sustituyen el criterio médico.</div>
   <nav class="bnav">
-    <button class="nb on" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
-    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
-    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
-    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
+    <button class="nb on" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
+    <button class="nb" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
   </nav>
 </div>
 
-<!-- ANALYZE -->
-<div class="screen" id="s-analyze">
+<!-- FOOD DB -->
+<div class="screen" id="s-food">
   <div class="topbar">
-    <button class="icon-btn" onclick="goTo('s-home')">←</button>
-    <h1>Analizar comida</h1>
+    <button class="ibt" onclick="goTo('s-home')" aria-label="Volver">←</button>
+    <h1>Buscar comida</h1>
   </div>
-  <div class="scroll" style="padding:0 16px">
-    <div class="mode-tabs">
-      <button class="mode-tab on" id="tab-photo" onclick="switchMode('photo')">📸 Foto</button>
-      <button class="mode-tab" id="tab-manual" onclick="switchMode('manual')">✏️ Manual</button>
-    </div>
-
-    <!-- PHOTO MODE -->
-    <div id="mode-photo">
-      <div id="gluc-alert" style="display:none"></div>
-      <div id="photo-drop-zone" class="photo-drop" onclick="document.getElementById('file-in').click()">
-        <div style="font-size:36px">📸</div>
-        <div style="font-size:15px;color:var(--text2)">Toca para hacer una foto</div>
-        <div style="font-size:12px;color:var(--text3)">o subir desde la galería</div>
-      </div>
-      <input type="file" id="file-in" accept="image/*" capture="environment" style="display:none" onchange="handlePhoto(event)">
-      <img id="photo-prev" alt="foto comida">
-      <div id="analysis-area" style="display:none">
-        <div class="nutri-bar">
-          <div class="nutri-box"><div class="nutri-val" id="sum-ch" style="color:var(--blue2)">—</div><div class="nutri-lbl">g Carbos</div></div>
-          <div class="nutri-box"><div class="nutri-val" id="sum-kcal" style="color:var(--orange)">—</div><div class="nutri-lbl">kcal</div></div>
-          <div class="nutri-box"><div class="nutri-val" id="sum-conf" style="font-size:13px">—</div><div class="nutri-lbl">Confianza IA</div></div>
-        </div>
-        <div class="card" style="padding:0">
-          <div style="padding:12px 16px 0;display:flex;justify-content:space-between">
-            <span style="font-size:11px;font-weight:600;color:var(--text3)">ALIMENTO</span>
-            <div style="display:flex;gap:4px">
-              <span style="font-size:11px;color:var(--text3);width:50px;text-align:right">Carbos</span>
-              <span style="font-size:11px;color:var(--orange);width:50px;text-align:right">Kcal</span>
-            </div>
-          </div>
-          <div id="ingr-list" style="padding:4px 16px"></div>
-          <div style="padding:12px 16px;background:var(--bg3);border-radius:0 0 var(--r) var(--r);display:flex;justify-content:space-between">
-            <span style="font-size:14px;font-weight:600;color:var(--blue2)">Total</span>
-            <div style="display:flex;gap:10px">
-              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="total-ch-val">—</span>
-              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange)" id="total-kcal-val">—</span>
-            </div>
-          </div>
-        </div>
-        <div id="obs-box" style="display:none;padding:10px 14px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);margin-bottom:10px;border-left:3px solid var(--blue)"></div>
-        <div style="margin-bottom:12px">
-          <label class="lbl">Tu glucemia actual (mg/dL)</label>
-          <input class="field" type="number" id="gluc-in" placeholder="Ej. 120" min="20" max="600" oninput="onGlucChange('photo')">
-        </div>
-        <div class="dose-hero" id="dose-hero" style="display:none">
-          <div class="dose-lbl">Dosis recomendada NovoRapid</div>
-          <div class="dose-big" id="dose-big">—</div>
-          <div style="font-size:15px;color:var(--blue2);font-weight:500">unidades</div>
-          <div class="dose-break" id="dose-break"></div>
-        </div>
-        <div class="alert alert-a" style="font-size:12px">⚕️ Recomendación orientativa. Consulta con tu endocrino.</div>
-        <div id="confirm-area" style="display:none;margin-bottom:12px">
-          <label class="lbl" style="margin-top:12px">Dosis real que te pones (u)</label>
-          <input class="field" type="number" id="dose-real" placeholder="Confirma o modifica" step="0.5" style="margin-bottom:10px;margin-top:6px">
-          <button class="btn btn-green" onclick="saveMeal('photo')">✅ Guardar registro</button>
-          <button class="btn btn-outline" onclick="resetAnalyze()">🔄 Nueva foto</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MANUAL MODE -->
-    <div id="mode-manual" style="display:none">
-      <div class="card">
-        <div class="card-title">Describe lo que has comido</div>
-        <div style="margin-bottom:12px">
-          <label class="lbl">Nombre del plato</label>
-          <input class="field" id="m-name" type="text" placeholder="Ej. Pasta boloñesa con pan">
-        </div>
-        <div style="margin-bottom:8px">
-          <label class="lbl">Ingredientes con cantidad (opcional)</label>
-          <div id="manual-ingrs"></div>
-          <button class="btn btn-outline" style="padding:10px;font-size:13px;margin-top:6px" onclick="addManualIngr()">+ Añadir ingrediente</button>
-        </div>
-        <div style="margin-bottom:12px">
-          <label class="lbl">O escribe los carbohidratos directamente (g)</label>
-          <input class="field" id="m-ch-direct" type="number" placeholder="Ej. 60 — si ya los sabes" oninput="onDirectCH()">
-        </div>
-        <button class="btn btn-primary" onclick="analyzeManual()">🤖 Calcular con IA</button>
-        <p style="font-size:12px;color:var(--text3);text-align:center;margin-top:8px">La IA estimará carbos y calorías</p>
-      </div>
-      <div id="manual-result" style="display:none">
-        <div class="nutri-bar">
-          <div class="nutri-box"><div class="nutri-val" id="m-sum-ch" style="color:var(--blue2)">—</div><div class="nutri-lbl">g Carbos</div></div>
-          <div class="nutri-box"><div class="nutri-val" id="m-sum-kcal" style="color:var(--orange)">—</div><div class="nutri-lbl">kcal</div></div>
-          <div class="nutri-box"><div class="nutri-val" id="m-sum-conf" style="font-size:13px">—</div><div class="nutri-lbl">Confianza IA</div></div>
-        </div>
-        <div class="card" style="padding:0">
-          <div style="padding:12px 16px 0;display:flex;justify-content:space-between">
-            <span style="font-size:11px;font-weight:600;color:var(--text3)">ALIMENTO</span>
-            <div style="display:flex;gap:4px">
-              <span style="font-size:11px;color:var(--text3);width:50px;text-align:right">Carbos</span>
-              <span style="font-size:11px;color:var(--orange);width:50px;text-align:right">Kcal</span>
-            </div>
-          </div>
-          <div id="m-ingr-list" style="padding:4px 16px"></div>
-          <div style="padding:12px 16px;background:var(--bg3);border-radius:0 0 var(--r) var(--r);display:flex;justify-content:space-between">
-            <span style="font-size:14px;font-weight:600;color:var(--blue2)">Total</span>
-            <div style="display:flex;gap:10px">
-              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="m-total-ch">—</span>
-              <span style="font-size:16px;font-weight:700;font-family:'DM Mono',monospace;color:var(--orange)" id="m-total-kcal">—</span>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:10px;margin-bottom:12px">
-          <label class="lbl">Tu glucemia actual (mg/dL)</label>
-          <input class="field" type="number" id="m-gluc-in" placeholder="Ej. 120" min="20" max="600" oninput="onGlucChange('manual')">
-        </div>
-        <div class="dose-hero" id="m-dose-hero" style="display:none">
-          <div class="dose-lbl">Dosis recomendada NovoRapid</div>
-          <div class="dose-big" id="m-dose-big">—</div>
-          <div style="font-size:15px;color:var(--blue2);font-weight:500">unidades</div>
-          <div class="dose-break" id="m-dose-break"></div>
-        </div>
-        <div class="alert alert-a" style="font-size:12px">⚕️ Recomendación orientativa. Consulta con tu endocrino.</div>
-        <div id="m-confirm-area" style="display:none;margin-bottom:12px">
-          <label class="lbl" style="margin-top:12px">Dosis real que te pones (u)</label>
-          <input class="field" type="number" id="m-dose-real" placeholder="Confirma o modifica" step="0.5" style="margin-bottom:10px;margin-top:6px">
-          <button class="btn btn-green" onclick="saveMeal('manual')">✅ Guardar registro</button>
-          <button class="btn btn-outline" onclick="resetManual()">🔄 Nueva comida</button>
-        </div>
-      </div>
-    </div>
+  <div class="search-wrap">
+    <input class="search-input" type="text" id="food-search" placeholder="Buscar: macarrones, pollo, pizza..." oninput="renderFoodList()" autocomplete="off" autocorrect="off">
+  </div>
+  <div class="cat-strip" id="cat-strip"></div>
+  <div class="scroll" style="padding-bottom:80px">
+    <div id="food-list"></div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
-    <button class="nb on" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
-    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
-    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nb on" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
+    <button class="nb" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
   </nav>
 </div>
 
 <!-- HISTORY -->
 <div class="screen" id="s-history">
   <div class="topbar">
-    <button class="icon-btn" onclick="goTo('s-home')">←</button>
-    <h1>Historial</h1>
-    <button class="icon-btn" onclick="exportData()">💾</button>
+    <button class="ibt" onclick="goTo('s-home')" aria-label="Volver">←</button>
+    <h1>Diario</h1>
+    <button class="ibt" onclick="exportData()" aria-label="Exportar">💾</button>
   </div>
   <div class="scroll">
-    <div style="padding:8px 16px">
-      <div class="chip-row" id="hist-filters">
+    <div style="padding:6px 14px">
+      <div class="chiprow" id="hist-chips">
         <button class="chip on" onclick="filterHist('all',this)">Todo</button>
         <button class="chip" onclick="filterHist('meal',this)">Comidas</button>
         <button class="chip" onclick="filterHist('hipo',this)">Hipos</button>
@@ -333,454 +210,849 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
     <div id="hist-list"></div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
-    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
-    <button class="nb on" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
-    <button class="nb" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb on" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
+    <button class="nb" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
   </nav>
 </div>
 
 <!-- PROFILE -->
 <div class="screen" id="s-profile">
   <div class="topbar">
-    <button class="icon-btn" onclick="goTo('s-home')">←</button>
+    <button class="ibt" onclick="goTo('s-home')" aria-label="Volver">←</button>
     <h1>Mi perfil</h1>
   </div>
-  <div class="scroll" style="padding:0 16px">
-    <div class="card" style="display:flex;align-items:center;gap:14px">
-      <div style="width:52px;height:52px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0">PV</div>
-      <div><div style="font-size:16px;font-weight:700">Pau Vey Manresa</div><div style="font-size:12px;color:var(--text2)">Diabetes Tipo 1 · 71kg · 176cm</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Parámetros de insulina</div>
-      <div class="set-row" onclick="editParam('ratio','Ratio insulina/CH (g por unidad)','number',12)">
-        <div class="set-ico" style="background:var(--teal-bg)">💧</div>
-        <div class="set-body"><div class="set-t">Ratio insulina/CH</div><div class="set-s">1u por cada N gramos</div></div>
-        <div class="set-v" id="cfg-ratio">12g/u</div>
-      </div>
-      <div class="set-row" onclick="editParam('sensitivity','Factor de sensibilidad (mg/dL)','number',43)">
-        <div class="set-ico" style="background:var(--blue-bg)">🎯</div>
-        <div class="set-body"><div class="set-t">Factor sensibilidad</div><div class="set-s">1u baja X mg/dL</div></div>
-        <div class="set-v" id="cfg-sens">43</div>
-      </div>
-      <div class="set-row" onclick="editParam('target','Glucemia objetivo (mg/dL)','number',100)">
-        <div class="set-ico" style="background:var(--amber-bg)">❤️</div>
-        <div class="set-body"><div class="set-t">Glucemia objetivo</div></div>
-        <div class="set-v" id="cfg-target">100</div>
-      </div>
-      <div class="set-row" onclick="editParam('basalDose','Dosis habitual Toujeo (u)','number',29)">
-        <div class="set-ico" style="background:var(--green-bg)">💉</div>
-        <div class="set-body"><div class="set-t">Dosis Toujeo habitual</div></div>
-        <div class="set-v" id="cfg-basal">29u</div>
+  <div class="scroll" style="padding:0 14px">
+    <div class="card" style="display:flex;align-items:center;gap:12px;margin-top:8px">
+      <div class="pav" id="prof-av" style="background:var(--blue)">?</div>
+      <div>
+        <div style="font-size:15px;font-weight:600;color:var(--t)" id="prof-name">—</div>
+        <div style="font-size:11px;color:var(--t2)" id="prof-sub">Diabetes Tipo 1</div>
       </div>
     </div>
     <div class="card">
-      <div class="card-title">Consejos personalizados</div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--blue)">💡 Tu mayor área de mejora: reducir los picos matutinos</div>
-        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--green)">✅ Las hipos de tarde-noche han mejorado con la Toujeo nocturna</div>
-        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--amber)">📊 Variabilidad 38.4% — objetivo ≤36%. ¡Casi!</div>
-        <div style="padding:10px;background:var(--bg3);border-radius:var(--r2);font-size:13px;color:var(--text2);border-left:3px solid var(--teal)">🎯 Cada 5% más en tiempo en rango es clínicamente beneficioso</div>
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">Parámetros insulina</div>
+      <div class="setrow" onclick="editParam('ratio','Ratio insulina/CH (g/u)','number')">
+        <div class="setico" style="background:rgba(20,184,166,.15)">💧</div>
+        <div style="flex:1"><div class="sett">Ratio CH</div><div class="sets">1u por cada N gramos</div></div>
+        <div class="setv" id="cfg-ratio">—</div>
+      </div>
+      <div class="setrow" onclick="editParam('sensitivity','Factor sensibilidad (mg/dL)','number')">
+        <div class="setico" style="background:var(--blue-bg)">🎯</div>
+        <div style="flex:1"><div class="sett">Factor sensibilidad</div><div class="sets">1u baja X mg/dL</div></div>
+        <div class="setv" id="cfg-sens">—</div>
+      </div>
+      <div class="setrow" onclick="editParam('target','Glucemia objetivo (mg/dL)','number')">
+        <div class="setico" style="background:var(--amber-bg)">❤️</div>
+        <div style="flex:1"><div class="sett">Glucemia objetivo</div></div>
+        <div class="setv" id="cfg-target">—</div>
+      </div>
+      <div class="setrow" onclick="editParam('basalDose','Dosis basal habitual (u)','number')">
+        <div class="setico" style="background:var(--green-bg)">💉</div>
+        <div style="flex:1"><div class="sett">Dosis basal</div></div>
+        <div class="setv" id="cfg-basal">—</div>
+      </div>
+      <div class="setrow" onclick="editParam('basalType','Tipo insulina basal','text')">
+        <div class="setico" style="background:var(--bg3)">🏷️</div>
+        <div style="flex:1"><div class="sett">Tipo basal</div></div>
+        <div class="setv" id="cfg-basalt">—</div>
+      </div>
+      <div class="setrow" onclick="editParam('rapidType','Tipo insulina rápida','text')">
+        <div class="setico" style="background:var(--bg3)">⚡</div>
+        <div style="flex:1"><div class="sett">Tipo rápida</div></div>
+        <div class="setv" id="cfg-rapidt">—</div>
       </div>
     </div>
     <div class="card" style="margin-bottom:20px">
-      <div class="card-title">Datos y privacidad</div>
-      <div class="set-row" onclick="exportData()">
-        <div class="set-ico" style="background:var(--blue-bg)">📤</div>
-        <div class="set-body"><div class="set-t">Exportar todos los datos</div><div class="set-s">Descarga JSON con el historial</div></div>
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">Cuenta</div>
+      <div class="setrow" onclick="switchProfile()">
+        <div class="setico" style="background:var(--bg3)">🔄</div>
+        <div style="flex:1"><div class="sett">Cambiar perfil</div></div>
       </div>
-      <div class="set-row" onclick="deleteAll()">
-        <div class="set-ico" style="background:var(--red-bg)">🗑️</div>
-        <div class="set-body"><div class="set-t">Borrar todos los datos</div><div class="set-s">Acción irreversible</div></div>
+      <div class="setrow" onclick="exportData()">
+        <div class="setico" style="background:var(--blue-bg)">📤</div>
+        <div style="flex:1"><div class="sett">Exportar datos</div></div>
+      </div>
+      <div class="setrow" onclick="deleteData()">
+        <div class="setico" style="background:var(--red-bg)">🗑️</div>
+        <div style="flex:1"><div class="sett">Borrar mis datos</div></div>
       </div>
     </div>
   </div>
   <nav class="bnav">
-    <button class="nb" onclick="goTo('s-home')"><div class="nb-icon">🏠</div>Inicio</button>
-    <button class="nb" onclick="goTo('s-analyze')"><div class="nb-icon">📸</div>Analizar</button>
-    <button class="nb" onclick="goTo('s-history')"><div class="nb-icon">📋</div>Historial</button>
-    <button class="nb on" onclick="goTo('s-profile')"><div class="nb-icon">👤</div>Perfil</button>
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
+    <button class="nb on" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
   </nav>
 </div>
 
 <!-- MODALS -->
+<div class="modal-ov" id="modal-newprofile" onclick="closeOut(event,'modal-newprofile')">
+  <div class="modal-box">
+    <div class="mhandle"></div>
+    <div class="mtitle">👤 Nuevo perfil</div>
+    <label class="lbl">Tu nombre</label>
+    <input class="field" id="np-name" type="text" placeholder="Ej. Pau" style="margin-bottom:8px">
+    <label class="lbl">Ratio insulina/CH (g por unidad)</label>
+    <input class="field" id="np-ratio" type="number" value="12" style="margin-bottom:8px">
+    <label class="lbl">Factor sensibilidad (mg/dL por unidad)</label>
+    <input class="field" id="np-sens" type="number" value="43" style="margin-bottom:8px">
+    <label class="lbl">Glucemia objetivo (mg/dL)</label>
+    <input class="field" id="np-target" type="number" value="100" style="margin-bottom:8px">
+    <label class="lbl">Insulina basal</label>
+    <input class="field" id="np-basalt" type="text" value="Toujeo" style="margin-bottom:8px">
+    <label class="lbl">Dosis basal habitual (u)</label>
+    <input class="field" id="np-basald" type="number" placeholder="Ej. 29" style="margin-bottom:8px">
+    <label class="lbl">Insulina rápida</label>
+    <input class="field" id="np-rapidt" type="text" value="NovoRapid" style="margin-bottom:14px">
+    <button class="btn btn-p" onclick="createProfile()">✅ Crear perfil</button>
+    <button class="btn" onclick="closeModal('modal-newprofile')" style="margin-top:6px">Cancelar</button>
+  </div>
+</div>
+
+<!-- FOOD DETAIL MODAL -->
+<div class="modal-ov" id="modal-food" onclick="closeOut(event,'modal-food')">
+  <div class="modal-box">
+    <div class="mhandle"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+      <div style="font-size:32px" id="fd-icon"></div>
+      <div>
+        <div style="font-size:17px;font-weight:600;color:var(--t)" id="fd-name"></div>
+        <div style="font-size:11px;color:var(--t2)" id="fd-cat"></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div class="lbl" style="margin-bottom:6px">Ración</div>
+      <div style="display:flex;gap:6px">
+        <button class="ration-btn on" id="rb-s" onclick="setRation('s')">S<br><span style="font-size:10px;opacity:.7" id="rb-s-ch"></span></button>
+        <button class="ration-btn" id="rb-m" onclick="setRation('m')">M<br><span style="font-size:10px;opacity:.7" id="rb-m-ch"></span></button>
+        <button class="ration-btn" id="rb-l" onclick="setRation('l')">L<br><span style="font-size:10px;opacity:.7" id="rb-l-ch"></span></button>
+      </div>
+    </div>
+
+    <div style="margin-bottom:12px">
+      <div class="lbl" style="margin-bottom:6px">Añadir extras</div>
+      <div id="extras-list"></div>
+    </div>
+
+    <div style="background:var(--bg3);border-radius:var(--r2);padding:12px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center">
+      <div>
+        <div style="font-size:11px;color:var(--t2)">Total carbohidratos</div>
+        <div style="font-size:28px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="fd-total-ch">—</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:11px;color:var(--t2)">Calorías aprox.</div>
+        <div style="font-size:20px;font-weight:500;font-family:'DM Mono',monospace;color:var(--orange)" id="fd-total-kcal">—</div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px">
+      <label class="lbl">Glucemia actual (mg/dL)</label>
+      <input class="field" type="number" id="fd-gluc" placeholder="Ej. 120" oninput="calcFoodDose()" style="margin-top:4px">
+    </div>
+
+    <div class="dose-hero" id="fd-dose-hero" style="display:none">
+      <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);opacity:.7;margin-bottom:3px">Dosis recomendada</div>
+      <div class="dose-num" id="fd-dose-num">—</div>
+      <div style="font-size:13px;color:var(--blue2);font-weight:500" id="fd-rapid-lbl">unidades</div>
+      <div style="font-size:11px;color:var(--blue2);opacity:.8;margin-top:6px" id="fd-dose-sub"></div>
+    </div>
+
+    <div style="padding:8px 10px;background:var(--amber-bg);border-radius:var(--r2);font-size:11px;color:var(--amber);margin-bottom:10px">
+      ⚕️ Recomendación orientativa. Consulta con tu endocrino.
+    </div>
+
+    <div id="fd-confirm-area" style="display:none">
+      <label class="lbl">Dosis real que te pones (u)</label>
+      <input class="field" type="number" id="fd-dose-real" step="0.5" placeholder="Confirma o modifica" style="margin:4px 0 10px">
+      <button class="btn btn-g" onclick="saveFoodMeal()">✅ Guardar registro</button>
+    </div>
+    <button class="btn" onclick="closeModal('modal-food')" style="margin-top:6px">Cancelar</button>
+  </div>
+</div>
+
+<!-- HIPO -->
 <div class="modal-ov" id="modal-hipo" onclick="closeOut(event,'modal-hipo')">
   <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⬇️ Hipoglucemia</div>
+    <div class="mhandle"></div>
+    <div class="mtitle">⬇️ Hipoglucemia</div>
     <label class="lbl">Glucemia mínima (mg/dL)</label>
-    <input class="field" id="h-gluc" type="number" placeholder="Ej. 58" style="margin-bottom:10px">
+    <input class="field" id="h-gluc" type="number" placeholder="Ej. 58" style="margin-bottom:8px">
     <label class="lbl">Síntomas</label>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="h-symp-btns">
-      <button class="chip" onclick="toggleChip(this)">Temblor</button>
-      <button class="chip" onclick="toggleChip(this)">Sudor</button>
-      <button class="chip" onclick="toggleChip(this)">Mareo</button>
-      <button class="chip" onclick="toggleChip(this)">Confusión</button>
-      <button class="chip" onclick="toggleChip(this)">Hambre</button>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px" id="h-symp">
+      <button class="chip" onclick="this.classList.toggle('on')">Temblor</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Sudor</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Mareo</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Confusión</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Hambre</button>
     </div>
     <label class="lbl">Tratamiento</label>
-    <input class="field" id="h-treat" type="text" placeholder="Ej. zumo naranja" style="margin-bottom:10px">
+    <input class="field" id="h-treat" placeholder="Ej. zumo naranja" style="margin-bottom:8px">
     <label class="lbl">Notas</label>
-    <input class="field" id="h-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
-    <button class="btn btn-primary" onclick="saveHipo()">Guardar</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-hipo')">Cancelar</button>
+    <input class="field" id="h-notes" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-p" onclick="saveHipo()">✅ Guardar</button>
+    <button class="btn" onclick="closeModal('modal-hipo')" style="margin-top:6px">Cancelar</button>
   </div>
 </div>
 
+<!-- HIPER -->
 <div class="modal-ov" id="modal-hiper" onclick="closeOut(event,'modal-hiper')">
   <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">⬆️ Hiperglucemia</div>
+    <div class="mhandle"></div>
+    <div class="mtitle">⬆️ Hiperglucemia</div>
     <label class="lbl">Glucemia máxima (mg/dL)</label>
-    <input class="field" id="hi-gluc" type="number" placeholder="Ej. 280" style="margin-bottom:10px">
+    <input class="field" id="hi-gluc" type="number" placeholder="Ej. 280" style="margin-bottom:8px">
     <label class="lbl">Causa probable</label>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="hi-cause-btns">
-      <button class="chip" onclick="toggleChip(this)">Comida abundante</button>
-      <button class="chip" onclick="toggleChip(this)">Estrés</button>
-      <button class="chip" onclick="toggleChip(this)">Enfermedad</button>
-      <button class="chip" onclick="toggleChip(this)">Olvidé insulina</button>
-      <button class="chip" onclick="toggleChip(this)">Otro</button>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px" id="hi-cause">
+      <button class="chip" onclick="this.classList.toggle('on')">Comida abundante</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Estrés</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Enfermedad</button>
+      <button class="chip" onclick="this.classList.toggle('on')">Olvidé insulina</button>
     </div>
     <label class="lbl">Corrección usada (u)</label>
-    <input class="field" id="hi-corr" type="number" placeholder="Ej. 2.5" step="0.5" style="margin-bottom:10px">
+    <input class="field" id="hi-corr" type="number" step="0.5" placeholder="Ej. 2.5" style="margin-bottom:8px">
     <label class="lbl">Notas</label>
-    <input class="field" id="hi-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
-    <button class="btn btn-primary" onclick="saveHiper()">Guardar</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-hiper')">Cancelar</button>
+    <input class="field" id="hi-notes" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-p" onclick="saveHiper()">✅ Guardar</button>
+    <button class="btn" onclick="closeModal('modal-hiper')" style="margin-top:6px">Cancelar</button>
   </div>
 </div>
 
+<!-- BASAL -->
 <div class="modal-ov" id="modal-basal" onclick="closeOut(event,'modal-basal')">
   <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title">💉 Insulina basal</div>
-    <label class="lbl">Unidades Toujeo</label>
-    <input class="field" id="b-units" type="number" placeholder="Ej. 29" style="margin-bottom:10px">
+    <div class="mhandle"></div>
+    <div class="mtitle">💉 Basal</div>
+    <label class="lbl">Unidades</label>
+    <input class="field" id="b-units" type="number" placeholder="Ej. 29" style="margin-bottom:8px">
     <label class="lbl">Hora</label>
-    <input class="field" id="b-time" type="time" value="22:00" style="margin-bottom:10px">
+    <input class="field" id="b-time" type="time" value="22:00" style="margin-bottom:8px">
     <label class="lbl">Notas</label>
-    <input class="field" id="b-notes" type="text" placeholder="Opcional" style="margin-bottom:14px">
-    <button class="btn btn-primary" onclick="saveBasal()">Guardar</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-basal')">Cancelar</button>
+    <input class="field" id="b-notes" placeholder="Opcional" style="margin-bottom:14px">
+    <button class="btn btn-p" onclick="saveBasal()">✅ Guardar</button>
+    <button class="btn" onclick="closeModal('modal-basal')" style="margin-top:6px">Cancelar</button>
   </div>
 </div>
 
+<!-- PARAM EDIT -->
 <div class="modal-ov" id="modal-param" onclick="closeOut(event,'modal-param')">
   <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="param-title">Editar</div>
-    <input class="field" id="param-input" type="number" style="margin-bottom:14px">
-    <button class="btn btn-primary" onclick="saveParam()">Guardar</button>
-    <button class="btn btn-outline" onclick="closeModal('modal-param')">Cancelar</button>
+    <div class="mhandle"></div>
+    <div class="mtitle" id="param-title">Editar</div>
+    <input class="field" id="param-val" type="text" style="margin-bottom:14px">
+    <button class="btn btn-p" onclick="saveParam()">✅ Guardar</button>
+    <button class="btn" onclick="closeModal('modal-param')" style="margin-top:6px">Cancelar</button>
   </div>
 </div>
 
-<div class="modal-ov" id="modal-highdose" onclick="closeOut(event,'modal-highdose')">
-  <div class="modal-box">
-    <div class="modal-handle"></div>
-    <div style="text-align:center;padding:10px 0">
-      <div style="font-size:48px">⚠️</div>
-      <div class="modal-title" style="margin-top:8px">Dosis alta</div>
-      <div style="font-size:14px;color:var(--text2);margin-bottom:20px" id="highdose-msg"></div>
-      <button class="btn btn-primary" onclick="confirmHighDose()">Sí, confirmar</button>
-      <button class="btn btn-outline" onclick="closeModal('modal-highdose')">Revisar</button>
-    </div>
-  </div>
-</div>
-
-<div class="spin-ov" id="spinner">
-  <div class="spin"></div>
-  <p id="spin-msg">Analizando con IA…</p>
-</div>
+<div class="spin-ov" id="spinner"><div class="spin"></div></div>
 <div id="toast"></div>
 
 <script>
-const STORE='diabapp_pau_v3';
-let S={config:{ratio:12,sensitivity:43,target:100,basalDose:29},entries:[],toujeo:{done:false,date:'',time:''}};
-let curAnalysis=null,curMode='photo',pendingHighDose=null;
+// ============================================================
+// FOOD DATABASE - 350+ platos
+// ============================================================
+const EXTRAS = [
+  {id:'pan',name:'Pan (1 rebanada)',icon:'🍞',ch:15,kcal:70},
+  {id:'pan2',name:'Pan (2 rebanadas)',icon:'🍞',ch:30,kcal:140},
+  {id:'panBarra',name:'Trozo barra de pan',icon:'🥖',ch:25,kcal:115},
+  {id:'arroz',name:'Arroz (ración pequeña)',icon:'🍚',ch:30,kcal:130},
+  {id:'patatasFritas',name:'Patatas fritas (puñado)',icon:'🍟',ch:20,kcal:160},
+  {id:'frutaNaranja',name:'Naranja mediana',icon:'🍊',ch:15,kcal:60},
+  {id:'frutaManzana',name:'Manzana mediana',icon:'🍎',ch:20,kcal:80},
+  {id:'frutaPlatano',name:'Plátano mediano',icon:'🍌',ch:27,kcal:105},
+  {id:'frutaUvas',name:'Uvas (racimo pequeño)',icon:'🍇',ch:18,kcal:70},
+  {id:'frutaSandía',name:'Sandía (trozo)',icon:'🍉',ch:12,kcal:46},
+  {id:'frutaMelon',name:'Melón (trozo)',icon:'🍈',ch:13,kcal:50},
+  {id:'frutaFresa',name:'Fresas (bol)',icon:'🍓',ch:11,kcal:50},
+  {id:'postYogur',name:'Yogur natural',icon:'🥛',ch:8,kcal:80},
+  {id:'postFlan',name:'Flan',icon:'🍮',ch:22,kcal:120},
+  {id:'postHeladoB',name:'Helado (bola)',icon:'🍨',ch:20,kcal:150},
+  {id:'postArrLeche',name:'Arroz con leche',icon:'🥣',ch:30,kcal:170},
+  {id:'postNatilla',name:'Natilla',icon:'🍮',ch:25,kcal:140},
+  {id:'postCrema',name:'Crema catalana',icon:'🍮',ch:28,kcal:180},
+  {id:'postTarta',name:'Porción tarta',icon:'🎂',ch:45,kcal:300},
+  {id:'postCookie',name:'Galleta (2 unidades)',icon:'🍪',ch:20,kcal:120},
+  {id:'postCroissant',name:'Croissant',icon:'🥐',ch:28,kcal:230},
+  {id:'postDona',name:'Dónut',icon:'🍩',ch:35,kcal:280},
+  {id:'bebAgua',name:'Agua (sin CH)',icon:'💧',ch:0,kcal:0},
+  {id:'bebZumo',name:'Zumo natural (vaso)',icon:'🥤',ch:22,kcal:90},
+  {id:'bebRefrescoN',name:'Refresco normal (lata)',icon:'🥤',ch:35,kcal:140},
+  {id:'bebRefrescoZ',name:'Refresco zero/light',icon:'🥤',ch:0,kcal:2},
+  {id:'bebCerveza',name:'Cerveza (caña)',icon:'🍺',ch:10,kcal:90},
+  {id:'bebCervezaNA',name:'Cerveza sin alcohol',icon:'🍺',ch:8,kcal:50},
+  {id:'bebVino',name:'Vino (copa)',icon:'🍷',ch:4,kcal:120},
+  {id:'bebCafe',name:'Café con leche',icon:'☕',ch:8,kcal:60},
+  {id:'bebLeche',name:'Vaso de leche',icon:'🥛',ch:12,kcal:100},
+  {id:'ensaladaV',name:'Ensalada verde',icon:'🥗',ch:5,kcal:30},
+  {id:'ensaladaT',name:'Tomate con aceite',icon:'🍅',ch:5,kcal:40},
+];
 
-function load(){try{const d=localStorage.getItem(STORE);if(d)S=Object.assign(S,JSON.parse(d));}catch(e){}}
-function save(){try{localStorage.setItem(STORE,JSON.stringify(S));}catch(e){}}
+const FOOD_DB = [
+  // ========== PASTAS ==========
+  {id:1,name:'Macarrones boloñesa',cat:'Pasta',icon:'🍝',s:{ch:45,kcal:380},m:{ch:65,kcal:540},l:{ch:90,kcal:750},tags:['macarrones','bolognesa','carne picada','pasta']},
+  {id:2,name:'Macarrones carbonara',cat:'Pasta',icon:'🍝',s:{ch:45,kcal:430},m:{ch:65,kcal:610},l:{ch:90,kcal:840},tags:['macarrones','carbonara','bacon','pasta']},
+  {id:3,name:'Macarrones con tomate',cat:'Pasta',icon:'🍝',s:{ch:48,kcal:320},m:{ch:68,kcal:460},l:{ch:95,kcal:640},tags:['macarrones','tomate','pasta']},
+  {id:4,name:'Macarrones pesto',cat:'Pasta',icon:'🍝',s:{ch:45,kcal:410},m:{ch:65,kcal:590},l:{ch:90,kcal:820},tags:['macarrones','pesto','pasta']},
+  {id:5,name:'Espaguetis boloñesa',cat:'Pasta',icon:'🍝',s:{ch:50,kcal:400},m:{ch:70,kcal:560},l:{ch:95,kcal:770},tags:['espaguetis','spaghetti','bolognesa','pasta']},
+  {id:6,name:'Espaguetis carbonara',cat:'Pasta',icon:'🍝',s:{ch:50,kcal:450},m:{ch:70,kcal:630},l:{ch:95,kcal:870},tags:['espaguetis','spaghetti','carbonara','pasta']},
+  {id:7,name:'Espaguetis con almejas',cat:'Pasta',icon:'🍝',s:{ch:48,kcal:370},m:{ch:68,kcal:520},l:{ch:92,kcal:720},tags:['espaguetis','almejas','marisco','pasta']},
+  {id:8,name:'Espaguetis aglio e olio',cat:'Pasta',icon:'🍝',s:{ch:48,kcal:380},m:{ch:68,kcal:540},l:{ch:92,kcal:750},tags:['espaguetis','ajo','aceite','pasta']},
+  {id:9,name:'Fideos con sepia',cat:'Pasta',icon:'🍝',s:{ch:40,kcal:320},m:{ch:58,kcal:460},l:{ch:80,kcal:640},tags:['fideos','sepia','pasta','fideuà']},
+  {id:10,name:'Fideuà',cat:'Pasta',icon:'🍝',s:{ch:42,kcal:340},m:{ch:60,kcal:490},l:{ch:84,kcal:680},tags:['fideos','fideuà','marisco','pasta']},
+  {id:11,name:'Lasaña boloñesa',cat:'Pasta',icon:'🍝',s:{ch:35,kcal:380},m:{ch:50,kcal:540},l:{ch:70,kcal:750},tags:['lasaña','bolognesa','pasta','horno']},
+  {id:12,name:'Lasaña verduras',cat:'Pasta',icon:'🍝',s:{ch:32,kcal:300},m:{ch:46,kcal:420},l:{ch:65,kcal:590},tags:['lasaña','verduras','pasta','vegetariana']},
+  {id:13,name:'Canelones',cat:'Pasta',icon:'🍝',s:{ch:35,kcal:380},m:{ch:50,kcal:540},l:{ch:70,kcal:750},tags:['canelones','pasta','bechamel']},
+  {id:14,name:'Penne rigate con tomate',cat:'Pasta',icon:'🍝',s:{ch:48,kcal:310},m:{ch:68,kcal:440},l:{ch:94,kcal:610},tags:['penne','tomate','pasta']},
+  {id:15,name:'Fusilli con pesto',cat:'Pasta',icon:'🍝',s:{ch:45,kcal:400},m:{ch:65,kcal:570},l:{ch:90,kcal:790},tags:['fusilli','pesto','pasta']},
+  {id:16,name:'Pasta al horno',cat:'Pasta',icon:'🍝',s:{ch:42,kcal:380},m:{ch:60,kcal:540},l:{ch:85,kcal:760},tags:['pasta','horno','tomate','queso']},
+  {id:17,name:'Raviolis con salsa',cat:'Pasta',icon:'🍝',s:{ch:38,kcal:360},m:{ch:55,kcal:510},l:{ch:76,kcal:710},tags:['raviolis','pasta','rellena']},
+  {id:18,name:'Tallarines con gambas',cat:'Pasta',icon:'🍝',s:{ch:45,kcal:380},m:{ch:65,kcal:540},l:{ch:90,kcal:750},tags:['tallarines','gambas','marisco','pasta']},
+  // ========== ARROCES ==========
+  {id:20,name:'Paella valenciana',cat:'Arroz',icon:'🥘',s:{ch:45,kcal:420},m:{ch:65,kcal:600},l:{ch:90,kcal:830},tags:['paella','valenciana','pollo','conejo','arroz']},
+  {id:21,name:'Paella de marisco',cat:'Arroz',icon:'🥘',s:{ch:45,kcal:390},m:{ch:65,kcal:560},l:{ch:90,kcal:780},tags:['paella','marisco','gambas','arroz']},
+  {id:22,name:'Paella mixta',cat:'Arroz',icon:'🥘',s:{ch:45,kcal:410},m:{ch:65,kcal:590},l:{ch:90,kcal:820},tags:['paella','mixta','arroz']},
+  {id:23,name:'Arroz con pollo',cat:'Arroz',icon:'🍗',s:{ch:40,kcal:380},m:{ch:58,kcal:540},l:{ch:80,kcal:750},tags:['arroz','pollo','arroz']},
+  {id:24,name:'Arroz a la cubana',cat:'Arroz',icon:'🍳',s:{ch:45,kcal:430},m:{ch:65,kcal:610},l:{ch:90,kcal:845},tags:['arroz','cubana','huevo','plátano','tomate']},
+  {id:25,name:'Arroz negro',cat:'Arroz',icon:'🥘',s:{ch:42,kcal:370},m:{ch:60,kcal:530},l:{ch:84,kcal:740},tags:['arroz','negro','sepia','tinta','arroz']},
+  {id:26,name:'Arroz caldoso con marisco',cat:'Arroz',icon:'🥘',s:{ch:40,kcal:340},m:{ch:58,kcal:490},l:{ch:80,kcal:680},tags:['arroz','caldoso','marisco','gambas']},
+  {id:27,name:'Risotto hongos',cat:'Arroz',icon:'🍄',s:{ch:42,kcal:390},m:{ch:60,kcal:560},l:{ch:85,kcal:780},tags:['risotto','setas','hongos','arroz','italiano']},
+  {id:28,name:'Risotto parmesano',cat:'Arroz',icon:'🧀',s:{ch:42,kcal:410},m:{ch:60,kcal:590},l:{ch:85,kcal:820},tags:['risotto','parmesano','queso','arroz']},
+  {id:29,name:'Arroz con leche',cat:'Postres',icon:'🥣',s:{ch:35,kcal:200},m:{ch:50,kcal:290},l:{ch:70,kcal:400},tags:['arroz','leche','postre','dulce']},
+  {id:30,name:'Arroz tres delicias',cat:'Arroz',icon:'🍳',s:{ch:42,kcal:390},m:{ch:60,kcal:560},l:{ch:84,kcal:780},tags:['arroz','tres delicias','chino','oriental','jamón','huevo']},
+  // ========== CARNES ==========
+  {id:40,name:'Pollo a la plancha',cat:'Carnes',icon:'🍗',s:{ch:0,kcal:160},m:{ch:0,kcal:220},l:{ch:0,kcal:320},tags:['pollo','plancha','carne']},
+  {id:41,name:'Pollo al horno',cat:'Carnes',icon:'🍗',s:{ch:0,kcal:200},m:{ch:0,kcal:280},l:{ch:0,kcal:400},tags:['pollo','horno','carne','asado']},
+  {id:42,name:'Pollo en salsa',cat:'Carnes',icon:'🍗',s:{ch:5,kcal:250},m:{ch:8,kcal:350},l:{ch:12,kcal:490},tags:['pollo','salsa','carne']},
+  {id:43,name:'Pollo al ajillo',cat:'Carnes',icon:'🍗',s:{ch:2,kcal:270},m:{ch:3,kcal:380},l:{ch:5,kcal:530},tags:['pollo','ajillo','ajo','carne']},
+  {id:44,name:'Pollo empanado',cat:'Carnes',icon:'🍗',s:{ch:18,kcal:280},m:{ch:26,kcal:400},l:{ch:36,kcal:560},tags:['pollo','empanado','rebozado']},
+  {id:45,name:'Nuggets de pollo (6u)',cat:'Fast food',icon:'🍗',s:{ch:15,kcal:250},m:{ch:22,kcal:370},l:{ch:30,kcal:500},tags:['nuggets','pollo','fast food']},
+  {id:46,name:'Chuletón de ternera',cat:'Carnes',icon:'🥩',s:{ch:0,kcal:280},m:{ch:0,kcal:400},l:{ch:0,kcal:580},tags:['chuletón','ternera','carne','asado','res']},
+  {id:47,name:'Filete de ternera',cat:'Carnes',icon:'🥩',s:{ch:0,kcal:200},m:{ch:0,kcal:280},l:{ch:0,kcal:400},tags:['filete','ternera','carne','res']},
+  {id:48,name:'Albóndigas en salsa',cat:'Carnes',icon:'🍲',s:{ch:12,kcal:320},m:{ch:18,kcal:450},l:{ch:25,kcal:630},tags:['albóndigas','carne','salsa','tomate']},
+  {id:49,name:'Hamburguesa casera',cat:'Carnes',icon:'🍔',s:{ch:25,kcal:380},m:{ch:35,kcal:540},l:{ch:48,kcal:750},tags:['hamburguesa','carne','ternera']},
+  {id:50,name:'Lomo a la plancha',cat:'Carnes',icon:'🥩',s:{ch:0,kcal:200},m:{ch:0,kcal:280},l:{ch:0,kcal:400},tags:['lomo','plancha','cerdo','carne']},
+  {id:51,name:'Cerdo a la plancha',cat:'Carnes',icon:'🥩',s:{ch:0,kcal:210},m:{ch:0,kcal:300},l:{ch:0,kcal:420},tags:['cerdo','plancha','carne','chuleta']},
+  {id:52,name:'Costillas de cerdo',cat:'Carnes',icon:'🍖',s:{ch:0,kcal:350},m:{ch:0,kcal:500},l:{ch:0,kcal:700},tags:['costillas','cerdo','carne','bbq']},
+  {id:53,name:'Cordero al horno',cat:'Carnes',icon:'🍖',s:{ch:0,kcal:280},m:{ch:0,kcal:400},l:{ch:0,kcal:560},tags:['cordero','horno','carne','asado']},
+  {id:54,name:'Pavo a la plancha',cat:'Carnes',icon:'🍗',s:{ch:0,kcal:160},m:{ch:0,kcal:220},l:{ch:0,kcal:310},tags:['pavo','plancha','carne']},
+  {id:55,name:'Salchichas con patatas',cat:'Carnes',icon:'🌭',s:{ch:25,kcal:380},m:{ch:36,kcal:540},l:{ch:50,kcal:750},tags:['salchichas','patatas','carne']},
+  {id:56,name:'Chorizo a la sidra',cat:'Carnes',icon:'🍷',s:{ch:2,kcal:280},m:{ch:3,kcal:400},l:{ch:4,kcal:560},tags:['chorizo','sidra','carne','embutido']},
+  {id:57,name:'Carrillada de cerdo',cat:'Carnes',icon:'🍲',s:{ch:8,kcal:320},m:{ch:12,kcal:460},l:{ch:17,kcal:640},tags:['carrillada','cerdo','carne','guiso']},
+  {id:58,name:'Rabo de toro',cat:'Carnes',icon:'🍲',s:{ch:6,kcal:350},m:{ch:9,kcal:500},l:{ch:13,kcal:700},tags:['rabo','toro','carne','guiso','estofado']},
+  {id:59,name:'Cocido madrileño',cat:'Legumbres',icon:'🍲',s:{ch:35,kcal:480},m:{ch:50,kcal:680},l:{ch:70,kcal:950},tags:['cocido','madrileño','garbanzos','carne','chorizo']},
+  // ========== PESCADOS ==========
+  {id:70,name:'Merluza a la plancha',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:140},m:{ch:0,kcal:200},l:{ch:0,kcal:280},tags:['merluza','plancha','pescado']},
+  {id:71,name:'Merluza al horno',cat:'Pescados',icon:'🐟',s:{ch:2,kcal:170},m:{ch:3,kcal:240},l:{ch:5,kcal:340},tags:['merluza','horno','pescado']},
+  {id:72,name:'Salmón a la plancha',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:200},m:{ch:0,kcal:290},l:{ch:0,kcal:410},tags:['salmón','plancha','pescado']},
+  {id:73,name:'Salmón al horno',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:220},m:{ch:0,kcal:310},l:{ch:0,kcal:440},tags:['salmón','horno','pescado']},
+  {id:74,name:'Bacalao al pil pil',cat:'Pescados',icon:'🐟',s:{ch:2,kcal:280},m:{ch:3,kcal:400},l:{ch:5,kcal:560},tags:['bacalao','pil pil','pescado','vasco']},
+  {id:75,name:'Bacalao a la vizcaína',cat:'Pescados',icon:'🐟',s:{ch:8,kcal:260},m:{ch:12,kcal:370},l:{ch:17,kcal:520},tags:['bacalao','vizcaína','pescado','vasco']},
+  {id:76,name:'Dorada al horno',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:180},m:{ch:0,kcal:260},l:{ch:0,kcal:360},tags:['dorada','horno','pescado']},
+  {id:77,name:'Lubina a la sal',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:170},m:{ch:0,kcal:240},l:{ch:0,kcal:340},tags:['lubina','sal','pescado','horno']},
+  {id:78,name:'Calamares a la romana',cat:'Pescados',icon:'🦑',s:{ch:22,kcal:280},m:{ch:32,kcal:400},l:{ch:44,kcal:560},tags:['calamares','romana','rebozado','marisco']},
+  {id:79,name:'Calamares en su tinta',cat:'Pescados',icon:'🦑',s:{ch:5,kcal:220},m:{ch:8,kcal:320},l:{ch:11,kcal:450},tags:['calamares','tinta','marisco']},
+  {id:80,name:'Gambas a la plancha',cat:'Pescados',icon:'🦐',s:{ch:0,kcal:100},m:{ch:0,kcal:150},l:{ch:0,kcal:220},tags:['gambas','plancha','marisco']},
+  {id:81,name:'Gambas al ajillo',cat:'Pescados',icon:'🦐',s:{ch:2,kcal:180},m:{ch:3,kcal:260},l:{ch:5,kcal:370},tags:['gambas','ajillo','marisco','ajo']},
+  {id:82,name:'Pulpo a la gallega',cat:'Pescados',icon:'🐙',s:{ch:5,kcal:160},m:{ch:8,kcal:230},l:{ch:12,kcal:325},tags:['pulpo','gallega','galicia','pimentón']},
+  {id:83,name:'Mejillones al vapor',cat:'Pescados',icon:'🦪',s:{ch:4,kcal:100},m:{ch:6,kcal:150},l:{ch:9,kcal:220},tags:['mejillones','vapor','marisco']},
+  {id:84,name:'Almejas a la marinera',cat:'Pescados',icon:'🦪',s:{ch:5,kcal:120},m:{ch:8,kcal:175},l:{ch:12,kcal:250},tags:['almejas','marinera','marisco']},
+  {id:85,name:'Atún a la plancha',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:180},m:{ch:0,kcal:260},l:{ch:0,kcal:370},tags:['atún','plancha','pescado']},
+  {id:86,name:'Pescaíto frito (ración)',cat:'Pescados',icon:'🐟',s:{ch:18,kcal:280},m:{ch:26,kcal:400},l:{ch:36,kcal:560},tags:['pescaíto','frito','rebozado','pescado','andaluz']},
+  {id:87,name:'Boquerones al limón',cat:'Pescados',icon:'🐟',s:{ch:2,kcal:160},m:{ch:3,kcal:230},l:{ch:5,kcal:320},tags:['boquerones','limón','pescado']},
+  {id:88,name:'Rape al horno',cat:'Pescados',icon:'🐟',s:{ch:0,kcal:160},m:{ch:0,kcal:230},l:{ch:0,kcal:320},tags:['rape','horno','pescado']},
+  // ========== PIZZAS ==========
+  {id:100,name:'Pizza margarita',cat:'Pizzas',icon:'🍕',s:{ch:40,kcal:380},m:{ch:58,kcal:550},l:{ch:80,kcal:760},tags:['pizza','margarita','tomate','queso','italiana']},
+  {id:101,name:'Pizza 4 quesos',cat:'Pizzas',icon:'🍕',s:{ch:38,kcal:420},m:{ch:55,kcal:610},l:{ch:76,kcal:840},tags:['pizza','cuatro quesos','queso','italiana']},
+  {id:102,name:'Pizza pepperoni',cat:'Pizzas',icon:'🍕',s:{ch:40,kcal:430},m:{ch:58,kcal:620},l:{ch:80,kcal:860},tags:['pizza','pepperoni','salami','italiana']},
+  {id:103,name:'Pizza barbacoa',cat:'Pizzas',icon:'🍕',s:{ch:42,kcal:440},m:{ch:60,kcal:630},l:{ch:84,kcal:880},tags:['pizza','barbacoa','pollo','bacon','bbq']},
+  {id:104,name:'Pizza carbonara',cat:'Pizzas',icon:'🍕',s:{ch:38,kcal:430},m:{ch:55,kcal:620},l:{ch:76,kcal:860},tags:['pizza','carbonara','bacon','nata']},
+  {id:105,name:'Pizza vegetal',cat:'Pizzas',icon:'🍕',s:{ch:38,kcal:340},m:{ch:55,kcal:490},l:{ch:76,kcal:680},tags:['pizza','vegetal','verduras','vegetariana']},
+  {id:106,name:'Pizza jamón york y champiñones',cat:'Pizzas',icon:'🍕',s:{ch:40,kcal:390},m:{ch:58,kcal:560},l:{ch:80,kcal:780},tags:['pizza','jamón','champiñones','setas']},
+  {id:107,name:'Pizza hawaiana',cat:'Pizzas',icon:'🍕',s:{ch:42,kcal:400},m:{ch:60,kcal:570},l:{ch:84,kcal:790},tags:['pizza','hawaiana','piña','jamón']},
+  {id:108,name:'Pizza atún y cebolla',cat:'Pizzas',icon:'🍕',s:{ch:38,kcal:360},m:{ch:55,kcal:520},l:{ch:76,kcal:720},tags:['pizza','atún','cebolla']},
+  {id:109,name:'Calzone',cat:'Pizzas',icon:'🍕',s:{ch:45,kcal:450},m:{ch:65,kcal:650},l:{ch:90,kcal:900},tags:['calzone','pizza','italiana','rellena']},
+  // ========== HAMBURGUESAS ==========
+  {id:120,name:'Hamburguesa clásica',cat:'Fast food',icon:'🍔',s:{ch:28,kcal:400},m:{ch:40,kcal:570},l:{ch:55,kcal:790},tags:['hamburguesa','clásica','carne','pan']},
+  {id:121,name:'Hamburguesa con queso',cat:'Fast food',icon:'🍔',s:{ch:30,kcal:440},m:{ch:43,kcal:630},l:{ch:59,kcal:870},tags:['hamburguesa','queso','cheeseburger','carne']},
+  {id:122,name:'Hamburguesa doble',cat:'Fast food',icon:'🍔',s:{ch:30,kcal:550},m:{ch:43,kcal:780},l:{ch:59,kcal:1080},tags:['hamburguesa','doble','carne']},
+  {id:123,name:'Hamburguesa pollo',cat:'Fast food',icon:'🍔',s:{ch:32,kcal:390},m:{ch:46,kcal:560},l:{ch:63,kcal:780},tags:['hamburguesa','pollo','chicken']},
+  {id:124,name:'Hamburguesa vegana',cat:'Fast food',icon:'🍔',s:{ch:28,kcal:330},m:{ch:40,kcal:470},l:{ch:55,kcal:655},tags:['hamburguesa','vegana','vegetal','plant based']},
+  {id:125,name:'Hot dog (perrito caliente)',cat:'Fast food',icon:'🌭',s:{ch:22,kcal:280},m:{ch:32,kcal:400},l:{ch:44,kcal:560},tags:['hot dog','perrito','salchicha','pan']},
+  {id:126,name:'Kebab (pita)',cat:'Fast food',icon:'🌯',s:{ch:35,kcal:450},m:{ch:50,kcal:640},l:{ch:70,kcal:890},tags:['kebab','pita','carne','árabe','turco']},
+  {id:127,name:'Döner kebab en bandeja',cat:'Fast food',icon:'🥙',s:{ch:25,kcal:380},m:{ch:36,kcal:540},l:{ch:50,kcal:750},tags:['döner','kebab','carne','árabe']},
+  // ========== BOCADILLOS Y SANDWICHES ==========
+  {id:140,name:'Bocadillo jamón serrano',cat:'Bocadillos',icon:'🥖',s:{ch:40,kcal:380},m:{ch:58,kcal:540},l:{ch:80,kcal:750},tags:['bocadillo','jamón','serrano','pan']},
+  {id:141,name:'Bocadillo jamón york',cat:'Bocadillos',icon:'🥖',s:{ch:40,kcal:360},m:{ch:58,kcal:510},l:{ch:80,kcal:710},tags:['bocadillo','jamón','york','pan']},
+  {id:142,name:'Bocadillo tortilla',cat:'Bocadillos',icon:'🥖',s:{ch:42,kcal:420},m:{ch:60,kcal:600},l:{ch:84,kcal:840},tags:['bocadillo','tortilla','patata','pan']},
+  {id:143,name:'Bocadillo mixto (jamón y queso)',cat:'Bocadillos',icon:'🥖',s:{ch:38,kcal:400},m:{ch:55,kcal:570},l:{ch:76,kcal:790},tags:['bocadillo','mixto','jamón','queso','pan']},
+  {id:144,name:'Bocadillo atún',cat:'Bocadillos',icon:'🥖',s:{ch:40,kcal:360},m:{ch:58,kcal:510},l:{ch:80,kcal:710},tags:['bocadillo','atún','pan']},
+  {id:145,name:'Bocadillo calamares',cat:'Bocadillos',icon:'🥖',s:{ch:50,kcal:480},m:{ch:72,kcal:680},l:{ch:100,kcal:950},tags:['bocadillo','calamares','pan','madrileño']},
+  {id:146,name:'Sandwich mixto',cat:'Bocadillos',icon:'🥪',s:{ch:30,kcal:320},m:{ch:44,kcal:460},l:{ch:60,kcal:640},tags:['sandwich','mixto','jamón','queso','tostado']},
+  {id:147,name:'Sandwich club',cat:'Bocadillos',icon:'🥪',s:{ch:32,kcal:360},m:{ch:46,kcal:520},l:{ch:64,kcal:720},tags:['sandwich','club','pollo','bacon','lechuga']},
+  {id:148,name:'Tosta con aguacate',cat:'Bocadillos',icon:'🥑',s:{ch:20,kcal:220},m:{ch:30,kcal:320},l:{ch:42,kcal:450},tags:['tosta','aguacate','pan','tostada']},
+  {id:149,name:'Pan con tomate (pa amb tomàquet)',cat:'Bocadillos',icon:'🍅',s:{ch:25,kcal:180},m:{ch:36,kcal:260},l:{ch:50,kcal:360},tags:['pan','tomate','tomàquet','catalán','aceite']},
+  {id:150,name:'Wrap de pollo',cat:'Bocadillos',icon:'🌯',s:{ch:35,kcal:380},m:{ch:50,kcal:540},l:{ch:70,kcal:750},tags:['wrap','pollo','tortilla','mexicano']},
+  {id:151,name:'Wrap vegetal',cat:'Bocadillos',icon:'🌯',s:{ch:32,kcal:300},m:{ch:46,kcal:430},l:{ch:64,kcal:600},tags:['wrap','vegetal','verduras','tortilla']},
+  // ========== ENSALADAS ==========
+  {id:160,name:'Ensalada mixta',cat:'Ensaladas',icon:'🥗',s:{ch:8,kcal:80},m:{ch:12,kcal:120},l:{ch:17,kcal:170},tags:['ensalada','mixta','lechuga','tomate','vegetariana']},
+  {id:161,name:'Ensalada César con pollo',cat:'Ensaladas',icon:'🥗',s:{ch:12,kcal:220},m:{ch:18,kcal:320},l:{ch:25,kcal:450},tags:['ensalada','cesar','pollo','lechuga','crutones']},
+  {id:162,name:'Ensalada caprese',cat:'Ensaladas',icon:'🥗',s:{ch:5,kcal:150},m:{ch:8,kcal:220},l:{ch:12,kcal:310},tags:['ensalada','caprese','mozarella','tomate','italiana']},
+  {id:163,name:'Ensalada griega',cat:'Ensaladas',icon:'🥗',s:{ch:8,kcal:150},m:{ch:12,kcal:220},l:{ch:17,kcal:310},tags:['ensalada','griega','feta','aceitunas','pepino']},
+  {id:164,name:'Ensalada de pasta',cat:'Ensaladas',icon:'🥗',s:{ch:30,kcal:280},m:{ch:44,kcal:400},l:{ch:62,kcal:560},tags:['ensalada','pasta','fría']},
+  {id:165,name:'Ensalada de patata',cat:'Ensaladas',icon:'🥗',s:{ch:22,kcal:220},m:{ch:32,kcal:320},l:{ch:45,kcal:450},tags:['ensalada','patata','papa','fría']},
+  {id:166,name:'Ensalada de arroz',cat:'Ensaladas',icon:'🥗',s:{ch:30,kcal:260},m:{ch:44,kcal:375},l:{ch:62,kcal:525},tags:['ensalada','arroz','fría']},
+  {id:167,name:'Taboulé',cat:'Ensaladas',icon:'🥗',s:{ch:25,kcal:200},m:{ch:36,kcal:290},l:{ch:50,kcal:405},tags:['taboulé','cuscús','árabe','bulgur']},
+  {id:168,name:'Poke bowl de salmón',cat:'Ensaladas',icon:'🥗',s:{ch:40,kcal:380},m:{ch:58,kcal:540},l:{ch:80,kcal:750},tags:['poke','bowl','salmón','arroz','hawaiano']},
+  {id:169,name:'Bowl de quinoa',cat:'Ensaladas',icon:'🥗',s:{ch:35,kcal:320},m:{ch:50,kcal:460},l:{ch:70,kcal:640},tags:['bowl','quinoa','vegetariana']},
+  // ========== HUEVOS Y TORTILLAS ==========
+  {id:180,name:'Tortilla de patatas',cat:'Huevos',icon:'🍳',s:{ch:20,kcal:250},m:{ch:30,kcal:360},l:{ch:42,kcal:500},tags:['tortilla','patatas','española','huevo']},
+  {id:181,name:'Tortilla francesa',cat:'Huevos',icon:'🍳',s:{ch:1,kcal:180},m:{ch:2,kcal:250},l:{ch:3,kcal:350},tags:['tortilla','francesa','huevo','plain']},
+  {id:182,name:'Huevos fritos con patatas',cat:'Huevos',icon:'🍳',s:{ch:25,kcal:380},m:{ch:36,kcal:540},l:{ch:50,kcal:750},tags:['huevos','fritos','patatas','fritas']},
+  {id:183,name:'Huevos revueltos',cat:'Huevos',icon:'🍳',s:{ch:2,kcal:200},m:{ch:3,kcal:280},l:{ch:5,kcal:395},tags:['huevos','revueltos','scrambled']},
+  {id:184,name:'Huevos con jamón',cat:'Huevos',icon:'🍳',s:{ch:1,kcal:250},m:{ch:2,kcal:350},l:{ch:3,kcal:490},tags:['huevos','jamón','serrano']},
+  {id:185,name:'Huevos rotos con jamón',cat:'Huevos',icon:'🍳',s:{ch:28,kcal:420},m:{ch:40,kcal:600},l:{ch:56,kcal:840},tags:['huevos','rotos','jamón','patatas']},
+  {id:186,name:'Revuelto de setas',cat:'Huevos',icon:'🍄',s:{ch:4,kcal:200},m:{ch:6,kcal:285},l:{ch:9,kcal:400},tags:['revuelto','setas','champiñones','huevo']},
+  {id:187,name:'Revuelto de gambas',cat:'Huevos',icon:'🦐',s:{ch:2,kcal:220},m:{ch:3,kcal:315},l:{ch:5,kcal:440},tags:['revuelto','gambas','huevo','marisco']},
+  // ========== SOPAS Y CREMAS ==========
+  {id:200,name:'Gazpacho',cat:'Sopas',icon:'🥣',s:{ch:8,kcal:60},m:{ch:12,kcal:90},l:{ch:17,kcal:130},tags:['gazpacho','fría','tomate','andaluz','verano']},
+  {id:201,name:'Salmorejo',cat:'Sopas',icon:'🥣',s:{ch:18,kcal:140},m:{ch:26,kcal:200},l:{ch:36,kcal:280},tags:['salmorejo','fría','tomate','pan','cordobés']},
+  {id:202,name:'Sopa de fideos',cat:'Sopas',icon:'🍜',s:{ch:25,kcal:160},m:{ch:36,kcal:230},l:{ch:50,kcal:320},tags:['sopa','fideos','caldo','pollo']},
+  {id:203,name:'Caldo de pollo',cat:'Sopas',icon:'🍜',s:{ch:5,kcal:40},m:{ch:8,kcal:60},l:{ch:12,kcal:90},tags:['caldo','pollo','sopa']},
+  {id:204,name:'Crema de verduras',cat:'Sopas',icon:'🥣',s:{ch:15,kcal:100},m:{ch:22,kcal:145},l:{ch:30,kcal:200},tags:['crema','verduras','puré']},
+  {id:205,name:'Crema de calabaza',cat:'Sopas',icon:'🎃',s:{ch:16,kcal:90},m:{ch:23,kcal:130},l:{ch:32,kcal:180},tags:['crema','calabaza','puré']},
+  {id:206,name:'Sopa de cebolla',cat:'Sopas',icon:'🍲',s:{ch:12,kcal:120},m:{ch:18,kcal:175},l:{ch:25,kcal:245},tags:['sopa','cebolla','francesa']},
+  {id:207,name:'Sopa de cocido',cat:'Sopas',icon:'🍜',s:{ch:22,kcal:150},m:{ch:32,kcal:215},l:{ch:44,kcal:300},tags:['sopa','cocido','fideos','caldo']},
+  {id:208,name:'Crema de zanahoria',cat:'Sopas',icon:'🥕',s:{ch:14,kcal:80},m:{ch:20,kcal:115},l:{ch:28,kcal:160},tags:['crema','zanahoria','puré']},
+  {id:209,name:'Vichyssoise',cat:'Sopas',icon:'🥣',s:{ch:14,kcal:120},m:{ch:20,kcal:175},l:{ch:28,kcal:245},tags:['vichyssoise','puerro','fría','crema']},
+  {id:210,name:'Fabada asturiana',cat:'Legumbres',icon:'🫘',s:{ch:35,kcal:450},m:{ch:50,kcal:640},l:{ch:70,kcal:890},tags:['fabada','asturiana','fabes','chorizo','morcilla']},
+  // ========== LEGUMBRES ==========
+  {id:220,name:'Lentejas estofadas',cat:'Legumbres',icon:'🫘',s:{ch:30,kcal:280},m:{ch:44,kcal:400},l:{ch:62,kcal:560},tags:['lentejas','estofadas','legumbres','guiso']},
+  {id:221,name:'Garbanzos con espinacas',cat:'Legumbres',icon:'🫘',s:{ch:30,kcal:260},m:{ch:44,kcal:375},l:{ch:62,kcal:525},tags:['garbanzos','espinacas','legumbres']},
+  {id:222,name:'Potaje de garbanzos',cat:'Legumbres',icon:'🍲',s:{ch:32,kcal:300},m:{ch:46,kcal:430},l:{ch:64,kcal:600},tags:['potaje','garbanzos','legumbres','guiso']},
+  {id:223,name:'Alubias con chorizo',cat:'Legumbres',icon:'🫘',s:{ch:32,kcal:380},m:{ch:46,kcal:540},l:{ch:64,kcal:755},tags:['alubias','judías','chorizo','legumbres']},
+  {id:224,name:'Hummus',cat:'Legumbres',icon:'🫘',s:{ch:12,kcal:150},m:{ch:18,kcal:220},l:{ch:25,kcal:310},tags:['hummus','garbanzos','árabe']},
+  // ========== TAPAS Y RACIONES ==========
+  {id:240,name:'Patatas bravas',cat:'Tapas',icon:'🥔',s:{ch:22,kcal:220},m:{ch:32,kcal:320},l:{ch:45,kcal:450},tags:['patatas','bravas','tapas','salsa']},
+  {id:241,name:'Croquetas de jamón (4u)',cat:'Tapas',icon:'🍤',s:{ch:20,kcal:240},m:{ch:30,kcal:360},l:{ch:42,kcal:500},tags:['croquetas','jamón','tapas','bechamel']},
+  {id:242,name:'Croquetas de bacalao (4u)',cat:'Tapas',icon:'🍤',s:{ch:20,kcal:220},m:{ch:30,kcal:330},l:{ch:42,kcal:460},tags:['croquetas','bacalao','tapas']},
+  {id:243,name:'Croquetas de pollo (4u)',cat:'Tapas',icon:'🍤',s:{ch:20,kcal:230},m:{ch:30,kcal:345},l:{ch:42,kcal:480},tags:['croquetas','pollo','tapas']},
+  {id:244,name:'Pimientos del piquillo',cat:'Tapas',icon:'🫑',s:{ch:8,kcal:60},m:{ch:12,kcal:90},l:{ch:17,kcal:130},tags:['pimientos','piquillo','tapas','asados']},
+  {id:245,name:'Pimientos de padrón',cat:'Tapas',icon:'🫑',s:{ch:5,kcal:60},m:{ch:8,kcal:90},l:{ch:12,kcal:130},tags:['pimientos','padrón','tapas','fritos']},
+  {id:246,name:'Anchoas en aceite',cat:'Tapas',icon:'🐟',s:{ch:0,kcal:80},m:{ch:0,kcal:120},l:{ch:0,kcal:170},tags:['anchoas','aceite','tapas']},
+  {id:247,name:'Jamón serrano (ración)',cat:'Tapas',icon:'🥓',s:{ch:0,kcal:120},m:{ch:0,kcal:180},l:{ch:0,kcal:260},tags:['jamón','serrano','ibérico','tapas']},
+  {id:248,name:'Queso manchego',cat:'Tapas',icon:'🧀',s:{ch:1,kcal:180},m:{ch:2,kcal:260},l:{ch:3,kcal:370},tags:['queso','manchego','tapas']},
+  {id:249,name:'Aceitunas',cat:'Tapas',icon:'🫒',s:{ch:3,kcal:80},m:{ch:5,kcal:120},l:{ch:7,kcal:170},tags:['aceitunas','olivas','tapas']},
+  {id:250,name:'Tortilla de patatas (porción)',cat:'Tapas',icon:'🍳',s:{ch:18,kcal:200},m:{ch:26,kcal:290},l:{ch:36,kcal:400},tags:['tortilla','patatas','tapas']},
+  {id:251,name:'Ensaladilla rusa',cat:'Tapas',icon:'🥗',s:{ch:18,kcal:220},m:{ch:26,kcal:320},l:{ch:36,kcal:450},tags:['ensaladilla','rusa','patata','atún','tapas']},
+  {id:252,name:'Pan con jamón y queso',cat:'Tapas',icon:'🥖',s:{ch:25,kcal:280},m:{ch:36,kcal:400},l:{ch:50,kcal:560},tags:['pan','jamón','queso','tapa']},
+  {id:253,name:'Montadito de lomo',cat:'Tapas',icon:'🥖',s:{ch:15,kcal:180},m:{ch:22,kcal:260},l:{ch:30,kcal:365},tags:['montadito','lomo','tapas','pan']},
+  // ========== DESAYUNOS ==========
+  {id:270,name:'Tostadas con mantequilla y mermelada',cat:'Desayuno',icon:'🍞',s:{ch:35,kcal:280},m:{ch:50,kcal:400},l:{ch:70,kcal:560},tags:['tostadas','mantequilla','mermelada','desayuno']},
+  {id:271,name:'Tostadas con aceite y tomate',cat:'Desayuno',icon:'🍞',s:{ch:30,kcal:220},m:{ch:44,kcal:320},l:{ch:62,kcal:450},tags:['tostadas','aceite','tomate','desayuno','andaluz']},
+  {id:272,name:'Croissant solo',cat:'Desayuno',icon:'🥐',s:{ch:28,kcal:230},m:{ch:40,kcal:330},l:{ch:56,kcal:465},tags:['croissant','desayuno','bollería']},
+  {id:273,name:'Croissant relleno jamón queso',cat:'Desayuno',icon:'🥐',s:{ch:28,kcal:320},m:{ch:40,kcal:460},l:{ch:56,kcal:645},tags:['croissant','jamón','queso','desayuno']},
+  {id:274,name:'Napolitana de chocolate',cat:'Desayuno',icon:'🥐',s:{ch:35,kcal:310},m:{ch:50,kcal:445},l:{ch:70,kcal:625},tags:['napolitana','chocolate','desayuno','bollería']},
+  {id:275,name:'Magdalenas (2u)',cat:'Desayuno',icon:'🧁',s:{ch:28,kcal:240},m:{ch:40,kcal:345},l:{ch:56,kcal:485},tags:['magdalenas','desayuno','bollería']},
+  {id:276,name:'Galletas María (6u)',cat:'Desayuno',icon:'🍪',s:{ch:28,kcal:200},m:{ch:40,kcal:285},l:{ch:56,kcal:400},tags:['galletas','maría','desayuno']},
+  {id:277,name:'Cereales con leche',cat:'Desayuno',icon:'🥣',s:{ch:35,kcal:250},m:{ch:50,kcal:360},l:{ch:70,kcal:505},tags:['cereales','leche','desayuno']},
+  {id:278,name:'Porridge de avena',cat:'Desayuno',icon:'🥣',s:{ch:28,kcal:180},m:{ch:40,kcal:260},l:{ch:56,kcal:365},tags:['porridge','avena','desayuno','saludable']},
+  {id:279,name:'Granola con yogur',cat:'Desayuno',icon:'🥣',s:{ch:32,kcal:280},m:{ch:46,kcal:400},l:{ch:64,kcal:560},tags:['granola','yogur','desayuno']},
+  {id:280,name:'Pancakes (3u)',cat:'Desayuno',icon:'🥞',s:{ch:42,kcal:320},m:{ch:60,kcal:460},l:{ch:84,kcal:645},tags:['pancakes','tortitas','desayuno','americano']},
+  {id:281,name:'Tostada francesa (pain perdu)',cat:'Desayuno',icon:'🍞',s:{ch:30,kcal:280},m:{ch:44,kcal:400},l:{ch:62,kcal:560},tags:['tostada','francesa','pain perdu','desayuno']},
+  {id:282,name:'Muesli con leche',cat:'Desayuno',icon:'🥣',s:{ch:35,kcal:280},m:{ch:50,kcal:400},l:{ch:70,kcal:560},tags:['muesli','leche','desayuno']},
+  {id:283,name:'Batido de plátano',cat:'Desayuno',icon:'🍌',s:{ch:30,kcal:180},m:{ch:44,kcal:260},l:{ch:62,kcal:365},tags:['batido','plátano','desayuno','smoothie']},
+  {id:284,name:'Zumo de naranja (vaso)',cat:'Desayuno',icon:'🍊',s:{ch:22,kcal:90},m:{ch:32,kcal:130},l:{ch:45,kcal:185},tags:['zumo','naranja','desayuno']},
+  // ========== COMIDA ESPAÑOLA ==========
+  {id:300,name:'Puchero',cat:'Española',icon:'🍲',s:{ch:30,kcal:400},m:{ch:44,kcal:570},l:{ch:62,kcal:795},tags:['puchero','cocido','guiso','español']},
+  {id:301,name:'Pisto manchego',cat:'Española',icon:'🫑',s:{ch:12,kcal:120},m:{ch:18,kcal:175},l:{ch:25,kcal:245},tags:['pisto','manchego','verduras','español']},
+  {id:302,name:'Migas',cat:'Española',icon:'🍞',s:{ch:45,kcal:380},m:{ch:65,kcal:540},l:{ch:90,kcal:755},tags:['migas','pan','español','extremeño','manchego']},
+  {id:303,name:'Caldo gallego',cat:'Española',icon:'🍲',s:{ch:18,kcal:180},m:{ch:26,kcal:260},l:{ch:36,kcal:365},tags:['caldo','gallego','galicia','berza']},
+  {id:304,name:'Gazpacho manchego',cat:'Española',icon:'🍲',s:{ch:30,kcal:320},m:{ch:44,kcal:460},l:{ch:62,kcal:645},tags:['gazpacho','manchego','tortas','carne']},
+  {id:305,name:'Morteruelo',cat:'Española',icon:'🍲',s:{ch:8,kcal:280},m:{ch:12,kcal:400},l:{ch:17,kcal:560},tags:['morteruelo','cuenca','caza','español']},
+  {id:306,name:'Berberechos al vapor',cat:'Pescados',icon:'🦪',s:{ch:3,kcal:80},m:{ch:5,kcal:120},l:{ch:7,kcal:170},tags:['berberechos','vapor','marisco']},
+  {id:307,name:'Txangurro (buey de mar)',cat:'Pescados',icon:'🦀',s:{ch:4,kcal:160},m:{ch:6,kcal:230},l:{ch:9,kcal:325},tags:['txangurro','centollo','buey','mar','vasco']},
+  {id:308,name:'Pintxos mixtos',cat:'Tapas',icon:'🍢',s:{ch:25,kcal:280},m:{ch:36,kcal:400},l:{ch:50,kcal:560},tags:['pintxos','pinchos','tapas','vasco','mixtos']},
+  {id:309,name:'Patatas al horno',cat:'Española',icon:'🥔',s:{ch:30,kcal:180},m:{ch:44,kcal:260},l:{ch:62,kcal:365},tags:['patatas','horno','asadas','guarnición']},
+  {id:310,name:'Puré de patata',cat:'Española',icon:'🥔',s:{ch:25,kcal:180},m:{ch:36,kcal:260},l:{ch:50,kcal:365},tags:['puré','patata','guarnición']},
+  {id:311,name:'Pimientos rellenos de carne',cat:'Española',icon:'🫑',s:{ch:18,kcal:250},m:{ch:26,kcal:360},l:{ch:36,kcal:505},tags:['pimientos','rellenos','carne','español']},
+  {id:312,name:'Berenjenas rellenas',cat:'Española',icon:'🍆',s:{ch:15,kcal:200},m:{ch:22,kcal:290},l:{ch:30,kcal:405},tags:['berenjenas','rellenas','español']},
+  // ========== COMIDA INTERNACIONAL ==========
+  {id:330,name:'Sushi (8 piezas)',cat:'Asiático',icon:'🍱',s:{ch:35,kcal:280},m:{ch:50,kcal:400},l:{ch:70,kcal:560},tags:['sushi','japonés','arroz','salmon','atún']},
+  {id:331,name:'Ramen',cat:'Asiático',icon:'🍜',s:{ch:50,kcal:420},m:{ch:72,kcal:600},l:{ch:100,kcal:840},tags:['ramen','japonés','fideos','sopa']},
+  {id:332,name:'Pad thai',cat:'Asiático',icon:'🍜',s:{ch:48,kcal:420},m:{ch:69,kcal:600},l:{ch:96,kcal:840},tags:['pad thai','tailandés','fideos','oriental']},
+  {id:333,name:'Curry de pollo',cat:'Asiático',icon:'🍛',s:{ch:20,kcal:320},m:{ch:30,kcal:460},l:{ch:42,kcal:645},tags:['curry','pollo','indio','tailandés']},
+  {id:334,name:'Noodles con verduras',cat:'Asiático',icon:'🍜',s:{ch:45,kcal:340},m:{ch:65,kcal:490},l:{ch:90,kcal:685},tags:['noodles','fideos','verduras','asiático']},
+  {id:335,name:'Gyozas (6u)',cat:'Asiático',icon:'🥟',s:{ch:28,kcal:240},m:{ch:40,kcal:345},l:{ch:56,kcal:485},tags:['gyozas','dumplings','japonés','chino']},
+  {id:336,name:'Wonton frito (6u)',cat:'Asiático',icon:'🥟',s:{ch:25,kcal:220},m:{ch:36,kcal:315},l:{ch:50,kcal:445},tags:['wonton','dumplings','chino','frito']},
+  {id:337,name:'Arroz frito chino',cat:'Asiático',icon:'🍚',s:{ch:45,kcal:380},m:{ch:65,kcal:545},l:{ch:90,kcal:760},tags:['arroz','frito','chino','oriental']},
+  {id:338,name:'Burrito de carne',cat:'Mexicano',icon:'🌯',s:{ch:50,kcal:520},m:{ch:72,kcal:745},l:{ch:100,kcal:1035},tags:['burrito','carne','mexicano','tortilla']},
+  {id:339,name:'Tacos de pollo (3u)',cat:'Mexicano',icon:'🌮',s:{ch:36,kcal:380},m:{ch:52,kcal:545},l:{ch:72,kcal:760},tags:['tacos','pollo','mexicano']},
+  {id:340,name:'Nachos con guacamole',cat:'Mexicano',icon:'🥑',s:{ch:35,kcal:380},m:{ch:50,kcal:545},l:{ch:70,kcal:765},tags:['nachos','guacamole','mexicano','chips']},
+  {id:341,name:'Falafel (ración)',cat:'Árabe',icon:'🧆',s:{ch:30,kcal:300},m:{ch:44,kcal:430},l:{ch:62,kcal:605},tags:['falafel','árabe','vegetariano','garbanzos']},
+  {id:342,name:'Shawarma',cat:'Árabe',icon:'🌯',s:{ch:35,kcal:420},m:{ch:50,kcal:600},l:{ch:70,kcal:840},tags:['shawarma','árabe','pollo','carne','pita']},
+  // ========== POSTRES ==========
+  {id:360,name:'Flan casero',cat:'Postres',icon:'🍮',s:{ch:22,kcal:120},m:{ch:32,kcal:175},l:{ch:45,kcal:245},tags:['flan','postre','dulce','huevo']},
+  {id:361,name:'Crema catalana',cat:'Postres',icon:'🍮',s:{ch:28,kcal:180},m:{ch:40,kcal:260},l:{ch:56,kcal:365},tags:['crema','catalana','postre','dulce']},
+  {id:362,name:'Natilla',cat:'Postres',icon:'🍮',s:{ch:25,kcal:140},m:{ch:36,kcal:200},l:{ch:50,kcal:280},tags:['natilla','postre','dulce']},
+  {id:363,name:'Tarta de queso',cat:'Postres',icon:'🍰',s:{ch:30,kcal:280},m:{ch:44,kcal:400},l:{ch:62,kcal:560},tags:['tarta','queso','postre','pastel']},
+  {id:364,name:'Tarta de chocolate',cat:'Postres',icon:'🍰',s:{ch:42,kcal:350},m:{ch:60,kcal:500},l:{ch:84,kcal:700},tags:['tarta','chocolate','postre','pastel']},
+  {id:365,name:'Tarta de manzana',cat:'Postres',icon:'🍰',s:{ch:38,kcal:290},m:{ch:55,kcal:415},l:{ch:76,kcal:580},tags:['tarta','manzana','postre']},
+  {id:366,name:'Brownie',cat:'Postres',icon:'🍫',s:{ch:35,kcal:300},m:{ch:50,kcal:430},l:{ch:70,kcal:605},tags:['brownie','chocolate','postre']},
+  {id:367,name:'Tiramisu',cat:'Postres',icon:'🍰',s:{ch:30,kcal:280},m:{ch:44,kcal:400},l:{ch:62,kcal:560},tags:['tiramisu','italiano','postre','café']},
+  {id:368,name:'Coulant de chocolate',cat:'Postres',icon:'🍫',s:{ch:32,kcal:300},m:{ch:46,kcal:430},l:{ch:64,kcal:605},tags:['coulant','chocolate','postre','caliente']},
+  {id:369,name:'Helado (2 bolas)',cat:'Postres',icon:'🍨',s:{ch:22,kcal:180},m:{ch:32,kcal:260},l:{ch:45,kcal:365},tags:['helado','postre','frío','dulce']},
+  {id:370,name:'Mousse de chocolate',cat:'Postres',icon:'🍫',s:{ch:20,kcal:200},m:{ch:30,kcal:290},l:{ch:42,kcal:405},tags:['mousse','chocolate','postre']},
+  {id:371,name:'Churros con chocolate',cat:'Postres',icon:'🍩',s:{ch:42,kcal:380},m:{ch:60,kcal:545},l:{ch:84,kcal:765},tags:['churros','chocolate','postre','desayuno']},
+  {id:372,name:'Buñuelos',cat:'Postres',icon:'🍩',s:{ch:35,kcal:280},m:{ch:50,kcal:400},l:{ch:70,kcal:560},tags:['buñuelos','postre','frito']},
+  {id:373,name:'Torrijas',cat:'Postres',icon:'🍞',s:{ch:45,kcal:320},m:{ch:65,kcal:460},l:{ch:90,kcal:645},tags:['torrijas','semana santa','postre','dulce']},
+];
 
+const CATS = ['Todos',...[...new Set(FOOD_DB.map(f=>f.cat))].sort()];
+
+// ============================================================
+// STATE
+// ============================================================
+const STORE = 'diabapp_v5';
+const COLORS = ['#6366F1','#14B8A6','#F97316','#22C55E','#EF4444','#8B5CF6','#EC4899','#EAB308'];
+let profiles=[], curId=null, histFilter='all', editKey='', editType='';
+let selFood=null, selRation='m', selExtras={}, curCat='Todos';
+
+function getP(){return profiles.find(p=>p.id===curId)}
+function load(){try{const d=localStorage.getItem(STORE);if(d){const j=JSON.parse(d);profiles=j.profiles||[];}}catch(e){}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify({profiles}));}catch(e){}}
+
+// ============================================================
+// NAV
+// ============================================================
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const map={'s-home':0,'s-analyze':1,'s-history':2,'s-profile':3};
+  const map={'s-home':0,'s-food':1,'s-history':2,'s-profile':3};
   document.querySelectorAll('.bnav').forEach(nav=>{
     nav.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',i===(map[id]??-1)));
   });
   if(id==='s-home')renderHome();
+  if(id==='s-food'){renderCats();renderFoodList();}
   if(id==='s-history')renderHistory('all');
   if(id==='s-profile')renderProfile();
 }
 
-function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+// ============================================================
+// UTILS
+// ============================================================
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 function openModal(id){document.getElementById(id).classList.add('open');}
 function closeModal(id){document.getElementById(id).classList.remove('open');}
 function closeOut(e,id){if(e.target===document.getElementById(id))closeModal(id);}
-function toggleChip(el){el.classList.toggle('on');}
-function showSpin(msg){document.getElementById('spin-msg').textContent=msg||'Analizando…';document.getElementById('spinner').classList.add('on');}
-function hideSpin(){document.getElementById('spinner').classList.remove('on');}
 
-function switchMode(m){
-  curMode=m;
-  document.getElementById('tab-photo').classList.toggle('on',m==='photo');
-  document.getElementById('tab-manual').classList.toggle('on',m==='manual');
-  document.getElementById('mode-photo').style.display=m==='photo'?'block':'none';
-  document.getElementById('mode-manual').style.display=m==='manual'?'block':'none';
+// ============================================================
+// PROFILES
+// ============================================================
+function renderProfilesScreen(){
+  const list=document.getElementById('profiles-list');
+  if(!profiles.length){list.innerHTML='<div style="text-align:center;color:var(--t3);font-size:13px;padding:16px 0 20px">Crea tu primer perfil para empezar.</div>';return;}
+  list.innerHTML=profiles.map(p=>`
+    <button class="pcard" onclick="selectProfile('${p.id}')">
+      <div class="pav" style="background:${p.color};width:42px;height:42px;font-size:16px">${p.name.charAt(0).toUpperCase()}</div>
+      <div style="flex:1;text-align:left">
+        <div style="font-size:14px;font-weight:500;color:var(--t)">${p.name}</div>
+        <div style="font-size:11px;color:var(--t2);margin-top:2px">Ratio ${p.config.ratio}g/u · FSI ${p.config.sensitivity} · ${p.entries.length} registros</div>
+      </div>
+      <span style="color:var(--t3);font-size:18px">›</span>
+    </button>`).join('');
 }
+function createProfile(){
+  const name=document.getElementById('np-name').value.trim();
+  if(!name){toast('Escribe tu nombre');return;}
+  const p={id:Date.now().toString(),name,color:COLORS[profiles.length%COLORS.length],
+    config:{ratio:parseFloat(document.getElementById('np-ratio').value)||12,
+      sensitivity:parseFloat(document.getElementById('np-sens').value)||43,
+      target:parseFloat(document.getElementById('np-target').value)||100,
+      basalDose:parseFloat(document.getElementById('np-basald').value)||0,
+      basalType:document.getElementById('np-basalt').value||'Toujeo',
+      rapidType:document.getElementById('np-rapidt').value||'NovoRapid'},
+    entries:[],toujeo:{done:false,date:'',time:''}};
+  profiles.push(p);save();
+  closeModal('modal-newprofile');
+  document.getElementById('np-name').value='';document.getElementById('np-basald').value='';
+  selectProfile(p.id);
+}
+function selectProfile(id){curId=id;renderHome();renderProfile();goTo('s-home');}
+function switchProfile(){curId=null;goTo('s-profiles');document.querySelector('#s-profiles').classList.add('active');document.querySelectorAll('.screen').forEach(s=>{if(s.id!=='s-profiles')s.classList.remove('active');});renderProfilesScreen();}
 
+// ============================================================
+// TOUJEO
+// ============================================================
 function toggleToujeo(){
+  const p=getP();if(!p)return;
   const today=new Date().toDateString();
-  if(S.toujeo.date===today&&S.toujeo.done){S.toujeo.done=false;S.toujeo.time='';}
-  else{S.toujeo.done=true;S.toujeo.date=today;S.toujeo.time=new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
+  if(p.toujeo.date===today&&p.toujeo.done){p.toujeo.done=false;p.toujeo.time='';}
+  else{p.toujeo.done=true;p.toujeo.date=today;p.toujeo.time=new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
   save();renderToujeo();
 }
 function renderToujeo(){
-  const today=new Date().toDateString();
-  const done=S.toujeo.done&&S.toujeo.date===today;
-  document.getElementById('toujeo-card').style.borderColor=done?'rgba(34,197,94,.4)':'var(--border)';
-  document.getElementById('toujeo-label').textContent=done?'✅ Toujeo puesta':'💉 Toujeo de hoy';
-  document.getElementById('toujeo-sub').textContent=done?'Registrada a las '+S.toujeo.time:'¿Ya te la has puesto?';
-  document.getElementById('toujeo-check').textContent=done?'✓':'';
-  document.getElementById('toujeo-check').style.background=done?'var(--green)':'transparent';
-  document.getElementById('toujeo-check').style.borderColor=done?'var(--green)':'var(--border)';
-  document.getElementById('toujeo-check').style.color=done?'#fff':'transparent';
+  const p=getP();if(!p)return;
+  const today=new Date().toDateString(),done=p.toujeo.done&&p.toujeo.date===today;
+  document.getElementById('toujeo-card').style.borderColor=done?'rgba(34,197,94,.5)':'var(--bd)';
+  document.getElementById('toujeo-lbl').textContent=done?p.config.basalType+' ✅':'Basal de hoy';
+  document.getElementById('toujeo-sub').textContent=done?'Registrada a las '+p.toujeo.time:'¿Ya te la has puesto?';
+  const ck=document.getElementById('toujeo-check');
+  ck.textContent=done?'✓':'';
+  ck.style.background=done?'var(--green)':'transparent';
+  ck.style.borderColor=done?'var(--green)':'var(--bd2)';
+  ck.style.color=done?'#fff':'transparent';
 }
 
+// ============================================================
+// HOME
+// ============================================================
 function renderHome(){
-  const now=new Date();
-  document.getElementById('home-date').textContent=now.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
-  const today=now.toDateString();
-  const meals=S.entries.filter(e=>e.type==='meal'&&new Date(e.ts).toDateString()===today);
-  document.getElementById('today-rapid').innerHTML=meals.reduce((a,e)=>a+(e.doseFinal||0),0).toFixed(1)+'<span style="font-size:14px"> u</span>';
-  document.getElementById('today-ch').innerHTML=Math.round(meals.reduce((a,e)=>a+(e.ch||0),0))+'<span style="font-size:14px"> g</span>';
-  document.getElementById('today-kcal').innerHTML=Math.round(meals.reduce((a,e)=>a+(e.kcal||0),0))+'<span style="font-size:14px"> kcal</span>';
-  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
-  document.getElementById('today-hipos').textContent=S.entries.filter(e=>e.type==='hipo'&&new Date(e.ts)>weekAgo).length;
+  const p=getP();if(!p)return;
+  document.getElementById('home-name').textContent=p.name;
+  document.getElementById('home-greeting').textContent='Hola, '+p.name+' 👋';
+  document.getElementById('home-date').textContent=new Date().toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'});
+  const today=new Date().toDateString();
+  const meals=p.entries.filter(e=>e.type==='meal'&&new Date(e.ts).toDateString()===today);
+  document.getElementById('today-rapid').textContent=meals.reduce((a,e)=>a+(e.doseFinal||0),0).toFixed(1)+' u';
+  document.getElementById('today-ch').textContent=Math.round(meals.reduce((a,e)=>a+(e.ch||0),0))+' g';
+  document.getElementById('today-kcal').textContent=Math.round(meals.reduce((a,e)=>a+(e.kcal||0),0))+' kcal';
+  const w=new Date();w.setDate(w.getDate()-7);
+  document.getElementById('today-hipos').textContent=p.entries.filter(e=>e.type==='hipo'&&new Date(e.ts)>w).length;
   renderToujeo();
 }
 
-function calcDose(ch,gluc){
-  const c=S.config;
-  let base=ch/c.ratio,corr=(gluc-c.target)/c.sensitivity,total=base+corr;
+// ============================================================
+// FOOD DB
+// ============================================================
+function renderCats(){
+  const strip=document.getElementById('cat-strip');
+  strip.innerHTML=CATS.map(c=>`<button class="chip${c===curCat?' on':''}" onclick="setCat('${c}',this)">${c}</button>`).join('');
+}
+function setCat(c,btn){
+  curCat=c;
+  document.querySelectorAll('#cat-strip .chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderFoodList();
+}
+function renderFoodList(){
+  const q=(document.getElementById('food-search').value||'').toLowerCase().trim();
+  let items=FOOD_DB;
+  if(curCat!=='Todos') items=items.filter(f=>f.cat===curCat);
+  if(q) items=items.filter(f=>f.tags.some(t=>t.includes(q))||f.name.toLowerCase().includes(q)||f.cat.toLowerCase().includes(q));
+  const list=document.getElementById('food-list');
+  if(!items.length){list.innerHTML='<div style="padding:32px;text-align:center;color:var(--t3);font-size:13px">Sin resultados. Prueba otro término.</div>';return;}
+  list.innerHTML=items.map(f=>`
+    <div class="food-item" onclick="openFood(${f.id})">
+      <div class="food-icon">${f.icon}</div>
+      <div class="food-info">
+        <div class="food-name">${f.name}</div>
+        <div class="food-cat">${f.cat}</div>
+      </div>
+      <div class="food-ch">${f.m.ch}g CH</div>
+    </div>`).join('');
+}
+
+function openFood(id){
+  selFood=FOOD_DB.find(f=>f.id===id);
+  if(!selFood)return;
+  selRation='m';selExtras={};
+  document.getElementById('fd-icon').textContent=selFood.icon;
+  document.getElementById('fd-name').textContent=selFood.name;
+  document.getElementById('fd-cat').textContent=selFood.cat;
+  document.getElementById('rb-s-ch').textContent=selFood.s.ch+'g';
+  document.getElementById('rb-m-ch').textContent=selFood.m.ch+'g';
+  document.getElementById('rb-l-ch').textContent=selFood.l.ch+'g';
+  ['rb-s','rb-m','rb-l'].forEach((id,i)=>document.getElementById(id).classList.toggle('on',i===1));
+  const el=document.getElementById('extras-list');
+  el.innerHTML=EXTRAS.map(ex=>`
+    <div class="extra-item">
+      <div style="display:flex;align-items:center;gap:8px;flex:1">
+        <span style="font-size:18px">${ex.icon}</span>
+        <div>
+          <div style="font-size:12px;font-weight:500;color:var(--t)">${ex.name}</div>
+          <div style="font-size:11px;color:var(--t2)">${ex.ch}g CH · ${ex.kcal} kcal</div>
+        </div>
+      </div>
+      <div class="extra-check" id="ex-${ex.id}" onclick="toggleExtra('${ex.id}')"></div>
+    </div>`).join('');
+  document.getElementById('fd-gluc').value='';
+  document.getElementById('fd-dose-hero').style.display='none';
+  document.getElementById('fd-confirm-area').style.display='none';
+  updateFoodTotals();
+  openModal('modal-food');
+}
+
+function setRation(r){
+  selRation=r;
+  ['rb-s','rb-m','rb-l'].forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById('rb-'+r).classList.add('on');
+  updateFoodTotals();calcFoodDose();
+}
+
+function toggleExtra(id){
+  selExtras[id]=!selExtras[id];
+  const ck=document.getElementById('ex-'+id);
+  ck.textContent=selExtras[id]?'✓':'';
+  ck.classList.toggle('on',!!selExtras[id]);
+  updateFoodTotals();calcFoodDose();
+}
+
+function updateFoodTotals(){
+  if(!selFood)return;
+  const base=selFood[selRation];
+  let ch=base.ch, kcal=base.kcal;
+  EXTRAS.forEach(ex=>{if(selExtras[ex.id]){ch+=ex.ch;kcal+=ex.kcal;}});
+  document.getElementById('fd-total-ch').textContent=ch+'g';
+  document.getElementById('fd-total-kcal').textContent=kcal+' kcal';
+}
+
+function calcFoodDose(){
+  const p=getP();if(!p||!selFood)return;
+  const gluc=parseFloat(document.getElementById('fd-gluc').value);
+  if(isNaN(gluc)||gluc<20){document.getElementById('fd-dose-hero').style.display='none';document.getElementById('fd-confirm-area').style.display='none';return;}
+  const base=selFood[selRation];
+  let ch=base.ch;
+  EXTRAS.forEach(ex=>{if(selExtras[ex.id])ch+=ex.ch;});
+  let bDose=ch/p.config.ratio, corr=(gluc-p.config.target)/p.config.sensitivity, total=bDose+corr;
   if(gluc<90)total-=1;
   total=Math.max(0,Math.round(total*2)/2);
-  return{total,base:Math.round(base*10)/10,corr:Math.round(corr*10)/10};
+  document.getElementById('fd-dose-num').textContent=total.toFixed(1);
+  document.getElementById('fd-rapid-lbl').textContent='unidades '+p.config.rapidType;
+  let sub=bDose.toFixed(1)+'u comida';
+  if(Math.round(corr*10)/10!==0)sub+=' '+(corr>=0?'+':'')+Math.round(corr*10)/10+'u corrección';
+  if(gluc<90)sub+=' −1u seguridad';
+  document.getElementById('fd-dose-sub').textContent=sub;
+  document.getElementById('fd-dose-hero').style.display='block';
+  document.getElementById('fd-dose-real').value=total.toFixed(1);
+  document.getElementById('fd-confirm-area').style.display='block';
 }
 
-function handlePhoto(e){
-  const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const b64=ev.target.result.split(',')[1],mime=file.type||'image/jpeg';
-    document.getElementById('photo-prev').src=ev.target.result;
-    document.getElementById('photo-prev').style.display='block';
-    document.getElementById('photo-drop-zone').style.display='none';
-    document.getElementById('analysis-area').style.display='none';
-    analyzeWithAI({type:'photo',b64,mime});
-  };
-  reader.readAsDataURL(file);
+function saveFoodMeal(){
+  const p=getP();if(!p||!selFood)return;
+  const base=selFood[selRation];
+  let ch=base.ch, kcal=base.kcal;
+  const extrasUsed=[];
+  EXTRAS.forEach(ex=>{if(selExtras[ex.id]){ch+=ex.ch;kcal+=ex.kcal;extrasUsed.push(ex.name);}});
+  const gluc=parseFloat(document.getElementById('fd-gluc').value)||0;
+  const doseFinal=parseFloat(document.getElementById('fd-dose-real').value)||0;
+  let bDose=ch/p.config.ratio, corr=gluc>0?(gluc-p.config.target)/p.config.sensitivity:0, total=bDose+corr;
+  if(gluc<90&&gluc>0)total-=1;
+  const desc=selFood.name+(extrasUsed.length?' + '+extrasUsed.join(', '):'');
+  p.entries.unshift({id:Date.now(),type:'meal',ts:new Date().toISOString(),desc,ch,kcal,glucPrev:gluc,doseRec:Math.max(0,Math.round(total*2)/2),doseFinal});
+  save();closeModal('modal-food');toast('✅ Comida registrada');renderHome();
 }
 
-function addManualIngr(){
-  const wrap=document.getElementById('manual-ingrs');
-  const idx=wrap.children.length;
-  const div=document.createElement('div');div.className='manual-ingr';
-  div.innerHTML='<input class="field" type="text" placeholder="Alimento" id="mi-name-'+idx+'"><input class="field qty" type="number" placeholder="g" id="mi-qty-'+idx+'"><button class="del-btn" onclick="this.parentElement.remove()">✕</button>';
-  wrap.appendChild(div);
-}
-
-function onDirectCH(){
-  const ch=parseFloat(document.getElementById('m-ch-direct').value)||0;
-  if(ch>0){
-    const r={ingredientes:[{nombre:'Comida manual',cantidad_g:0,carbohidratos_g:ch,calorias_kcal:Math.round(ch*4)}],total_carbohidratos:ch,total_calorias:Math.round(ch*4),confianza:'alta',observaciones:'Valores introducidos manualmente'};
-    curAnalysis={...r,mode:'manual'};renderResults(r,'manual');
-  }
-}
-
-async function analyzeManual(){
-  const name=document.getElementById('m-name').value.trim();
-  const directCH=parseFloat(document.getElementById('m-ch-direct').value)||0;
-  if(!name&&!directCH){toast('⚠️ Escribe qué has comido');return;}
-  const ingrs=[];
-  document.querySelectorAll('.manual-ingr').forEach((row,i)=>{
-    const n=row.querySelector('[id^="mi-name"]')?.value?.trim();
-    const q=parseFloat(row.querySelector('[id^="mi-qty"]')?.value)||0;
-    if(n)ingrs.push(n+(q?' ('+q+'g)':''));
-  });
-  const desc=name+(ingrs.length?'\nIngredientes: '+ingrs.join(', '):'')+(directCH?'\nCarbohidratos conocidos: '+directCH+'g':'');
-  analyzeWithAI({type:'text',desc});
-}
-
-async function analyzeWithAI(input){
-  showSpin('Analizando con IA…');
-  try{
-    const prompt='Eres un nutricionista experto en diabetes tipo 1. '+(input.type==='photo'?'Analiza esta imagen de comida':'Analiza esta descripción de comida: '+input.desc)+' y devuelve SOLO un JSON sin texto adicional ni markdown: {"ingredientes":[{"nombre":"string","cantidad_g":number,"carbohidratos_g":number,"calorias_kcal":number}],"total_carbohidratos":number,"total_calorias":number,"confianza":"alta/media/baja","observaciones":"string"}';
-    const content=input.type==='photo'
-      ?[{type:'image',source:{type:'base64',media_type:input.mime,data:input.b64}},{type:'text',text:prompt}]
-      :[{type:'text',text:prompt}];
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content}]})
-    });
-    if(!res.ok){const err=await res.json();throw new Error(err.error?.message||'Error API');}
-    const data=await res.json();
-    const txt=data.content[0].text.trim().replace(/```json|```/g,'').trim();
-    const result=JSON.parse(txt);
-    const mode=input.type==='photo'?'photo':'manual';
-    curAnalysis={...result,mode};
-    renderResults(result,mode);
-  }catch(err){hideSpin();toast('❌ '+err.message);if(input.type==='photo')resetAnalyze();}
-  hideSpin();
-}
-
-function renderResults(r,mode){
-  const ingrHTML=(r.ingredientes||[]).map(i=>'<div class="ingr-row"><span class="ingr-n">'+i.nombre+'</span><span class="ingr-g">'+(i.cantidad_g||'—')+'g</span><span class="ingr-c">'+i.carbohidratos_g+'g</span><span class="ingr-k">'+(i.calorias_kcal||'—')+'</span></div>').join('');
-  const confColor=r.confianza==='alta'?'var(--green)':r.confianza==='media'?'var(--amber)':'var(--red)';
-  const confEmoji=r.confianza==='alta'?'✅':r.confianza==='media'?'⚠️':'❓';
-  if(mode==='photo'){
-    document.getElementById('sum-ch').textContent=(r.total_carbohidratos||0)+'g';
-    document.getElementById('sum-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
-    document.getElementById('sum-conf').textContent=confEmoji+' '+r.confianza;
-    document.getElementById('sum-conf').style.color=confColor;
-    document.getElementById('ingr-list').innerHTML=ingrHTML;
-    document.getElementById('total-ch-val').textContent=(r.total_carbohidratos||0)+'g';
-    document.getElementById('total-kcal-val').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
-    const obs=document.getElementById('obs-box');
-    if(r.observaciones){obs.textContent='💬 '+r.observaciones;obs.style.display='block';}else{obs.style.display='none';}
-    document.getElementById('gluc-in').value='';
-    document.getElementById('dose-hero').style.display='none';
-    document.getElementById('confirm-area').style.display='none';
-    document.getElementById('analysis-area').style.display='block';
-  }else{
-    document.getElementById('m-sum-ch').textContent=(r.total_carbohidratos||0)+'g';
-    document.getElementById('m-sum-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
-    document.getElementById('m-sum-conf').textContent=confEmoji+' '+r.confianza;
-    document.getElementById('m-sum-conf').style.color=confColor;
-    document.getElementById('m-ingr-list').innerHTML=ingrHTML;
-    document.getElementById('m-total-ch').textContent=(r.total_carbohidratos||0)+'g';
-    document.getElementById('m-total-kcal').textContent=(r.total_calorias||'—')+(r.total_calorias?' kcal':'');
-    document.getElementById('m-gluc-in').value='';
-    document.getElementById('m-dose-hero').style.display='none';
-    document.getElementById('m-confirm-area').style.display='none';
-    document.getElementById('manual-result').style.display='block';
-  }
-}
-
-function onGlucChange(mode){
-  if(!curAnalysis)return;
-  const p=mode==='photo'?'':'m-';
-  const gluc=parseFloat(document.getElementById(p+'gluc-in').value);
-  if(isNaN(gluc)||gluc<20){document.getElementById(p+'dose-hero').style.display='none';document.getElementById(p+'confirm-area').style.display='none';return;}
-  if(mode==='photo'){
-    const ab=document.getElementById('gluc-alert');
-    if(gluc<70){ab.innerHTML='<div class="alert alert-r">⚠️ HIPOGLUCEMIA — Toma 15g de azúcar ahora. Zumo, sobre de azúcar o glucosa.</div>';ab.style.display='block';}
-    else if(gluc>250){ab.innerHTML='<div class="alert alert-a">⚠️ GLUCEMIA MUY ALTA — Considera contactar con tu médico.</div>';ab.style.display='block';}
-    else{ab.style.display='none';}
-  }
-  const ch=curAnalysis.total_carbohidratos||0;
-  const d=calcDose(ch,gluc);
-  document.getElementById(p+'dose-big').textContent=d.total.toFixed(1);
-  let brk=d.base.toFixed(1)+'u comida';
-  if(d.corr!==0)brk+=' '+(d.corr>=0?'+':'')+d.corr.toFixed(1)+'u corrección';
-  if(gluc<90)brk+=' −1u seguridad';
-  document.getElementById(p+'dose-break').textContent=brk;
-  document.getElementById(p+'dose-hero').style.display='block';
-  document.getElementById(p+'dose-real').value=d.total.toFixed(1);
-  document.getElementById(p+'confirm-area').style.display='block';
-}
-
-function saveMeal(mode){
-  if(!curAnalysis)return;
-  const p=mode==='photo'?'':'m-';
-  const gluc=parseFloat(document.getElementById(p+'gluc-in').value)||0;
-  const doseFinal=parseFloat(document.getElementById(p+'dose-real').value)||0;
-  if(doseFinal>12){
-    pendingHighDose={gluc,doseFinal,mode};
-    document.getElementById('highdose-msg').textContent='La dosis calculada es '+doseFinal+'u. ¿Estás seguro?';
-    openModal('modal-highdose');return;
-  }
-  doSaveMeal(gluc,doseFinal,mode);
-}
-
-function confirmHighDose(){closeModal('modal-highdose');if(pendingHighDose)doSaveMeal(pendingHighDose.gluc,pendingHighDose.doseFinal,pendingHighDose.mode);}
-
-function doSaveMeal(gluc,doseFinal,mode){
-  const d=gluc>0?calcDose(curAnalysis.total_carbohidratos,gluc):{total:doseFinal,base:0,corr:0};
-  const desc=mode==='photo'?(curAnalysis.ingredientes||[]).map(i=>i.nombre).join(', ')||'Comida por foto':document.getElementById('m-name').value||'Comida manual';
-  S.entries.unshift({id:Date.now(),type:'meal',ts:new Date().toISOString(),desc,ch:curAnalysis.total_carbohidratos,kcal:curAnalysis.total_calorias||0,ingredients:curAnalysis.ingredientes||[],glucPrev:gluc,doseRec:d.total,doseFinal,source:mode,obs:curAnalysis.observaciones||''});
-  save();toast('✅ Comida registrada');
-  mode==='photo'?resetAnalyze():resetManual();
-  renderHome();goTo('s-home');
-}
-
-function resetAnalyze(){curAnalysis=null;document.getElementById('photo-prev').style.display='none';document.getElementById('photo-drop-zone').style.display='flex';document.getElementById('analysis-area').style.display='none';document.getElementById('gluc-alert').style.display='none';document.getElementById('file-in').value='';}
-function resetManual(){curAnalysis=null;document.getElementById('m-name').value='';document.getElementById('m-ch-direct').value='';document.getElementById('manual-ingrs').innerHTML='';document.getElementById('manual-result').style.display='none';}
-
+// ============================================================
+// DIARY
+// ============================================================
 function saveHipo(){
-  const gluc=parseFloat(document.getElementById('h-gluc').value)||0;if(!gluc){toast('⚠️ Introduce la glucemia');return;}
-  const symp=[...document.querySelectorAll('#h-symp-btns .chip.on')].map(b=>b.textContent).join(', ');
-  S.entries.unshift({id:Date.now(),type:'hipo',ts:new Date().toISOString(),gluc,symp,treat:document.getElementById('h-treat').value,notes:document.getElementById('h-notes').value});
-  save();closeModal('modal-hipo');['h-gluc','h-treat','h-notes'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('#h-symp-btns .chip').forEach(c=>c.classList.remove('on'));
+  const p=getP();if(!p)return;
+  const gluc=parseFloat(document.getElementById('h-gluc').value)||0;if(!gluc){toast('Introduce la glucemia');return;}
+  const symp=[...document.querySelectorAll('#h-symp .chip.on')].map(b=>b.textContent).join(', ');
+  p.entries.unshift({id:Date.now(),type:'hipo',ts:new Date().toISOString(),gluc,symp,treat:document.getElementById('h-treat').value,notes:document.getElementById('h-notes').value});
+  save();closeModal('modal-hipo');
+  ['h-gluc','h-treat','h-notes'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#h-symp .chip').forEach(c=>c.classList.remove('on'));
   toast('✅ Hipo registrada');renderHome();
 }
 function saveHiper(){
-  const gluc=parseFloat(document.getElementById('hi-gluc').value)||0;if(!gluc){toast('⚠️ Introduce la glucemia');return;}
-  const cause=[...document.querySelectorAll('#hi-cause-btns .chip.on')].map(b=>b.textContent).join(', ');
-  S.entries.unshift({id:Date.now(),type:'hiper',ts:new Date().toISOString(),gluc,cause,corr:parseFloat(document.getElementById('hi-corr').value)||0,notes:document.getElementById('hi-notes').value});
-  save();closeModal('modal-hiper');['hi-gluc','hi-corr','hi-notes'].forEach(id=>document.getElementById(id).value='');
-  document.querySelectorAll('#hi-cause-btns .chip').forEach(c=>c.classList.remove('on'));
+  const p=getP();if(!p)return;
+  const gluc=parseFloat(document.getElementById('hi-gluc').value)||0;if(!gluc){toast('Introduce la glucemia');return;}
+  const cause=[...document.querySelectorAll('#hi-cause .chip.on')].map(b=>b.textContent).join(', ');
+  p.entries.unshift({id:Date.now(),type:'hiper',ts:new Date().toISOString(),gluc,cause,corr:parseFloat(document.getElementById('hi-corr').value)||0,notes:document.getElementById('hi-notes').value});
+  save();closeModal('modal-hiper');
+  ['hi-gluc','hi-corr','hi-notes'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('#hi-cause .chip').forEach(c=>c.classList.remove('on'));
   toast('✅ Hiper registrada');renderHome();
 }
 function saveBasal(){
-  const units=parseFloat(document.getElementById('b-units').value)||0;if(!units){toast('⚠️ Introduce las unidades');return;}
-  S.entries.unshift({id:Date.now(),type:'basal',ts:new Date().toISOString(),units,time:document.getElementById('b-time').value,notes:document.getElementById('b-notes').value});
-  save();closeModal('modal-basal');['b-units','b-notes'].forEach(id=>document.getElementById(id).value='');
+  const p=getP();if(!p)return;
+  const units=parseFloat(document.getElementById('b-units').value)||0;if(!units){toast('Introduce las unidades');return;}
+  p.entries.unshift({id:Date.now(),type:'basal',ts:new Date().toISOString(),units,time:document.getElementById('b-time').value,notes:document.getElementById('b-notes').value});
+  save();closeModal('modal-basal');
+  ['b-units','b-notes'].forEach(id=>document.getElementById(id).value='');
   toast('✅ Basal registrada');renderHome();
 }
-
-let histFilter='all';
-function filterHist(f,btn){histFilter=f;document.querySelectorAll('#hist-filters .chip').forEach(c=>c.classList.remove('on'));btn.classList.add('on');renderHistory(f);}
+function filterHist(f,btn){
+  histFilter=f;
+  document.querySelectorAll('#hist-chips .chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');renderHistory(f);
+}
 function renderHistory(f){
-  const entries=f==='all'?S.entries:S.entries.filter(e=>e.type===f);
+  const p=getP();if(!p)return;
+  const entries=f==='all'?p.entries:p.entries.filter(e=>e.type===f);
   const list=document.getElementById('hist-list');
-  if(!entries.length){list.innerHTML='<div style="padding:32px;text-align:center;color:var(--text3);font-size:14px">No hay registros todavía.</div>';return;}
+  if(!entries.length){list.innerHTML='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">No hay registros todavía.</div>';return;}
   const groups={};
   entries.forEach(e=>{const d=new Date(e.ts).toDateString();if(!groups[d])groups[d]=[];groups[d].push(e);});
   list.innerHTML=Object.keys(groups).map(day=>{
     const d=new Date(day);
     const lbl=isToday(d)?'Hoy':isYest(d)?'Ayer':fmtDate(d);
-    return'<div class="day-sep">'+lbl+'</div>'+groups[day].map(e=>entryHTML(e)).join('');
+    return'<div class="daysep">'+lbl+'</div>'+groups[day].map(e=>entryHTML(e)).join('');
   }).join('');
 }
 function entryHTML(e){
-  const icons={meal:'🍽️',hipo:'⬇️',hiper:'⬆️',basal:'💉'};
+  const ico={meal:'🍽️',hipo:'⬇️',hiper:'⬆️',basal:'💉'}[e.type]||'📝';
   let t='',s='',badge='',bc='';
-  if(e.type==='meal'){t=e.desc;const k=e.kcal?' · '+e.kcal+'kcal':'';s=e.ch+'g CH'+k+' · '+(e.glucPrev||'—')+' mg/dL · '+e.doseFinal+'u';badge=e.doseFinal+'u';bc='pill-b';}
+  if(e.type==='meal'){t=e.desc;s=e.ch+'g CH'+(e.kcal?' · '+e.kcal+'kcal':'')+' · '+(e.glucPrev||'—')+' mg/dL · '+e.doseFinal+'u';badge=e.doseFinal+'u';bc='pill-b';}
   if(e.type==='hipo'){t='Hipoglucemia';s=e.gluc+' mg/dL · '+(e.symp||'');badge=e.gluc+'';bc='pill-r';}
   if(e.type==='hiper'){t='Hiperglucemia';s=e.gluc+' mg/dL · '+(e.cause||'');badge=e.gluc+'';bc='pill-a';}
-  if(e.type==='basal'){t='Basal Toujeo';s=e.units+'u · '+e.time;badge=e.units+'u';bc='pill-g';}
-  return'<div class="log-row"><div class="log-ico">'+(icons[e.type]||'📝')+'</div><div class="log-info"><div class="log-t">'+t+'</div><div class="log-s">'+fmtTime(e.ts)+' · '+s+'</div></div><span class="pill '+bc+'" style="flex-shrink:0">'+badge+'</span><button onclick="delEntry('+e.id+')" style="background:none;border:none;cursor:pointer;font-size:16px;color:var(--text3);padding:4px;flex-shrink:0">🗑</button></div>';
+  if(e.type==='basal'){t='Basal';s=e.units+'u · '+e.time;badge=e.units+'u';bc='pill-g';}
+  return`<div class="logrow"><div class="logico">${ico}</div><div class="loginfo"><div class="logt">${t}</div><div class="logs">${fmtTime(e.ts)} · ${s}</div></div><span class="pill ${bc}">${badge}</span><button onclick="delEntry(${e.id})" style="background:none;border:none;cursor:pointer;font-size:14px;color:var(--t3);padding:4px">🗑</button></div>`;
 }
-function delEntry(id){if(!confirm('¿Borrar?'))return;S.entries=S.entries.filter(e=>e.id!==id);save();renderHistory(histFilter);renderHome();toast('🗑 Eliminado');}
+function delEntry(id){if(!confirm('¿Borrar?'))return;const p=getP();p.entries=p.entries.filter(e=>e.id!==id);save();renderHistory(histFilter);renderHome();toast('Eliminado');}
 
-let editKey='',editType='';
-function editParam(key,label,type,def){editKey=key;editType=type;document.getElementById('param-title').textContent=label;const inp=document.getElementById('param-input');inp.type=type;inp.value=S.config[key]!==undefined?S.config[key]:def;openModal('modal-param');}
-function saveParam(){const val=document.getElementById('param-input').value;if(!val)return;S.config[editKey]=editType==='number'?parseFloat(val):val;save();renderProfile();closeModal('modal-param');toast('✅ Guardado');}
-function renderProfile(){document.getElementById('cfg-ratio').textContent=S.config.ratio+'g/u';document.getElementById('cfg-sens').textContent=S.config.sensitivity;document.getElementById('cfg-target').textContent=S.config.target;document.getElementById('cfg-basal').textContent=S.config.basalDose+'u';}
-
-function exportData(){const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='DiabApp_'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);toast('📤 Datos exportados');}
-function deleteAll(){if(!confirm('¿Borrar TODOS los datos?'))return;if(!confirm('Confirma: se borrará todo el historial.'))return;S.entries=[];save();renderHome();renderHistory('all');toast('🗑 Datos borrados');}
-
+// ============================================================
+// PROFILE SETTINGS
+// ============================================================
+function editParam(key,label,type){
+  editKey=key;editType=type;
+  document.getElementById('param-title').textContent=label;
+  const p=getP();
+  const inp=document.getElementById('param-val');
+  inp.type=type;inp.value=p.config[key]!==undefined?p.config[key]:'';
+  openModal('modal-param');
+}
+function saveParam(){
+  const val=document.getElementById('param-val').value;if(!val)return;
+  const p=getP();
+  p.config[editKey]=['ratio','sensitivity','target','basalDose'].includes(editKey)?parseFloat(val):val;
+  save();renderProfile();closeModal('modal-param');toast('✅ Guardado');
+}
+function renderProfile(){
+  const p=getP();if(!p)return;
+  const init=p.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const av=document.getElementById('prof-av');av.textContent=init;av.style.background=p.color;
+  document.getElementById('prof-name').textContent=p.name;
+  document.getElementById('prof-sub').textContent='Diabetes T1 · '+p.entries.length+' registros';
+  document.getElementById('cfg-ratio').textContent=p.config.ratio+'g/u';
+  document.getElementById('cfg-sens').textContent=p.config.sensitivity+' mg/dL';
+  document.getElementById('cfg-target').textContent=p.config.target+' mg/dL';
+  document.getElementById('cfg-basal').textContent=p.config.basalDose+'u';
+  document.getElementById('cfg-basalt').textContent=p.config.basalType;
+  document.getElementById('cfg-rapidt').textContent=p.config.rapidType;
+}
+function exportData(){
+  const p=getP();if(!p)return;
+  const blob=new Blob([JSON.stringify(p,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  a.href=url;a.download='DiabApp_'+p.name+'_'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();URL.revokeObjectURL(url);toast('📤 Exportado');
+}
+function deleteData(){
+  if(!confirm('¿Borrar todos tus registros?'))return;
+  const p=getP();p.entries=[];save();renderHome();renderHistory('all');toast('Borrado');
+}
 function fmtTime(ts){return new Date(ts).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});}
 function fmtDate(d){return d.toLocaleDateString('es-ES',{day:'numeric',month:'long'});}
 function isToday(d){return d.toDateString()===new Date().toDateString();}
 function isYest(d){const y=new Date();y.setDate(y.getDate()-1);return d.toDateString()===y.toDateString();}
 
-load();renderHome();renderProfile();
+load();renderProfilesScreen();
 </script>
 </body>
 </html>
