@@ -141,7 +141,8 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
       </div>
       <div id="toujeo-check" style="width:24px;height:24px;border-radius:50%;border:1.5px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:12px"></div>
     </div>
-    <button class="btn btn-p" style="margin-bottom:8px;padding:16px;font-size:16px" onclick="goTo('s-food')">🍽️ Buscar comida y calcular dosis</button>
+    <button class="btn btn-p" style="margin-bottom:6px;padding:16px;font-size:16px" onclick="goTo('s-food')">🍽️ Buscar comida y calcular dosis</button>
+    <button class="btn" style="margin-bottom:8px;padding:14px;font-size:14px;border-color:var(--blue2);color:var(--blue2)" onclick="goTo('s-plate')">🫓 Rellenar plato visualmente</button>
     <div class="card">
       <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t3);margin-bottom:8px">Hoy</div>
       <div class="stat2">
@@ -164,6 +165,7 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
   <nav class="bnav">
     <button class="nb on" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
     <button class="nb" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb" onclick="goTo('s-plate')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Plato</button>
     <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
     <button class="nb" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
   </nav>
@@ -185,8 +187,77 @@ html,body{height:100%;background:var(--bg);font-family:'DM Sans',sans-serif;colo
   <nav class="bnav">
     <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
     <button class="nb on" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb" onclick="goTo('s-plate')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Plato</button>
     <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
     <button class="nb" onclick="goTo('s-profile')"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Perfil</button>
+  </nav>
+</div>
+
+<!-- PLATE PAINTER -->
+<div class="screen" id="s-plate">
+  <div class="topbar">
+    <button class="ibt" onclick="goTo('s-home')" aria-label="Volver">←</button>
+    <h1>Rellenar plato</h1>
+  </div>
+  <div class="scroll" style="padding:0 14px">
+    <p style="font-size:12px;color:var(--t2);padding:10px 0 4px">Añade alimentos y ajusta qué porcentaje ocupa cada uno en el plato. La app calcula los CH proporcionalmente.</p>
+
+    <!-- Plate canvas -->
+    <div style="display:flex;justify-content:center;margin:10px 0">
+      <div style="position:relative;width:240px;height:240px">
+        <canvas id="plate-canvas" width="240" height="240" style="border-radius:50%;cursor:pointer;touch-action:none"></canvas>
+        <div id="plate-empty-msg" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:12px;text-align:center;pointer-events:none">Añade alimentos<br>abajo para empezar</div>
+      </div>
+    </div>
+
+    <!-- Plate segments list -->
+    <div id="plate-segments-list" style="margin-bottom:10px"></div>
+
+    <!-- Add food search -->
+    <div class="card" style="padding:12px">
+      <div style="font-size:11px;font-weight:500;color:var(--t2);margin-bottom:6px">Añadir alimento</div>
+      <input class="field" id="plate-search" type="text" placeholder="Buscar: pollo, pasta, lechuga..." oninput="renderPlateSearch()" autocomplete="off" style="margin-bottom:8px">
+      <div id="plate-search-results" style="max-height:160px;overflow-y:auto"></div>
+    </div>
+
+    <!-- Totals -->
+    <div id="plate-totals" style="display:none">
+      <div style="background:var(--bg3);border-radius:var(--r2);padding:12px;margin-bottom:10px;display:flex;justify-content:space-between">
+        <div>
+          <div style="font-size:10px;color:var(--t2)">Total carbohidratos</div>
+          <div style="font-size:26px;font-weight:700;font-family:'DM Mono',monospace;color:var(--blue2)" id="plate-total-ch">0g</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--t2)">Calorías aprox.</div>
+          <div style="font-size:20px;font-weight:500;font-family:'DM Mono',monospace;color:var(--orange)" id="plate-total-kcal">0 kcal</div>
+        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <label class="lbl">Glucemia actual (mg/dL)</label>
+        <input class="field" type="number" id="plate-gluc" placeholder="Ej. 120" oninput="calcPlateDose()" style="margin-top:4px">
+      </div>
+      <div class="dose-hero" id="plate-dose-hero" style="display:none">
+        <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--blue2);opacity:.7;margin-bottom:3px">Dosis recomendada</div>
+        <div class="dose-num" id="plate-dose-num">—</div>
+        <div style="font-size:13px;color:var(--blue2);font-weight:500" id="plate-rapid-lbl">unidades</div>
+        <div style="font-size:11px;color:var(--blue2);opacity:.8;margin-top:6px" id="plate-dose-sub"></div>
+      </div>
+      <div style="padding:8px 10px;background:var(--amber-bg);border-radius:var(--r2);font-size:11px;color:var(--amber);margin-bottom:10px">
+        ⚕️ Recomendación orientativa. Consulta con tu endocrino.
+      </div>
+      <div id="plate-confirm-area" style="display:none">
+        <label class="lbl">Dosis real que te pones (u)</label>
+        <input class="field" type="number" id="plate-dose-real" step="0.5" placeholder="Confirma o modifica" style="margin:4px 0 10px">
+        <button class="btn btn-g" onclick="savePlateMeal()">✅ Guardar registro</button>
+      </div>
+      <button class="btn" onclick="resetPlate()" style="margin-top:6px">🗑 Vaciar plato</button>
+    </div>
+  </div>
+  <nav class="bnav">
+    <button class="nb" onclick="goTo('s-home')"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Inicio</button>
+    <button class="nb" onclick="goTo('s-food')"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Buscar</button>
+    <button class="nb on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Plato</button>
+    <button class="nb" onclick="goTo('s-history')"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Diario</button>
   </nav>
 </div>
 
@@ -731,7 +802,7 @@ function save(){try{localStorage.setItem(STORE,JSON.stringify({profiles}));}catc
 function goTo(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  const map={'s-home':0,'s-food':1,'s-history':2,'s-profile':3};
+  const map={'s-home':0,'s-food':1,'s-plate':2,'s-history':3,'s-profile':4};
   document.querySelectorAll('.bnav').forEach(nav=>{
     nav.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',i===(map[id]??-1)));
   });
@@ -1052,7 +1123,333 @@ function fmtDate(d){return d.toLocaleDateString('es-ES',{day:'numeric',month:'lo
 function isToday(d){return d.toDateString()===new Date().toDateString();}
 function isYest(d){const y=new Date();y.setDate(y.getDate()-1);return d.toDateString()===y.toDateString();}
 
+
+// ============================================================
+// PLATE PAINTER
+// ============================================================
+const PLATE_COLORS = ['#6366F1','#14B8A6','#F97316','#22C55E','#EF4444','#8B5CF6','#EC4899','#EAB308','#3B82F6','#10B981'];
+let plateSegments = []; // {food, pct, color}
+let plateDragging = -1;
+let plateCanvas, plateCtx;
+
+function initPlate() {
+  plateCanvas = document.getElementById('plate-canvas');
+  if (!plateCanvas) return;
+  plateCtx = plateCanvas.getContext('2d');
+  drawPlate();
+
+  plateCanvas.addEventListener('touchstart', plateTouchStart, {passive:false});
+  plateCanvas.addEventListener('touchmove', plateTouchMove, {passive:false});
+  plateCanvas.addEventListener('touchend', plateTouchEnd);
+  plateCanvas.addEventListener('mousedown', plateMouseDown);
+  plateCanvas.addEventListener('mousemove', plateMouseMove);
+  plateCanvas.addEventListener('mouseup', () => plateDragging = -1);
+}
+
+function drawPlate() {
+  if (!plateCtx) return;
+  const c = plateCanvas;
+  const cx = c.width/2, cy = c.height/2, r = c.width/2 - 4;
+  plateCtx.clearRect(0, 0, c.width, c.height);
+
+  // Plate background
+  plateCtx.beginPath();
+  plateCtx.arc(cx, cy, r, 0, Math.PI*2);
+  plateCtx.fillStyle = '#2A2F45';
+  plateCtx.fill();
+  plateCtx.strokeStyle = '#3A3A58';
+  plateCtx.lineWidth = 2;
+  plateCtx.stroke();
+
+  if (!plateSegments.length) return;
+  document.getElementById('plate-empty-msg').style.display = 'none';
+
+  let startAngle = -Math.PI/2;
+  plateSegments.forEach((seg, i) => {
+    const sweep = (seg.pct/100) * Math.PI * 2;
+    plateCtx.beginPath();
+    plateCtx.moveTo(cx, cy);
+    plateCtx.arc(cx, cy, r-2, startAngle, startAngle + sweep);
+    plateCtx.closePath();
+    plateCtx.fillStyle = seg.color;
+    plateCtx.fill();
+    plateCtx.strokeStyle = '#0F1117';
+    plateCtx.lineWidth = 2;
+    plateCtx.stroke();
+
+    // Label
+    if (seg.pct > 8) {
+      const midAngle = startAngle + sweep/2;
+      const lx = cx + Math.cos(midAngle) * r * 0.62;
+      const ly = cy + Math.sin(midAngle) * r * 0.62;
+      plateCtx.fillStyle = 'rgba(255,255,255,0.92)';
+      plateCtx.font = 'bold 11px DM Sans, sans-serif';
+      plateCtx.textAlign = 'center';
+      plateCtx.textBaseline = 'middle';
+      plateCtx.fillText(Math.round(seg.pct) + '%', lx, ly);
+    }
+    startAngle += sweep;
+  });
+
+  // Center circle
+  plateCtx.beginPath();
+  plateCtx.arc(cx, cy, 28, 0, Math.PI*2);
+  plateCtx.fillStyle = '#0F1117';
+  plateCtx.fill();
+  plateCtx.fillStyle = '#9896B0';
+  plateCtx.font = '10px DM Sans, sans-serif';
+  plateCtx.textAlign = 'center';
+  plateCtx.textBaseline = 'middle';
+  plateCtx.fillText('100%', cx, cy);
+}
+
+function getAngleFromPoint(e) {
+  const rect = plateCanvas.getBoundingClientRect();
+  let clientX, clientY;
+  if (e.touches) { clientX = e.touches[0].clientX; clientY = e.touches[0].clientY; }
+  else { clientX = e.clientX; clientY = e.clientY; }
+  const x = clientX - rect.left - rect.width/2;
+  const y = clientY - rect.top - rect.height/2;
+  return Math.atan2(y, x);
+}
+
+function findSegmentAtAngle(angle) {
+  let a = -Math.PI/2;
+  for (let i = 0; i < plateSegments.length; i++) {
+    const sweep = (plateSegments[i].pct/100)*Math.PI*2;
+    const end = a + sweep;
+    // Normalize angles
+    let norm = angle;
+    while (norm < a) norm += Math.PI*2;
+    while (norm > a + Math.PI*2) norm -= Math.PI*2;
+    if (norm >= a && norm <= end) return i;
+    a = end;
+  }
+  return -1;
+}
+
+function plateTouchStart(e) { e.preventDefault(); const a=getAngleFromPoint(e); plateDragging=findSegmentAtAngle(a); }
+function plateTouchMove(e) { e.preventDefault(); if(plateDragging<0)return; adjustSegment(e); }
+function plateTouchEnd() { plateDragging=-1; }
+function plateMouseDown(e) { const a=getAngleFromPoint(e); plateDragging=findSegmentAtAngle(a); }
+function plateMouseMove(e) { if(plateDragging<0)return; adjustSegment(e); }
+
+function adjustSegment(e) {
+  if (plateDragging < 0 || plateSegments.length < 2) return;
+  const angle = getAngleFromPoint(e);
+  const cx = plateCanvas.width/2, cy = plateCanvas.height/2;
+
+  // Calculate cumulative angle to boundary between dragging and next
+  let cumAngle = -Math.PI/2;
+  for (let i = 0; i < plateDragging; i++) {
+    cumAngle += (plateSegments[i].pct/100)*Math.PI*2;
+  }
+
+  let diff = angle - cumAngle;
+  while (diff < 0) diff += Math.PI*2;
+  while (diff > Math.PI*2) diff -= Math.PI*2;
+
+  const newPct = Math.round((diff / (Math.PI*2)) * 100);
+  const clampedPct = Math.max(5, Math.min(90, newPct));
+  const delta = clampedPct - plateSegments[plateDragging].pct;
+  const nextIdx = (plateDragging + 1) % plateSegments.length;
+  const nextNew = plateSegments[nextIdx].pct - delta;
+  if (nextNew < 5) return;
+  plateSegments[plateDragging].pct = clampedPct;
+  plateSegments[nextIdx].pct = nextNew;
+
+  normalizePct();
+  drawPlate();
+  renderSegmentsList();
+  updatePlateTotals();
+}
+
+function normalizePct() {
+  const total = plateSegments.reduce((a,s)=>a+s.pct,0);
+  if (total !== 100 && plateSegments.length > 0) {
+    const diff = 100 - total;
+    plateSegments[plateSegments.length-1].pct = Math.max(5, plateSegments[plateSegments.length-1].pct + diff);
+  }
+}
+
+function addFoodToPlate(foodId) {
+  const food = FOOD_DB.find(f=>f.id===foodId);
+  if (!food) return;
+  if (plateSegments.find(s=>s.food.id===foodId)) { toast('Ya está en el plato'); return; }
+  if (plateSegments.length >= 8) { toast('Máximo 8 alimentos por plato'); return; }
+
+  const defaultPct = plateSegments.length === 0 ? 100 : Math.floor(100/(plateSegments.length+1));
+  // Redistribute
+  if (plateSegments.length > 0) {
+    const take = defaultPct;
+    let remaining = take;
+    for (let i = plateSegments.length-1; i >= 0 && remaining > 0; i--) {
+      const give = Math.min(remaining, plateSegments[i].pct - 5);
+      if (give > 0) { plateSegments[i].pct -= give; remaining -= give; }
+    }
+    defaultPct2 = take - remaining;
+  }
+
+  plateSegments.push({
+    food,
+    pct: plateSegments.length === 0 ? 100 : Math.floor(100/(plateSegments.length+1)),
+    color: PLATE_COLORS[plateSegments.length % PLATE_COLORS.length]
+  });
+
+  // Re-normalize so total = 100
+  if (plateSegments.length > 1) {
+    const perSeg = Math.floor(100/plateSegments.length);
+    plateSegments.forEach((s,i) => s.pct = perSeg);
+    plateSegments[0].pct += 100 - perSeg*plateSegments.length;
+  }
+
+  document.getElementById('plate-search').value='';
+  document.getElementById('plate-search-results').innerHTML='';
+  document.getElementById('plate-totals').style.display='block';
+  document.getElementById('plate-empty-msg').style.display='none';
+  drawPlate();
+  renderSegmentsList();
+  updatePlateTotals();
+}
+
+function removeFromPlate(idx) {
+  plateSegments.splice(idx,1);
+  if (plateSegments.length > 0) {
+    const perSeg = Math.floor(100/plateSegments.length);
+    plateSegments.forEach(s=>s.pct=perSeg);
+    plateSegments[0].pct += 100 - perSeg*plateSegments.length;
+  } else {
+    document.getElementById('plate-totals').style.display='none';
+    document.getElementById('plate-empty-msg').style.display='flex';
+  }
+  drawPlate();
+  renderSegmentsList();
+  updatePlateTotals();
+}
+
+function renderSegmentsList() {
+  const el = document.getElementById('plate-segments-list');
+  if (!plateSegments.length) { el.innerHTML=''; return; }
+  el.innerHTML = plateSegments.map((s,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:0.5px solid var(--bd)">
+      <div style="width:14px;height:14px;border-radius:50%;background:${s.color};flex-shrink:0"></div>
+      <div style="font-size:22px">${s.food.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:12px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${s.food.name}</div>
+        <div style="font-size:10px;color:var(--t2)">${Math.round(s.food.m.ch*(s.pct/100))}g CH · ${Math.round(s.food.m.kcal*(s.pct/100))} kcal</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:4px">
+        <button onclick="changePct(${i},-5)" style="width:26px;height:26px;border-radius:6px;border:0.5px solid var(--bd2);background:transparent;color:var(--t);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">−</button>
+        <span style="font-size:13px;font-weight:700;color:var(--blue2);font-family:'DM Mono',monospace;min-width:36px;text-align:center">${Math.round(s.pct)}%</span>
+        <button onclick="changePct(${i},+5)" style="width:26px;height:26px;border-radius:6px;border:0.5px solid var(--bd2);background:transparent;color:var(--t);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">+</button>
+      </div>
+      <button onclick="removeFromPlate(${i})" style="background:var(--red-bg);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;color:var(--red);font-size:14px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>`).join('');
+}
+
+function changePct(idx, delta) {
+  if (plateSegments.length < 2) return;
+  const newPct = plateSegments[idx].pct + delta;
+  if (newPct < 5 || newPct > 90) return;
+  // Take from/give to another segment
+  const otherIdx = idx === 0 ? 1 : 0;
+  const otherNew = plateSegments[otherIdx].pct - delta;
+  if (otherNew < 5) return;
+  plateSegments[idx].pct = newPct;
+  plateSegments[otherIdx].pct = otherNew;
+  normalizePct();
+  drawPlate();
+  renderSegmentsList();
+  updatePlateTotals();
+}
+
+function updatePlateTotals() {
+  let ch=0, kcal=0;
+  plateSegments.forEach(s=>{
+    ch += s.food.m.ch * (s.pct/100);
+    kcal += s.food.m.kcal * (s.pct/100);
+  });
+  document.getElementById('plate-total-ch').textContent=Math.round(ch)+'g';
+  document.getElementById('plate-total-kcal').textContent=Math.round(kcal)+' kcal';
+  calcPlateDose();
+}
+
+function calcPlateDose() {
+  const p=getP(); if(!p) return;
+  let ch=0;
+  plateSegments.forEach(s=>ch+=s.food.m.ch*(s.pct/100));
+  ch=Math.round(ch);
+  const gluc=parseFloat(document.getElementById('plate-gluc').value);
+  if(isNaN(gluc)||gluc<20){document.getElementById('plate-dose-hero').style.display='none';document.getElementById('plate-confirm-area').style.display='none';return;}
+  let base=ch/p.config.ratio, corr=(gluc-p.config.target)/p.config.sensitivity, total=base+corr;
+  if(gluc<90)total-=1;
+  total=Math.max(0,Math.round(total*2)/2);
+  document.getElementById('plate-dose-num').textContent=total.toFixed(1);
+  document.getElementById('plate-rapid-lbl').textContent='unidades '+p.config.rapidType;
+  let sub=Math.round(base*10)/10+'u comida';
+  if(Math.round(corr*10)/10!==0)sub+=' '+(corr>=0?'+':'')+Math.round(corr*10)/10+'u corrección';
+  if(gluc<90)sub+=' −1u seguridad';
+  document.getElementById('plate-dose-sub').textContent=sub;
+  document.getElementById('plate-dose-hero').style.display='block';
+  document.getElementById('plate-dose-real').value=total.toFixed(1);
+  document.getElementById('plate-confirm-area').style.display='block';
+}
+
+function savePlateMeal() {
+  const p=getP(); if(!p||!plateSegments.length) return;
+  let ch=0, kcal=0;
+  plateSegments.forEach(s=>{ch+=s.food.m.ch*(s.pct/100);kcal+=s.food.m.kcal*(s.pct/100);});
+  ch=Math.round(ch); kcal=Math.round(kcal);
+  const gluc=parseFloat(document.getElementById('plate-gluc').value)||0;
+  const doseFinal=parseFloat(document.getElementById('plate-dose-real').value)||0;
+  const desc='Plato: '+plateSegments.map(s=>s.food.name+' ('+Math.round(s.pct)+'%)').join(', ');
+  let base=ch/(p.config.ratio), corr=gluc>0?(gluc-p.config.target)/p.config.sensitivity:0, doseRec=base+corr;
+  if(gluc<90&&gluc>0)doseRec-=1;
+  p.entries.unshift({id:Date.now(),type:'meal',ts:new Date().toISOString(),desc,ch,kcal,glucPrev:gluc,doseRec:Math.max(0,Math.round(doseRec*2)/2),doseFinal});
+  save(); toast('✅ Plato registrado'); resetPlate(); renderHome(); goTo('s-home');
+}
+
+function resetPlate() {
+  plateSegments=[];
+  document.getElementById('plate-totals').style.display='none';
+  document.getElementById('plate-dose-hero').style.display='none';
+  document.getElementById('plate-confirm-area').style.display='none';
+  document.getElementById('plate-gluc').value='';
+  document.getElementById('plate-search').value='';
+  document.getElementById('plate-search-results').innerHTML='';
+  document.getElementById('plate-empty-msg').style.display='flex';
+  renderSegmentsList();
+  drawPlate();
+}
+
+function renderPlateSearch() {
+  const q=(document.getElementById('plate-search').value||'').toLowerCase().trim();
+  const res=document.getElementById('plate-search-results');
+  if(!q){res.innerHTML='';return;}
+  const items=FOOD_DB.filter(f=>f.tags.some(t=>t.includes(q))||f.name.toLowerCase().includes(q)).slice(0,10);
+  if(!items.length){res.innerHTML='<div style="padding:8px;font-size:12px;color:var(--t3)">Sin resultados</div>';return;}
+  res.innerHTML=items.map(f=>`
+    <div onclick="addFoodToPlate(${f.id})" style="display:flex;align-items:center;gap:8px;padding:8px 4px;cursor:pointer;border-bottom:0.5px solid var(--bd)">
+      <span style="font-size:20px">${f.icon}</span>
+      <div style="flex:1">
+        <div style="font-size:12px;font-weight:500;color:var(--t)">${f.name}</div>
+        <div style="font-size:10px;color:var(--t2)">${f.cat} · ${f.m.ch}g CH ración M</div>
+      </div>
+      <span style="font-size:20px;color:var(--blue2)">+</span>
+    </div>`).join('');
+}
+
+
 load();renderProfilesScreen();
+
+// Wrap goTo to init plate
+const _baseGoTo = goTo;
+goTo = function(id) {
+  _baseGoTo(id);
+  if (id === 's-plate') {
+    setTimeout(() => { initPlate(); drawPlate(); renderSegmentsList(); }, 50);
+  }
+};
 </script>
 </body>
 </html>
