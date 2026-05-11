@@ -989,10 +989,11 @@ function goTo(id){
   document.querySelectorAll('.bnav').forEach(nav=>{
     nav.querySelectorAll('.nb').forEach((b,i)=>b.classList.toggle('on',i===(map[id]??-1)));
   });
-  if(id==='s-home')renderHome();
-  if(id==='s-food'){renderCats();renderFoodList();}
-  if(id==='s-history')renderHistory('all');
-  if(id==='s-profile')renderProfile();
+  if(id==='s-home') renderHome();
+  if(id==='s-food') { renderCats(); renderFoodList(); }
+  if(id==='s-plate') { setTimeout(()=>{ initPlate(); drawPlate(); renderSegmentsList(); }, 50); }
+  if(id==='s-history') renderHistory('all');
+  if(id==='s-profile') renderProfile();
 }
 
 // ============================================================
@@ -1083,6 +1084,7 @@ function renderHome(){
 // FOOD DB
 // ============================================================
 function renderCats(){
+  if (foodTab === 'ingr') { renderIngrCats(); return; }
   const strip=document.getElementById('cat-strip');
   strip.innerHTML=CATS.map(c=>`<button class="chip${c===curCat?' on':''}" onclick="setCat('${c}',this)">${c}</button>`).join('');
 }
@@ -1093,6 +1095,7 @@ function setCat(c,btn){
   renderFoodList();
 }
 function renderFoodList(){
+  if (foodTab === 'ingr') { renderIngrList(); return; }
   const q=(document.getElementById('food-search').value||'').toLowerCase().trim();
   let items=FOOD_DB;
   if(curCat!=='Todos') items=items.filter(f=>f.cat===curCat);
@@ -1311,33 +1314,16 @@ function isYest(d){const y=new Date();y.setDate(y.getDate()-1);return d.toDateSt
 // ============================================================
 // INGREDIENTS TAB
 // ============================================================
-let foodTab = 'platos'; // 'platos' or 'ingr'
+let foodTab = 'platos';
 let selIngr = null, ingrQty = 1;
 
 function switchFoodTab(tab) {
   foodTab = tab;
   document.getElementById('tab-platos').classList.toggle('on', tab==='platos');
   document.getElementById('tab-ingr').classList.toggle('on', tab==='ingr');
+  renderCats();
   renderFoodList();
 }
-
-const _origRenderFoodList = renderFoodList;
-renderFoodList = function() {
-  if (foodTab === 'ingr') {
-    renderIngrList();
-  } else {
-    _origRenderFoodList();
-  }
-};
-
-const _origRenderCats = renderCats;
-renderCats = function() {
-  if (foodTab === 'ingr') {
-    renderIngrCats();
-  } else {
-    _origRenderCats();
-  }
-};
 
 let curIngrCat = 'Todos';
 
@@ -1437,9 +1423,8 @@ function saveIngrMeal() {
   save(); closeModal('modal-ingr'); toast('✅ Registrado'); renderHome();
 }
 
-// Also add ingredients to plate painter search
-const _origRenderPlateSearch = renderPlateSearch;
-renderPlateSearch = function() {
+// Plate search with ingredients
+function renderPlateSearch() {
   const q = (document.getElementById('plate-search').value||'').toLowerCase().trim();
   const res = document.getElementById('plate-search-results');
   if (!q) { res.innerHTML=''; return; }
@@ -1803,34 +1788,12 @@ function resetPlate() {
   drawPlate();
 }
 
-function renderPlateSearch() {
-  const q=(document.getElementById('plate-search').value||'').toLowerCase().trim();
-  const res=document.getElementById('plate-search-results');
-  if(!q){res.innerHTML='';return;}
-  const items=FOOD_DB.filter(f=>f.tags.some(t=>t.includes(q))||f.name.toLowerCase().includes(q)).slice(0,10);
-  if(!items.length){res.innerHTML='<div style="padding:8px;font-size:12px;color:var(--t3)">Sin resultados</div>';return;}
-  res.innerHTML=items.map(f=>`
-    <div onclick="addFoodToPlate(${f.id})" style="display:flex;align-items:center;gap:8px;padding:8px 4px;cursor:pointer;border-bottom:0.5px solid var(--bd)">
-      <span style="font-size:20px">${f.icon}</span>
-      <div style="flex:1">
-        <div style="font-size:12px;font-weight:500;color:var(--t)">${f.name}</div>
-        <div style="font-size:10px;color:var(--t2)">${f.cat} · ${f.m.ch}g CH ración M</div>
-      </div>
-      <span style="font-size:20px;color:var(--blue2)">+</span>
-    </div>`).join('');
-}
+// renderPlateSearch moved below with ingredients support
 
 
 load();renderProfilesScreen();
 
-// Wrap goTo to init plate
-const _baseGoTo = goTo;
-goTo = function(id) {
-  _baseGoTo(id);
-  if (id === 's-plate') {
-    setTimeout(() => { initPlate(); drawPlate(); renderSegmentsList(); }, 50);
-  }
-};
+// goTo with plate init handled inside
 </script>
 </body>
 </html>
